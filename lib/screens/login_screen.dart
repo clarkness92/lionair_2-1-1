@@ -1,7 +1,16 @@
+import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:lionair_2/providers/user_provider.dart';
-import 'package:provider/provider.dart';
+// import 'package:lionair_2/providers/user_provider.dart';
+// import 'package:provider/provider.dart';
 import '../widgets/input_decoration.dart';
+import '../constants.dart';
+import '../screens/home_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:xml2json/xml2json.dart';
+import 'package:xml/xml.dart' as xml;
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -11,6 +20,194 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  // late String name, password;
+  var loading = false;
+  List hasil_result = [];
+  List hasil_results = [];
+  Xml2Json xml2json = new Xml2Json();
+  var hasilJson;
+
+  TextEditingController destination = TextEditingController();
+  TextEditingController idpegawai = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  void _cekUser(String idpegawai, String password) async {
+    final temporaryList = [];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<CekUser xmlns="http://tempuri.org/">' +
+        '<Usernameapi>admin</Usernameapi>' +
+        '<Passwordapi>admin</Passwordapi>' +
+        '<Username>$idpegawai</Username>' + //dibuat statis agar mudah bolak balik page => ganti dengan $idpegawai jika ingin dinamis
+        '<Password>$password</Password>' + //dibuat statis agar mudah bolak balik page => ganti dengan $password jika ingin dinamis
+        '</CekUser>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_CekUser),
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/CekUser',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+          // 'Accept': 'application/json',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      // debugPrint("Response status: ${response.statusCode}");
+      // debugPrint("Response body: ${response.body}");
+
+      final document = xml.XmlDocument.parse(response.body);
+
+      debugPrint("=================");
+      // debugPrint("document saja : ${document}");
+      // debugPrint("=================");
+      // debugPrint("document.tostring : ${document.toString()}");
+      // debugPrint("=================");
+      debugPrint(
+          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      debugPrint("=================");
+
+      final list_result_all = document.findAllElements('CekUser');
+
+      for (final list_result in list_result_all) {
+        final username = list_result.findElements('USERNAME').first.text;
+        final idemployee = list_result.findElements('IDEMPLOYEE').first.text;
+        final namaasli = list_result.findElements('NAMAASLI').first.text;
+        final division = list_result.findElements('DIVISION').first.text;
+        temporaryList.add({
+          'username': username,
+          'idemployee': idemployee,
+          'namaasli': namaasli,
+          'division': division,
+        });
+        debugPrint("object");
+        hasilJson = jsonEncode(temporaryList);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson");
+      }
+      loading = false;
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Login Gagal, ${response.statusCode}",
+      ).show();
+      Timer(Duration(seconds: 2), () {
+        Navigator.pop(context);
+      });
+      return;
+    }
+    setState(() {
+      hasil_result = temporaryList;
+      loading = true;
+    });
+  }
+
+  void getData(String destination, String idpegawai) async {
+    final temporaryList1 = [];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<GetReservationByIDSTaff xmlns="http://tempuri.org/">' +
+        '<UsernameApi>admin</UsernameApi>' +
+        '<PasswordApi>admin</PasswordApi>' +
+        '<DESTINATION>BLJ</DESTINATION>' +
+        '<IDSTAFF>$idpegawai</IDSTAFF>' + //dibuat statis agar mudah bolak balik page => ganti dengan $idpegawai jika ingin dinamis
+        '</GetReservationByIDSTaff>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_GetReservationByIDSTaff),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/GetReservationByIDSTaff',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+          // 'Accept': 'application/json',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      // debugPrint("Response status: ${response.statusCode}");
+      // debugPrint("Response body: ${response.body}");
+
+      final document = xml.XmlDocument.parse(response.body);
+
+      debugPrint("=================");
+      // debugPrint("document saja : ${document}");
+      // debugPrint("=================");
+      // debugPrint("document.tostring : ${document.toString()}");
+      // debugPrint("=================");
+      debugPrint(
+          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      debugPrint("=================");
+
+      final list_result_all1 = document.findAllElements('_x002D_');
+
+      for (final list_result in list_result_all1) {
+        final idx = list_result.findElements('IDX').first.text;
+        final idstaff = list_result.findElements('IDSTAFF').first.text;
+        final name = list_result.findElements('NAME').first.text;
+        final checkin = list_result.findElements('CHECKIN').first.text;
+        final checkout = list_result.findElements('CHECKOUT').first.text;
+        temporaryList1.add({
+          'idx': idx,
+          'idstaff': idstaff,
+          'name': name,
+          'checkin': checkin,
+          'checkout': checkout
+        });
+        debugPrint("object 2");
+        hasilJson = jsonEncode(temporaryList1);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 2");
+      }
+      loading = false;
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Login Gagal, ${response.statusCode}",
+      ).show();
+      Timer(Duration(seconds: 2), () {
+        Navigator.pop(context);
+      });
+      return;
+    }
+    setState(() {
+      hasil_results = temporaryList1;
+      loading = true;
+    });
+    List combine = [...hasil_result, ...hasil_results];
+
+    if (hasil_result.isEmpty) {
+      sweatAlertDenied(context);
+    } else {
+      Alert(
+        context: context,
+        type: AlertType.success,
+        title: "Login berhasil",
+      ).show();
+      Timer(Duration(seconds: 1), () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              HomeScreen(data: hasil_result, data1: hasil_results),
+        ));
+      });
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -47,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(20),
             margin: const EdgeInsets.symmetric(horizontal: 30),
             width: double.infinity,
-            //height: 350,
+            // height: 350,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(25),
@@ -63,86 +260,99 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 10),
                 Text('Login', style: Theme.of(context).textTheme.headline4),
                 const SizedBox(height: 30),
-                Container(
-                  child: Form(
-                    // autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          decoration: InputDecorations.inputDecoration(
-                            hintext: 'email@lionair.com',
-                            labeltext: 'Email',
-                            icon: const Icon(Icons.alternate_email_rounded),
-                          ),
-                          validator: (value) {
-                            String pattern =
-                                r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                            RegExp regExp = new RegExp(pattern);
-                            return regExp.hasMatch(value ?? '')
-                                ? null
-                                : 'The value entered is not an email';
-                          },
+                Form(
+                  key: _formKey,
+                  // autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        autocorrect: false,
+                        controller: idpegawai,
+                        decoration: InputDecorations.inputDecoration(
+                          hintext: '1234***',
+                          labeltext: 'ID Pegawai',
+                          icon: const Icon(Icons.credit_card_outlined),
                         ),
-                        const SizedBox(height: 30),
-                        TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          autocorrect: false,
-                          obscureText: true,
-                          decoration: InputDecorations.inputDecoration(
-                            hintext: '*****',
-                            labeltext: 'Password',
-                            icon: const Icon(Icons.lock_outlined),
-                          ),
-                          validator: (value) {
-                            return (value != null && value.length >= 6)
-                                ? null
-                                : 'Password must be greater than or equal to 6 characters';
-                          },
+                        validator: (value) {
+                          String pattern = r"[0-9]";
+                          RegExp regExp = new RegExp(pattern);
+                          return regExp.hasMatch(value ?? '')
+                              ? null
+                              : 'Invalid input';
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      TextFormField(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        autocorrect: false,
+                        controller: password,
+                        obscureText: true,
+                        decoration: InputDecorations.inputDecoration(
+                          hintext: '*****',
+                          labeltext: 'Password',
+                          icon: const Icon(Icons.lock_outlined),
                         ),
-                        const SizedBox(height: 30),
-                        MaterialButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            disabledColor: Colors.grey,
-                            color: Colors.blueAccent,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 80, vertical: 15),
-                              child: const Text('Submit',
-                                  style: TextStyle(color: Colors.white)),
-                            ),
-                            onPressed: () {
-                              // print(userProvider.user2);
-                              Navigator.pushReplacementNamed(context, 'home');
-                            })
-                      ],
-                    ),
+                        //VALIDATOR Password
+                        validator: (value) {
+                          return (value != null && value.length >= 3)
+                              ? null
+                              : 'Password must be greater than or equal to 3 characters';
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          disabledColor: Colors.grey,
+                          color: Colors.blueAccent,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 80, vertical: 15),
+                            child: const Text('Submit',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          onPressed: () async {
+                            _cekUser(idpegawai.text, password.text);
+                            getData(destination.text, idpegawai.text);
+                          }),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 20),
-          const Text('OR'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.bold),
-                ),
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, 'register');
-                },
-                child: const Text('Create a new account'),
-              ),
-            ],
-          ),
+          // const SizedBox(height: 20),
+          // const Text('OR'),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     TextButton(
+          //       style: TextButton.styleFrom(
+          //         textStyle: const TextStyle(
+          //             fontSize: 17, fontWeight: FontWeight.bold),
+          //       ),
+          //       onPressed: () async {
+          //         Navigator.pushReplacementNamed(context, 'register');
+          //       },
+          //       child: const Text('Create a new account'),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
   }
+}
+
+void sweatAlertDenied(BuildContext context) {
+  Alert(
+    context: context,
+    type: AlertType.error,
+    title: "Login Gagal, sudah registrasi?",
+  ).show();
+  Timer(Duration(seconds: 2), () {
+    Navigator.pop(context);
+  });
+  return;
 }
