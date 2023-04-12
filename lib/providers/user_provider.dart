@@ -4,7 +4,6 @@ import '../constants.dart';
 import '../models/user.dart';
 
 const urlapi = url_CekUser;
-const urlapi = url_CekUser;
 
 class UserProvider with ChangeNotifier {
   String? USERNAME;

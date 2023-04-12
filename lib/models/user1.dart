@@ -1,66 +1,38 @@
-import 'dart:convert';
-
-List<User> userFromJson(String str) {
-  var list = List<User>.from(json.decode(str).map((x) => User.fromJson(x)));
-  return list;
-}
-
-String userToJson(List<User> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+import 'package:flutter/material.dart';
 
 class User {
-  User({
-    required this.id,
-    this.email,
-    required this.password,
-  });
+  // String? username;
+  String? idemployee;
+  String? namaasli;
 
-  int id;
-  String? email;
-  String password;
+  // User({required this.username, this.idemployee, this.namaasli});
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        email: json["email"],
-        password: json["password"],
-      );
+  User({required this.idemployee, this.namaasli});
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "email": email,
-        "password": password,
-      };
-}
-import 'dart:convert';
+  Map<String, dynamic> data() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    // data['username'] = this.username;
+    data['idemployee'] = this.idemployee;
+    data['namaasli'] = this.namaasli;
+    return data;
+  }
 
-List<User> userFromJson(String str) {
-  var list = List<User>.from(json.decode(str).map((x) => User.fromJson(x)));
-  return list;
+  User.fromJson(Map<String, dynamic> User) {
+    // username = User['username'];
+    idemployee = User['idemployee'];
+    namaasli = User['namaasli'];
+  }
 }
 
-String userToJson(List<User> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+class MultipartUpload extends StatelessWidget {
+  // const MultipartUpload({super.key});
 
-class User {
-  User({
-    required this.id,
-    this.email,
-    required this.password,
-  });
+  final Widget child;
 
-  int id;
-  String? email;
-  String password;
+  const MultipartUpload({super.key, required this.child});
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        email: json["email"],
-        password: json["password"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "email": email,
-        "password": password,
-      };
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
 }
