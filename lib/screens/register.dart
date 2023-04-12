@@ -1,7 +1,18 @@
 import 'dart:convert';
 // import 'dart:ffi';
 
+import 'dart:convert';
+// import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:xml2json/xml2json.dart';
+import '../constants.dart';
+import '../widgets/input_decoration.dart';
+import 'package:xml/xml.dart' as xml;
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'login_screen.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 import '../constants.dart';
@@ -12,6 +23,7 @@ import 'login_screen.dart';
 import 'package:flutter/foundation.dart' show debugPrint;
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
