@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import '../constants.dart';
 import 'lihat_reservasi.dart';
 import 'package:xml/xml.dart' as xml;
-import 'package:flutter/foundation.dart' show debugPrint;
 
 class InputLaporan extends StatefulWidget {
   var data;
@@ -26,7 +25,7 @@ class _InputLaporanState extends State<InputLaporan> {
   final _formKey = GlobalKey<FormState>();
 
   String? name, idstaff, gender, title;
-  Xml2Json xml2json = new Xml2Json();
+  Xml2Json xml2json = Xml2Json();
 
   var loading = false;
   List data = [];
@@ -111,7 +110,7 @@ class _InputLaporanState extends State<InputLaporan> {
         type: AlertType.error,
         title: "Login Gagal, ${response.statusCode}",
       ).show();
-      Timer(Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 2), () {
         Navigator.pop(context);
       });
       return;
@@ -122,7 +121,6 @@ class _InputLaporanState extends State<InputLaporan> {
   Widget build(BuildContext context) {
     final start = dateRange.start;
     final end = dateRange.end;
-    final difference = dateRange.duration;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -252,12 +250,12 @@ class _InputLaporanState extends State<InputLaporan> {
             ));
           },
           backgroundColor: Colors.red,
+          elevation: 12,
+          tooltip: "Back to HomeScreen",
           child: const Icon(
             Icons.cancel_outlined,
             size: 45,
           ),
-          elevation: 12,
-          tooltip: "Back to HomeScreen",
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),

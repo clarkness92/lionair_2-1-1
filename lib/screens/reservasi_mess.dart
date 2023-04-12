@@ -129,7 +129,6 @@ class _ReservasiMessState extends State<ReservasiMess> {
   Widget build(BuildContext context) {
     final start = dateRange.start;
     final end = dateRange.end;
-    final difference = dateRange.duration;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
