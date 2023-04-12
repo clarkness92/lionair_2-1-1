@@ -1,6 +1,5 @@
 name: lionair_2
 description: A new Lion Air Reservation apps.
-description: A new Lion Air Reservation apps.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
