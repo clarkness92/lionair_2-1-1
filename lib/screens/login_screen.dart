@@ -224,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
     await flutterLocalNotificationsPlugin.show(
       0,
       'New Notification',
-      'Hi, ${hasil_result[0]['namaasli']}',
+      'Hi, ${idpegawai.text}',
       platformChannelSpecifics,
       payload: 'item x',
     );
