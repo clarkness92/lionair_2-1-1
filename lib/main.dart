@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lionair_2/providers/user_provider.dart';
 import 'package:lionair_2/screens/home_screen.dart';
 import 'package:lionair_2/screens/input_laporan.dart';
-import 'package:lionair_2/screens/input_laporan.dart';
 import 'package:lionair_2/screens/login_screen.dart';
 import 'package:lionair_2/screens/notification.dart';
 import 'package:lionair_2/screens/reservasi_mess.dart';
@@ -29,7 +28,6 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Lion Air Apps',
         title: 'Lion Air Apps',
         routes: {
           'login': (_) => const LoginScreen(),

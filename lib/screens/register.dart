@@ -24,7 +24,6 @@ import 'package:flutter/foundation.dart' show debugPrint;
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
-  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   State<RegisterScreen> createState() => RegisterScreenState();
