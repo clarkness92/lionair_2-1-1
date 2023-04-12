@@ -2,7 +2,7 @@
     package="com.example.lionair_2">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="lionair_2"
+        android:label="Lion Reserve"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

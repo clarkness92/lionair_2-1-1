@@ -1,5 +1,5 @@
 name: lionair_2
-description: A new Flutter project.
+description: A new Lion Air Reservation apps.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -32,8 +32,18 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_progress_dialog: ^0.1.0
   http: ^0.13.4
-  provider: ^6.0.3
+  intl: ^0.18.0
+  json_serializable: ^6.5.4
+  provider: ^6.0.4
+  syncfusion_flutter_datepicker: ^20.3.61
+  xml: ^6.1.0
+  xml2json: ^5.3.5
+  progress_dialog: ^1.2.4
+  rflutter_alert: ^2.0.2
+  syncfusion_flutter_datagrid: ^20.4.54
+  flutter_local_notifications: ^13.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

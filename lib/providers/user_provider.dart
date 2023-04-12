@@ -3,39 +3,36 @@ import 'package:http/http.dart' as http;
 import '../constants.dart';
 import '../models/user.dart';
 
-const urlapi = url;
+const urlapi = url_CekUser;
 
 class UserProvider with ChangeNotifier {
-  String iDStaff = "";
-  String? name;
-  String? gender;
-  String? title;
-  String? organization;
-  String? company;
-  // String email = "";
-  // String telephone = "";
-  // String? iDStaff;
+  String? USERNAME;
+  String? IDEMPLOYEE;
+  String? NAMAASLI;
+  String? DIVISION;
+  String? EMAIL;
+  String? PHONE;
 
-  List<User> user2 = [];
+  List<User> person = [];
 
-  UserProvider() {
-    getUserUrl();
+  String toXml() {
+    return '<User><IDSTAFF>$IDEMPLOYEE</IDSTAFF><NAME>$NAMAASLI</NAME></User>';
   }
 
-  getUserUrl() async {
-    final url = Uri.http(urlapi, 'api/jonatan/api/staff?id=53031290');
-    final resp = await http.get(url,
-        // body: {
-        //   'xEmail': objtext
-        // },
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": "true",
-          'Content-type': 'application/json',
-          'Accept': 'application/json'
-        });
-    final response = userFromJson(resp.body);
-    user2 = response;
-    notifyListeners();
-  }
+  // UserProvider() {
+  //   getUserUrl();
+  // }
+
+  // getUserUrl() async {
+  //   // print('saya ada disini');
+  //   final url = Uri.http(url_CekUser);
+  //   final resp = await http.get(url, headers: {
+  //     // "Access-Control-Allow-Origin": "*",
+  //     // "Access-Control-Allow-Credentials": "true",
+  //     'Content-type': 'text/xml',
+  //   });
+  //   final response = userFromJson(resp.body);
+  //   person = response;
+  //   notifyListeners();
+  // }
 }
