@@ -213,8 +213,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: 25),
-                            const Text(
-                              "IDX",
+                            Text(
+                              "${data3[index]['vidx']}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),

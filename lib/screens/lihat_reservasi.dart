@@ -206,7 +206,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                       ),
                       Text(
                         "${data3[index]['idkamar']}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ]),
                     const Divider(
@@ -221,21 +221,24 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                 const Text("Area"),
                                 Text(
                                   "     ${data3[index]['areamess']}",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 )
                               ]),
                               Row(children: [
                                 const Text("Blok"),
                                 Text(
                                   "     ${data3[index]['blok']}",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ]),
                               Row(children: [
                                 const Text("Nomor"),
                                 Text(
                                   " ${data3[index]['nokamar']}",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 )
                               ]),
                             ]),
@@ -268,7 +271,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                       const Text("Bed"),
                       Text(
                         "      ${data3[index]['namabed']}",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       )
                     ]),
                     const Divider(
