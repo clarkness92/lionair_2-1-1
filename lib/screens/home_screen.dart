@@ -1,19 +1,32 @@
+import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
 import 'reservasi_mess.dart';
+import '../constants.dart';
+import 'package:http/http.dart' as http;
+import 'package:xml2json/xml2json.dart';
+import 'package:xml/xml.dart' as xml;
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class HomeScreen extends StatefulWidget {
   var data;
   var data1;
+  var data2;
 
-  HomeScreen({super.key, required this.data, required this.data1});
+  HomeScreen(
+      {super.key,
+      required this.data,
+      required this.data1,
+      required this.data2});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState(data, data1);
+  State<HomeScreen> createState() => _HomeScreenState(data, data1, data2);
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  _HomeScreenState(this.data, this.data1);
+  _HomeScreenState(this.data, this.data1, this.data2);
   late PageController _pageController;
   int activePage = 0;
   int maxLimit = 19;
@@ -23,14 +36,209 @@ class _HomeScreenState extends State<HomeScreen> {
   var loading = false;
   List data = [];
   List data1 = [];
+  List data2 = [];
+  List data3 = [];
+  List dataBaru2 = [];
+  Xml2Json xml2json = Xml2Json();
+  var hasilJson;
+
+  TextEditingController destination = TextEditingController();
+  TextEditingController idpegawai = TextEditingController();
+
+  void updateData2(String destination, String idpegawai) async {
+    final temporaryList2 = [];
+    idpegawai = data[0]['idemployee'];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<Checktime_GetCurrentStay xmlns="http://tempuri.org/">' +
+        '<UsernameAPI>admin</UsernameAPI>' +
+        '<PasswordAPI>admin</PasswordAPI>' +
+        '<Destination>BLJ</Destination>' +
+        '<IDSTAFF>$idpegawai</IDSTAFF>' +
+        '</Checktime_GetCurrentStay>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_Checktime_GetCurrentStay),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/Checktime_GetCurrentStay',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      debugPrint("=================");
+      debugPrint(
+          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      debugPrint("=================");
+
+      final listResultAll2 = document.findAllElements('_x002D_');
+
+      for (final list_result in listResultAll2) {
+        final idx = list_result.findElements('IDX').first.text;
+        final idkamar = list_result.findElements('IDKAMAR').first.text;
+        final areamess = list_result.findElements('AREAMESS').first.text;
+        final blok = list_result.findElements('BLOK').first.text;
+        final nokamar = list_result.findElements('NOKAMAR').first.text;
+        final namabed = list_result.findElements('NAMABED').first.text;
+        final bookin = list_result.findElements('BOOKIN').first.text;
+        final bookout = list_result.findElements('BOOKOUT').first.text;
+        temporaryList2.add({
+          'idx': idx,
+          'idkamar': idkamar,
+          'areamess': areamess,
+          'blok': blok,
+          'nokamar': nokamar,
+          'namabed': namabed,
+          'bookin': bookin,
+          'bookout': bookout
+        });
+        debugPrint("object 2.1");
+        hasilJson = jsonEncode(temporaryList2);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 2.1");
+      }
+      loading = false;
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Update Gagal, ${response.statusCode}",
+      ).show();
+      Timer(const Duration(seconds: 2), () {
+        Navigator.pop(context);
+      });
+      return;
+    }
+    setState(() {
+      dataBaru2 = temporaryList2;
+      loading = true;
+      debugPrint('$dataBaru2');
+    });
+
+    Map<String, dynamic> map1 = Map.fromIterable(data2, key: (e) => e['idx']);
+    Map<String, dynamic> map2 =
+        Map.fromIterable(dataBaru2, key: (e) => e['idx']);
+
+    map1.addAll(map2);
+
+    List mergedList = map1.values.toList();
+
+    debugPrint('$mergedList');
+
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) =>
+          HomeScreen(data: data, data1: data1, data2: mergedList),
+    ));
+  }
+
+  void getReservationHist(String destination, String idpegawai) async {
+    final temporaryList3 = [];
+    idpegawai = data[0]['idemployee'];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<Checktime_GetHistoryStay xmlns="http://tempuri.org/">' +
+        '<UsernameAPI>admin</UsernameAPI>' +
+        '<PasswordAPI>admin</PasswordAPI>' +
+        '<Destination>BLJ</Destination>' +
+        '<IDSTAFF>$idpegawai</IDSTAFF>' +
+        '</Checktime_GetHistoryStay>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_Checktime_GetHistoryStay),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/Checktime_GetHistoryStay',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      debugPrint("=================");
+      debugPrint(
+          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      debugPrint("=================");
+
+      final listResultAll3 = document.findAllElements('_x002D_');
+
+      for (final list_result in listResultAll3) {
+        final idx = list_result.findElements('IDX').first.text;
+        final idkamar = list_result.findElements('IDKAMAR').first.text;
+        final areamess = list_result.findElements('AREAMESS').first.text;
+        final blok = list_result.findElements('BLOK').first.text;
+        final nokamar = list_result.findElements('NOKAMAR').first.text;
+        final namabed = list_result.findElements('NAMABED').first.text;
+        final bookin = list_result.findElements('BOOKIN').first.text;
+        final bookout = list_result.findElements('BOOKOUT').first.text;
+        final checkin = list_result.findElements('CHECKIN').first.text;
+        final checkout = list_result.findElements('CHECKOUT').first.text;
+        temporaryList3.add({
+          'idx': idx,
+          'idkamar': idkamar,
+          'areamess': areamess,
+          'blok': blok,
+          'nokamar': nokamar,
+          'namabed': namabed,
+          'bookin': bookin,
+          'bookout': bookout,
+          'checkin': checkin,
+          'checkout': checkout
+        });
+        debugPrint("object 3");
+        hasilJson = jsonEncode(temporaryList3);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 3");
+      }
+      loading = false;
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "${response.statusCode}",
+      ).show();
+      Timer(const Duration(seconds: 2), () {
+        Navigator.pop(context);
+      });
+      return;
+    }
+    setState(() {
+      data3 = temporaryList3;
+      loading = true;
+    });
+
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => LihatDataEmployee(
+        data: data,
+        data1: data1,
+        data2: data2,
+        data3: data3,
+      ),
+    ));
+  }
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(viewportFraction: 1.0);
 
-    if (data1.length <= maxLimit) {
-      indiLength = data1.length;
+    if (data2.length <= maxLimit) {
+      indiLength = data2.length;
     } else {
       indiLength = maxLimit;
     }
@@ -48,6 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context) => HomeScreen(
                 data: data,
                 data1: data1,
+                data2: data2,
               ),
             ));
           },
@@ -55,6 +264,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: const Text("Home Screen"),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.refresh, color: Colors.white),
+            onPressed: () async {
+              updateData2(destination.text, idpegawai.text);
+            },
+            tooltip: "Refresh Data",
+          ),
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
@@ -70,7 +286,7 @@ class _HomeScreenState extends State<HomeScreen> {
         key: _formKey,
         itemCount: 1,
         itemBuilder: (context, index) {
-          if (data1.isEmpty) {
+          if (data2.isEmpty) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
@@ -130,6 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (context) => ReservasiMess(
                                           data: data,
                                           data1: data1,
+                                          data2: data2,
                                         ),
                                       ));
                                     },
@@ -150,13 +367,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: Colors.red, width: 2),
                                     ),
                                     onPressed: () async {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => LihatDataEmployee(
-                                          data: data,
-                                          data1: data1,
-                                        ),
-                                      ));
+                                      getReservationHist(
+                                          destination.text, idpegawai.text);
                                     },
                                     child: const Text(
                                       "\nReservation\nHistory\n",
@@ -262,6 +474,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         builder: (context) => ReservasiMess(
                                           data: data,
                                           data1: data1,
+                                          data2: data2,
                                         ),
                                       ));
                                     },
@@ -282,13 +495,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: Colors.red, width: 2),
                                     ),
                                     onPressed: () async {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => LihatDataEmployee(
-                                          data: data,
-                                          data1: data1,
-                                        ),
-                                      ));
+                                      getReservationHist(
+                                          destination.text, idpegawai.text);
                                     },
                                     child: const Text(
                                       "\nReservation\nHistory\n",
@@ -321,7 +529,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 350,
                               height: 250,
                               child: PageView.builder(
-                                  itemCount: data1.length,
+                                  itemCount: data2.length,
                                   pageSnapping: true,
                                   controller: _pageController,
                                   onPageChanged: (page) {
@@ -345,7 +553,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: <Widget>[
                                             Row(children: [
                                               Text(
-                                                "${data1[index]['idx']}",
+                                                "${data2[index]['idx']}",
                                                 style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 18),
@@ -353,9 +561,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                               const Spacer(
                                                 flex: 1,
                                               ),
-                                              const Text(
-                                                "KMR001",
-                                                style: TextStyle(
+                                              Text(
+                                                "${data2[index]['idkamar']}",
+                                                style: const TextStyle(
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
@@ -370,41 +578,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Row(children: const [
-                                                        Text("Area"),
+                                                      Row(children: [
+                                                        const Text("Area"),
                                                         Text(
-                                                          "     MESS 1 TRANSIT",
-                                                          style: TextStyle(
+                                                          "     ${data2[index]['areamess']}",
+                                                          style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
                                                         )
                                                       ]),
-                                                      Row(children: const [
-                                                        Text("Blok"),
+                                                      Row(children: [
+                                                        const Text("Blok"),
                                                         Text(
-                                                          "     K9",
-                                                          style: TextStyle(
+                                                          "     ${data2[index]['blok']}",
+                                                          style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
                                                         ),
                                                       ]),
-                                                      Row(children: const [
-                                                        Text("Nomor"),
+                                                      Row(children: [
+                                                        const Text("Nomor"),
                                                         Text(
-                                                          " FANTA",
-                                                          style: TextStyle(
+                                                          " ${data2[index]['nokamar']}",
+                                                          style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
                                                         )
                                                       ]),
-                                                      Row(children: const [
-                                                        Text("Bed"),
+                                                      Row(children: [
+                                                        const Text("Bed"),
                                                         Text(
-                                                          "      A",
-                                                          style: TextStyle(
+                                                          "      ${data2[index]['namabed']}",
+                                                          style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -429,9 +637,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             Row(children: [
                                               // Text("${data[index]['name']}"),
-                                              const Text("Check-In"),
+                                              const Text("Book-In"),
                                               Text(
-                                                "    : ${data1[index]['checkin']}",
+                                                "    : ${data2[index]['bookin']}",
                                                 style: const TextStyle(
                                                     fontWeight:
                                                         FontWeight.bold),
@@ -439,9 +647,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ]),
                                             Row(
                                               children: [
-                                                const Text("Check-Out"),
+                                                const Text("Book-Out"),
                                                 Text(
-                                                  " : ${data1[index]['checkout']}",
+                                                  " : ${data2[index]['bookout']}",
                                                   style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),

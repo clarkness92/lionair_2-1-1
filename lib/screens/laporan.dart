@@ -22,20 +22,30 @@ import 'reservasi_mess.dart';
 class Lihatlaporan extends StatefulWidget {
   var data;
   var data1;
+  var data2;
+  var data3;
 
-  Lihatlaporan({super.key, required this.data, required this.data1});
+  Lihatlaporan(
+      {super.key,
+      required this.data,
+      required this.data1,
+      required this.data2,
+      required this.data3});
 
   @override
-  State<Lihatlaporan> createState() => _Lihatlaporanstate(data, data1);
+  State<Lihatlaporan> createState() =>
+      _Lihatlaporanstate(data, data1, data2, data3);
 }
 
 class _Lihatlaporanstate extends State<Lihatlaporan> {
-  _Lihatlaporanstate(this.data, this.data1);
+  _Lihatlaporanstate(this.data, this.data1, this.data2, this.data3);
 
   final _formKey = GlobalKey<FormState>();
   var loading = false;
   List data = [];
   List data1 = [];
+  List data2 = [];
+  List data3 = [];
   List dataBaru = [];
   var hasilJson;
 
@@ -135,7 +145,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     debugPrint('$mergedList');
 
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => Lihatlaporan(data: data, data1: mergedList),
+      builder: (context) => Lihatlaporan(
+          data: data, data1: data1, data2: data2, data3: mergedList),
     ));
   }
 
@@ -150,6 +161,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
               builder: (context) => LihatDataEmployee(
                 data: data,
                 data1: data1,
+                data2: data2,
+                data3: data3,
               ),
             ));
           },
@@ -277,6 +290,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
             builder: (context) => InputLaporan(
               data: data,
               data1: data1,
+              data2: data2,
+              data3: data3,
             ),
           ));
         },

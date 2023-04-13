@@ -12,15 +12,23 @@ import 'package:xml/xml.dart' as xml;
 class InputLaporan extends StatefulWidget {
   var data;
   var data1;
+  var data2;
+  var data3;
 
-  InputLaporan({super.key, required this.data, required this.data1});
+  InputLaporan(
+      {super.key,
+      required this.data,
+      required this.data1,
+      required this.data2,
+      required this.data3});
 
   @override
-  State<InputLaporan> createState() => _InputLaporanState(data, data1);
+  State<InputLaporan> createState() =>
+      _InputLaporanState(data, data1, data2, data3);
 }
 
 class _InputLaporanState extends State<InputLaporan> {
-  _InputLaporanState(this.data, this.data1);
+  _InputLaporanState(this.data, this.data1, this.data2, this.data3);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -30,6 +38,8 @@ class _InputLaporanState extends State<InputLaporan> {
   var loading = false;
   List data = [];
   List data1 = [];
+  List data2 = [];
+  List data3 = [];
 
   List result = [];
   String userInput = "";
@@ -224,8 +234,11 @@ class _InputLaporanState extends State<InputLaporan> {
                       onPressed: () async {
                         _addReport(vidx.text, category.text, description.text);
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              LihatDataEmployee(data: data, data1: data1),
+                          builder: (context) => LihatDataEmployee(
+                              data: data,
+                              data1: data1,
+                              data2: data2,
+                              data3: data3),
                         ));
                       },
                       child: const Text("Submit"),
@@ -246,6 +259,8 @@ class _InputLaporanState extends State<InputLaporan> {
               builder: (context) => Lihatlaporan(
                 data: data,
                 data1: data1,
+                data2: data2,
+                data3: data3,
               ),
             ));
           },

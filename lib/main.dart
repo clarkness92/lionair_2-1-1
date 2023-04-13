@@ -35,22 +35,30 @@ class MyApp extends StatelessWidget {
           'reservasi_mess': (_) => ReservasiMess(
                 data: '',
                 data1: '',
+                data2: '',
               ),
           'lihat_reservasi': (_) => LihatDataEmployee(
                 data: '',
                 data1: '',
+                data2: '',
+                data3: '',
               ),
           'input_laporan': (_) => InputLaporan(
                 data: '',
                 data1: '',
+                data2: '',
+                data3: '',
               ),
           'laporan': (_) => Lihatlaporan(
                 data: '',
                 data1: '',
+                data2: '',
+                data3: '',
               ),
           'home': (_) => HomeScreen(
                 data: '',
                 data1: '',
+                data2: '',
               ),
           'register': (_) => const RegisterScreen(),
         },

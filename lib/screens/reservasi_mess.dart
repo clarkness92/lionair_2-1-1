@@ -6,21 +6,25 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
-import 'lihat_reservasi.dart';
 import 'package:xml/xml.dart' as xml;
 
 class ReservasiMess extends StatefulWidget {
   var data;
   var data1;
+  var data2;
 
-  ReservasiMess({super.key, required this.data, required this.data1});
+  ReservasiMess(
+      {super.key,
+      required this.data,
+      required this.data1,
+      required this.data2});
 
   @override
-  State<ReservasiMess> createState() => _ReservasiMessState(data, data1);
+  State<ReservasiMess> createState() => _ReservasiMessState(data, data1, data2);
 }
 
 class _ReservasiMessState extends State<ReservasiMess> {
-  _ReservasiMessState(this.data, this.data1);
+  _ReservasiMessState(this.data, this.data1, this.data2);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -30,6 +34,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
   var loading = false;
   List data = [];
   List data1 = [];
+  List data2 = [];
 
   List result = [];
   String userInput = "";
@@ -73,6 +78,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
     String idpegawai = data[0]['idemployee'];
     String nama = data[0]['namaasli'];
     String title = data[0]['division'];
+    String gender = data1[0]['gender'];
 
     final String soapEnvelope = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -84,7 +90,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
         '<IDREFF>string</IDREFF>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
         '<NAME>$nama</NAME>' +
-        '<GENDER>MALE</GENDER>' +
+        '<GENDER>$gender</GENDER>' +
         '<TITLE>$title</TITLE>' +
         '<CHECKIN>${dateRange.start.toIso8601String()}</CHECKIN>' +
         '<CHECKOUT>${dateRange.end.toIso8601String()}</CHECKOUT>' +
@@ -224,8 +230,8 @@ class _ReservasiMessState extends State<ReservasiMess> {
                       onPressed: () async {
                         _sendReservation(necessary.text, notes.text);
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              LihatDataEmployee(data: data, data1: data1),
+                          builder: (context) => HomeScreen(
+                              data: data, data1: data1, data2: data2),
                         ));
                       },
                       child: const Text("Submit"),
@@ -246,6 +252,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
               builder: (context) => HomeScreen(
                 data: data,
                 data1: data1,
+                data2: data2,
               ),
             ));
           },

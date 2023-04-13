@@ -25,7 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
   // late String name, password;
   var loading = false;
   List hasil_result = [];
-  List hasil_results = [];
+  List hasil_result1 = [];
+  List hasil_result2 = [];
+  List hasil_result3 = [];
   Xml2Json xml2json = Xml2Json();
   var hasilJson;
 
@@ -54,21 +56,13 @@ class _LoginScreenState extends State<LoginScreen> {
           'SOAPAction': 'http://tempuri.org/CekUser',
           "Access-Control-Allow-Credentials": "true",
           'Content-type': 'text/xml; charset=utf-8',
-          // 'Accept': 'application/json',
         },
         body: objBody);
 
     if (response.statusCode == 200) {
-      // debugPrint("Response status: ${response.statusCode}");
-      // debugPrint("Response body: ${response.body}");
-
       final document = xml.XmlDocument.parse(response.body);
 
       debugPrint("=================");
-      // debugPrint("document saja : ${document}");
-      // debugPrint("=================");
-      // debugPrint("document.tostring : ${document.toString()}");
-      // debugPrint("=================");
       debugPrint(
           "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
       debugPrint("=================");
@@ -132,21 +126,13 @@ class _LoginScreenState extends State<LoginScreen> {
           'SOAPAction': 'http://tempuri.org/GetReservationByIDSTaff',
           "Access-Control-Allow-Credentials": "true",
           'Content-type': 'text/xml; charset=utf-8',
-          // 'Accept': 'application/json',
         },
         body: objBody);
 
     if (response.statusCode == 200) {
-      // debugPrint("Response status: ${response.statusCode}");
-      // debugPrint("Response body: ${response.body}");
-
       final document = xml.XmlDocument.parse(response.body);
 
       debugPrint("=================");
-      // debugPrint("document saja : ${document}");
-      // debugPrint("=================");
-      // debugPrint("document.tostring : ${document.toString()}");
-      // debugPrint("=================");
       debugPrint(
           "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
       debugPrint("=================");
@@ -157,12 +143,14 @@ class _LoginScreenState extends State<LoginScreen> {
         final idx = list_result.findElements('IDX').first.text;
         final idstaff = list_result.findElements('IDSTAFF').first.text;
         final name = list_result.findElements('NAME').first.text;
+        final gender = list_result.findElements('GENDER').first.text;
         final checkin = list_result.findElements('CHECKIN').first.text;
         final checkout = list_result.findElements('CHECKOUT').first.text;
         temporaryList1.add({
           'idx': idx,
           'idstaff': idstaff,
           'name': name,
+          'gender': gender,
           'checkin': checkin,
           'checkout': checkout
         });
@@ -186,7 +174,85 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     setState(() {
-      hasil_results = temporaryList1;
+      hasil_result1 = temporaryList1;
+      loading = true;
+    });
+  }
+
+  void getReservation(String destination, String idpegawai) async {
+    final temporaryList2 = [];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<Checktime_GetCurrentStay xmlns="http://tempuri.org/">' +
+        '<UsernameAPI>admin</UsernameAPI>' +
+        '<PasswordAPI>admin</PasswordAPI>' +
+        '<Destination>BLJ</Destination>' +
+        '<IDSTAFF>$idpegawai</IDSTAFF>' +
+        '</Checktime_GetCurrentStay>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_Checktime_GetCurrentStay),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/Checktime_GetCurrentStay',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      debugPrint("=================");
+      debugPrint(
+          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      debugPrint("=================");
+
+      final listResultAll2 = document.findAllElements('_x002D_');
+
+      for (final list_result in listResultAll2) {
+        final idx = list_result.findElements('IDX').first.text;
+        final idkamar = list_result.findElements('IDKAMAR').first.text;
+        final areamess = list_result.findElements('AREAMESS').first.text;
+        final blok = list_result.findElements('BLOK').first.text;
+        final nokamar = list_result.findElements('NOKAMAR').first.text;
+        final namabed = list_result.findElements('NAMABED').first.text;
+        final bookin = list_result.findElements('BOOKIN').first.text;
+        final bookout = list_result.findElements('BOOKOUT').first.text;
+        temporaryList2.add({
+          'idx': idx,
+          'idkamar': idkamar,
+          'areamess': areamess,
+          'blok': blok,
+          'nokamar': nokamar,
+          'namabed': namabed,
+          'bookin': bookin,
+          'bookout': bookout
+        });
+        debugPrint("object 3");
+        hasilJson = jsonEncode(temporaryList2);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 3");
+      }
+      loading = false;
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Login Gagal, ${response.statusCode}",
+      ).show();
+      Timer(const Duration(seconds: 2), () {
+        Navigator.pop(context);
+      });
+      return;
+    }
+    setState(() {
+      hasil_result2 = temporaryList2;
       loading = true;
     });
 
@@ -200,8 +266,8 @@ class _LoginScreenState extends State<LoginScreen> {
       ).show();
       Timer(const Duration(seconds: 1), () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              HomeScreen(data: hasil_result, data1: hasil_results),
+          builder: (context) => HomeScreen(
+              data: hasil_result, data1: hasil_result1, data2: hasil_result2),
         ));
       });
       return;
@@ -342,6 +408,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () async {
                             _cekUser(idpegawai.text, password.text);
                             getData(destination.text, idpegawai.text);
+                            getReservation(destination.text, idpegawai.text);
                             _showNotification();
                           }),
                     ],
