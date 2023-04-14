@@ -44,6 +44,7 @@ dependencies:
   rflutter_alert: ^2.0.2
   syncfusion_flutter_datagrid: ^20.4.54
   flutter_local_notifications: ^13.0.0
+  image_picker: ^0.8.7+2
 
 dev_dependencies:
   flutter_lints: ^2.0.0

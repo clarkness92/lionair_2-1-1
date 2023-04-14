@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import "dart:async";
+import 'dart:io';
+import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
 import 'package:lionair_2/screens/laporan.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -8,6 +9,7 @@ import 'package:http/http.dart' as http;
 import '../constants.dart';
 import 'lihat_reservasi.dart';
 import 'package:xml/xml.dart' as xml;
+import 'package:image_picker/image_picker.dart';
 
 class InputLaporan extends StatefulWidget {
   var data;
