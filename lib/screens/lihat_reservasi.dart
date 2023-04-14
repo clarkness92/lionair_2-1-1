@@ -81,7 +81,6 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       final listResultAll4 = document.findAllElements('_x002D_');
 
       for (final list_result in listResultAll4) {
-        final vidx = list_result.findElements('VIDX').first.text;
         final idx = list_result.findElements('IDX').first.text;
         final idkamar = list_result.findElements('IDKAMAR').first.text;
         final areamess = list_result.findElements('AREAMESS').first.text;
@@ -93,7 +92,6 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         final checkin = list_result.findElements('CHECKIN').first.text;
         final checkout = list_result.findElements('CHECKOUT').first.text;
         temporaryList4.add({
-          'vidx': vidx,
           'idx': idx,
           'idkamar': idkamar,
           'areamess': areamess,
@@ -307,21 +305,21 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                               Row(children: [
                                 const Text("Area"),
                                 Text(
-                                  "      ${data3[index]['areamess']}",
+                                  "        ${data3[index]['areamess']}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 )
                               ]),
                               Row(children: [
-                                const Text("Blok"),
+                                const Text("Block"),
                                 Text(
-                                  "      ${data3[index]['blok']}",
+                                  "       ${data3[index]['blok']}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
                               ]),
                               Row(children: [
-                                const Text("Nomor"),
+                                const Text("Number"),
                                 Text(
                                   "  ${data3[index]['nokamar']}",
                                   style: const TextStyle(
@@ -341,7 +339,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.redAccent,
                               ),
-                              child: const Text("LAPORAN"),
+                              child: const Text("REPORT"),
                             ),
                           ],
                         )

@@ -319,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             const SizedBox(height: 20),
-                            Text("Nama : ${data[index]['namaasli']}"),
+                            Text("Name : ${data[index]['namaasli']}"),
                             const SizedBox(height: 5),
                             Text("Username : ${data[index]['username']}"),
                             const SizedBox(height: 5),
@@ -447,7 +447,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             const SizedBox(height: 20),
-                            Text("Nama : ${data[index]['namaasli']}"),
+                            Text("Name : ${data[index]['namaasli']}"),
                             const SizedBox(height: 5),
                             Text("Username : ${data[index]['idemployee']}"),
                             const SizedBox(height: 5),
@@ -581,7 +581,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Row(children: [
                                                         const Text("Area"),
                                                         Text(
-                                                          "      ${data2[index]['areamess']}",
+                                                          "        ${data2[index]['areamess']}",
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -589,9 +589,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         )
                                                       ]),
                                                       Row(children: [
-                                                        const Text("Blok"),
+                                                        const Text("Block"),
                                                         Text(
-                                                          "      ${data2[index]['blok']}",
+                                                          "       ${data2[index]['blok']}",
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -599,7 +599,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ),
                                                       ]),
                                                       Row(children: [
-                                                        const Text("Nomor"),
+                                                        const Text("Number"),
                                                         Text(
                                                           "  ${data2[index]['nokamar']}",
                                                           style: const TextStyle(
@@ -611,7 +611,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Row(children: [
                                                         const Text("Bed"),
                                                         Text(
-                                                          "       ${data2[index]['namabed']}",
+                                                          "          ${data2[index]['namabed']}",
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -626,7 +626,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   children: const [
                                                     ElevatedButton(
                                                       onPressed: null,
-                                                      child: Text("LAPORAN"),
+                                                      child: Text("REPORT"),
                                                     ),
                                                   ],
                                                 )

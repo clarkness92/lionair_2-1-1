@@ -149,11 +149,6 @@ class _InputLaporanState extends State<InputLaporan> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Date",
-                      style: TextStyle(fontSize: 25),
-                    ),
-                    const SizedBox(height: 20),
                     Column(
                       children: [
                         const Text('Today'),
@@ -189,6 +184,7 @@ class _InputLaporanState extends State<InputLaporan> {
                     ),
                     const SizedBox(height: 30.0),
                     TextField(
+                      enabled: false,
                       controller: vidx,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,

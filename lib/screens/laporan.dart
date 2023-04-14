@@ -1,23 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
 import '../constants.dart';
-import '../models/user.dart';
-import '../screens/login_screen.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
-import 'package:xml2json/xml2json.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import '../models/user.dart';
-import 'home_screen.dart' show HomeScreen;
-import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'input_laporan.dart';
-import 'reservasi_mess.dart';
 
 class Lihatlaporan extends StatefulWidget {
   var data;
@@ -52,71 +42,62 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   List dataBaru4 = [];
   var hasilJson;
 
-  TextEditingController idx = TextEditingController();
+  TextEditingController destination = TextEditingController();
+  TextEditingController vidx = TextEditingController();
 
-  void updateData(String idx) async {
-    final temporaryList1 = [];
-    String idx = data1[0]['idx'];
+  void updateData4(String destination, String vidx) async {
+    final temporaryList5 = [];
+    vidx = data3[0]['idx'];
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
-        '<TenantReport_GetDataIDX xmlns="http://tempuri.org/">' +
+        '<TenantReport_GetDataVIDX xmlns="http://tempuri.org/">' +
         '<UsernameAPI>admin</UsernameAPI>' +
         '<PasswordAPI>admin</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
-        '<IDX>$idx</IDX>' +
-        '</TenantReport_GetDataIDX>' +
+        '<VIDX>$vidx</VIDX>' +
+        '</TenantReport_GetDataVIDX>' +
         '</soap:Body>' +
         '</soap:Envelope>';
 
     final response = await http.post(Uri.parse(url_TenantReport_GetDataVIDX),
         headers: <String, String>{
           "Access-Control-Allow-Origin": "*",
-          'SOAPAction': 'http://tempuri.org/TenantReport_GetDataIDX',
+          'SOAPAction': 'http://tempuri.org/TenantReport_GetDataVIDX',
           "Access-Control-Allow-Credentials": "true",
           'Content-type': 'text/xml; charset=utf-8',
-          // 'Accept': 'application/json',
         },
         body: objBody);
 
     if (response.statusCode == 200) {
-      // debugPrint("Response status: ${response.statusCode}");
-      // debugPrint("Response body: ${response.body}");
-
       final document = xml.XmlDocument.parse(response.body);
 
       debugPrint("=================");
-      // debugPrint("document saja : ${document}");
-      // debugPrint("=================");
-      // debugPrint("document.tostring : ${document.toString()}");
-      // debugPrint("=================");
       debugPrint(
           "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
       debugPrint("=================");
 
-      final list_result_all1 = document.findAllElements('_x002D_');
+      final list_result_all5 = document.findAllElements('_x002D_');
 
-      for (final list_result in list_result_all1) {
+      for (final list_result in list_result_all5) {
         final idx = list_result.findElements('IDX').first.text;
-        final vidx = list_result.findElements('VIDX').first.text;
-        final date = list_result.findElements('DATE').first.text;
-        final status = list_result.findElements('STATUS').first.text;
         final category = list_result.findElements('CATEGORY').first.text;
         final description = list_result.findElements('DESCRIPTION').first.text;
-        temporaryList1.add({
+        final date = list_result.findElements('DATE').first.text;
+        final userinsert = list_result.findElements('USERINSERT').first.text;
+        temporaryList5.add({
           'idx': idx,
-          'vidx': vidx,
-          'date': date,
-          'status': status,
           'category': category,
-          'description': description
+          'description': description,
+          'date': date,
+          'userinsert': userinsert
         });
-        debugPrint("object 4");
-        hasilJson = jsonEncode(temporaryList1);
+        debugPrint("object 5");
+        hasilJson = jsonEncode(temporaryList5);
 
         debugPrint(hasilJson);
-        debugPrint("object_hasilJson 4");
+        debugPrint("object_hasilJson 5");
       }
       loading = false;
     } else {
@@ -126,13 +107,13 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         type: AlertType.error,
         title: "Update Failed, ${response.statusCode}",
       ).show();
-      Timer(Duration(seconds: 1), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;
     }
     setState(() {
-      dataBaru4 = temporaryList1;
+      dataBaru4 = temporaryList5;
       loading = true;
       debugPrint('$dataBaru4');
     });
@@ -163,7 +144,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: new Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => LihatDataEmployee(
@@ -179,14 +160,14 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         title: const Text("Report"),
         actions: <Widget>[
           IconButton(
-            icon: new Icon(Icons.refresh, color: Colors.white),
+            icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () async {
-              // updateData(idx.text);
+              updateData4(destination.text, vidx.text);
             },
             tooltip: "Refresh Data",
           ),
           IconButton(
-            icon: new Icon(Icons.logout, color: Colors.white),
+            icon: const Icon(Icons.logout, color: Colors.white),
             onPressed: () {
               Navigator.pushReplacementNamed(context, 'login');
             },
@@ -197,11 +178,12 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         backgroundColor: Colors.redAccent,
       ),
       body: ListView.builder(
+        shrinkWrap: true,
         key: _formKey,
         itemCount: 1,
         itemBuilder: (context, index) {
           if (data4.isEmpty) {
-            return Center(child: Text("No Data"));
+            return const Center(child: Text("No Data"));
           } else {
             return Center(
               child: Padding(
@@ -211,7 +193,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                     const SizedBox(height: 20),
                     SizedBox(
                       width: 350,
-                      height: 350,
+                      height: MediaQuery.of(context).size.height * 0.4,
                       child: Card(
                         color: Colors.white,
                         elevation: 8.0,
@@ -223,23 +205,23 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                             const SizedBox(height: 25),
                             Text(
                               "${data3[0]['idx']}",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             const SizedBox(height: 50),
                             Container(
                               alignment: Alignment.bottomLeft,
-                              margin: EdgeInsets.only(left: 24),
+                              margin: const EdgeInsets.only(left: 24),
                               child: const Text(
                                 "Status: OPEN",
                                 style: TextStyle(fontSize: 15),
                               ),
                             ),
-                            Container(
+                            Expanded(
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
-                                  columns: <DataColumn>[
+                                  columns: const <DataColumn>[
                                     DataColumn(label: Text("IDX")),
                                     DataColumn(label: Text("Category")),
                                     DataColumn(label: Text("Description")),
@@ -290,9 +272,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
           ));
         },
         backgroundColor: Colors.red,
-        child: const Icon(Icons.add),
         elevation: 12,
         tooltip: "Add Report",
+        child: const Icon(Icons.add),
       ),
     );
   }
