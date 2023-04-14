@@ -28,7 +28,6 @@ class _ReservasiMessState extends State<ReservasiMess> {
 
   final _formKey = GlobalKey<FormState>();
 
-  String? name, idstaff, gender, title;
   Xml2Json xml2json = Xml2Json();
 
   var loading = false;
@@ -62,7 +61,8 @@ class _ReservasiMessState extends State<ReservasiMess> {
     }); //for button SAVE
   }
 
-  String? value;
+  String location = 'Balaraja';
+  String gender = 'MALE';
 
   DropdownMenuItem<String> buildmenuItem(String item) => DropdownMenuItem(
         value: item,
@@ -72,13 +72,13 @@ class _ReservasiMessState extends State<ReservasiMess> {
         ),
       );
 
-  final items = ['Balaraja', 'Makassar', 'Manado'];
+  List<String> items = ['Balaraja'];
+  List<String> listGender = ['MALE', 'FEMALE'];
 
   void _sendReservation(String necessary, String notes) async {
     String idpegawai = data[0]['idemployee'];
     String nama = data[0]['namaasli'];
     String title = data[0]['division'];
-    String gender = data1[0]['gender'];
 
     final String soapEnvelope = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -87,7 +87,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
         '<UsernameApi>admin</UsernameApi>' +
         '<PasswordApi>admin</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
-        '<IDREFF>string</IDREFF>' +
+        '<IDREFF>Android</IDREFF>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
         '<NAME>$nama</NAME>' +
         '<GENDER>$gender</GENDER>' +
@@ -149,20 +149,19 @@ class _ReservasiMessState extends State<ReservasiMess> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Select Date",
-                      style: TextStyle(fontSize: 25),
+                      "Reservation",
+                      style:
+                          TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
                     Column(
                       children: [
-                        // const SizedBox(height: 20),
                         const Text('Start Date:'),
                         Text(
                           DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY)
                               .format(start),
                           style: const TextStyle(fontSize: 20),
                         ),
-                        // const Text(" --- "),
                         const SizedBox(height: 20),
                         const Text('End Date:'),
                         Text(
@@ -195,13 +194,40 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: value,
-                            iconSize: 23,
-                            isExpanded: true,
-                            items: items.map(buildmenuItem).toList(),
-                            onChanged: (value) =>
-                                setState(() => this.value = value),
-                          ),
+                              value: location,
+                              iconSize: 23,
+                              isExpanded: true,
+                              items: items.map(buildmenuItem).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  location = value!;
+                                });
+                              }),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text("Gender"),
+                    const SizedBox(height: 15),
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.black, width: 2),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                              value: gender,
+                              iconSize: 23,
+                              isExpanded: true,
+                              items: listGender.map(buildmenuItem).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value!;
+                                });
+                              }),
                         ),
                       ),
                     ),

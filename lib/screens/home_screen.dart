@@ -636,7 +636,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                               thickness: 2,
                                             ),
                                             Row(children: [
-                                              // Text("${data[index]['name']}"),
                                               const Text("Book-In"),
                                               Text(
                                                 "    : ${data2[index]['bookin']}",

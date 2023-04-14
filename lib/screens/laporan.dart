@@ -46,8 +46,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   TextEditingController vidx = TextEditingController();
 
   void updateData4(String destination, String vidx) async {
-    final temporaryList5 = [];
-    vidx = data3[0]['idx'];
+    final temporaryList6 = [];
+    vidx = data4[0]['idx'];
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -78,26 +78,30 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
           "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
       debugPrint("=================");
 
-      final list_result_all5 = document.findAllElements('_x002D_');
+      final list_result_all6 = document.findAllElements('_x002D_');
 
-      for (final list_result in list_result_all5) {
+      for (final list_result in list_result_all6) {
         final idx = list_result.findElements('IDX').first.text;
+        final vidx = list_result.findElements('VIDX').first.text;
+        final date = list_result.findElements('DATE').first.text;
         final category = list_result.findElements('CATEGORY').first.text;
         final description = list_result.findElements('DESCRIPTION').first.text;
-        final date = list_result.findElements('DATE').first.text;
+        final resolution = list_result.findElements('RESOLUTION').first.text;
         final userinsert = list_result.findElements('USERINSERT').first.text;
-        temporaryList5.add({
+        temporaryList6.add({
           'idx': idx,
+          'vidx': vidx,
+          'date': date,
           'category': category,
           'description': description,
-          'date': date,
+          'resolution': resolution,
           'userinsert': userinsert
         });
-        debugPrint("object 5");
-        hasilJson = jsonEncode(temporaryList5);
+        debugPrint("object 6");
+        hasilJson = jsonEncode(temporaryList6);
 
         debugPrint(hasilJson);
-        debugPrint("object_hasilJson 5");
+        debugPrint("object_hasilJson 6");
       }
       loading = false;
     } else {
@@ -113,7 +117,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       return;
     }
     setState(() {
-      dataBaru4 = temporaryList5;
+      dataBaru4 = temporaryList6;
       loading = true;
       debugPrint('$dataBaru4');
     });
@@ -204,7 +208,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                           children: <Widget>[
                             const SizedBox(height: 25),
                             Text(
-                              "${data3[0]['idx']}",
+                              "${data4[index]['vidx']}",
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
@@ -225,6 +229,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                     DataColumn(label: Text("IDX")),
                                     DataColumn(label: Text("Category")),
                                     DataColumn(label: Text("Description")),
+                                    DataColumn(label: Text("Resolution")),
                                     DataColumn(label: Text("Date")),
                                     DataColumn(label: Text("User Insert")),
                                   ],
@@ -238,6 +243,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                             "${data4[index]['category']}")),
                                         DataCell(Text(
                                             "${data4[index]['description']}")),
+                                        DataCell(Text(
+                                            "${data4[index]['resolution']}")),
                                         DataCell(
                                             Text("${data4[index]['date']}")),
                                         DataCell(Text(

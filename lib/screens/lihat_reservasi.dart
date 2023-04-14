@@ -144,9 +144,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     ));
   }
 
-  void getReport(String destination, String vidx) async {
+  void getReport(String destination, String vidx, index) async {
     final temporaryList5 = [];
-    vidx = data3[0]['idx'];
+    vidx = data3[index]['idx'];
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -172,24 +172,28 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
 
-      debugPrint("=================");
-      debugPrint(
-          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      debugPrint("=================");
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
 
       final listResultAll5 = document.findAllElements('_x002D_');
 
       for (final list_result in listResultAll5) {
         final idx = list_result.findElements('IDX').first.text;
+        final vidx = list_result.findElements('VIDX').first.text;
+        final date = list_result.findElements('DATE').first.text;
         final category = list_result.findElements('CATEGORY').first.text;
         final description = list_result.findElements('DESCRIPTION').first.text;
-        final date = list_result.findElements('DATE').first.text;
+        final resolution = list_result.findElements('RESOLUTION').first.text;
         final userinsert = list_result.findElements('USERINSERT').first.text;
         temporaryList5.add({
           'idx': idx,
+          'vidx': vidx,
+          'date': date,
           'category': category,
           'description': description,
-          'date': date,
+          'resolution': resolution,
           'userinsert': userinsert
         });
         debugPrint("object 4");
@@ -334,7 +338,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                           children: [
                             ElevatedButton(
                               onPressed: () async {
-                                getReport(destination.text, vidx.text);
+                                getReport(destination.text, vidx.text, index);
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.redAccent,

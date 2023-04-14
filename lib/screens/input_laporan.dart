@@ -36,7 +36,6 @@ class _InputLaporanState extends State<InputLaporan> {
 
   final _formKey = GlobalKey<FormState>();
 
-  String? name, idstaff, gender, title;
   Xml2Json xml2json = Xml2Json();
 
   var loading = false;
@@ -70,7 +69,7 @@ class _InputLaporanState extends State<InputLaporan> {
     setState(() => dateRange = newDateRange); //for button SAVE
   }
 
-  String? location;
+  String location = 'Balaraja';
   String category = 'KEAMANAN/KETERTIBAN';
 
   DropdownMenuItem<String> buildmenuItem(String item) => DropdownMenuItem(
@@ -81,7 +80,7 @@ class _InputLaporanState extends State<InputLaporan> {
         ),
       );
 
-  final items = ['Balaraja', 'Makassar', 'Manado'];
+  final items = ['Balaraja'];
   List<String> listCategory = [
     'KEAMANAN/KETERTIBAN',
     'KEBERSIHAN',
@@ -90,6 +89,7 @@ class _InputLaporanState extends State<InputLaporan> {
 
   void _addReport(String vidx, String description) async {
     String namaasli = data[0]['namaasli'];
+    vidx = data4[0]['vidx'];
 
     final String soapEnvelope = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -151,6 +151,11 @@ class _InputLaporanState extends State<InputLaporan> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const Text(
+                      "Report",
+                      style:
+                          TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                    ),
                     Column(
                       children: [
                         const Text('Today'),
@@ -174,13 +179,15 @@ class _InputLaporanState extends State<InputLaporan> {
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: location,
-                            iconSize: 23,
-                            isExpanded: true,
-                            items: items.map(buildmenuItem).toList(),
-                            onChanged: (value) =>
-                                setState(() => location = value),
-                          ),
+                              value: location,
+                              iconSize: 23,
+                              isExpanded: true,
+                              items: items.map(buildmenuItem).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  location = value!;
+                                });
+                              }),
                         ),
                       ),
                     ),
