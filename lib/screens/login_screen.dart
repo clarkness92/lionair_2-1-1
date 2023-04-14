@@ -92,9 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "Login Gagal, ${response.statusCode}",
+        title: "Login Failed, ${response.statusCode}",
       ).show();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;
@@ -166,9 +166,9 @@ class _LoginScreenState extends State<LoginScreen> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "Login Gagal, ${response.statusCode}",
+        title: "Login Failed, ${response.statusCode}",
       ).show();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;
@@ -244,9 +244,9 @@ class _LoginScreenState extends State<LoginScreen> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "Login Gagal, ${response.statusCode}",
+        title: "Login Failed, ${response.statusCode}",
       ).show();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;
@@ -262,7 +262,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Alert(
         context: context,
         type: AlertType.success,
-        title: "Login berhasil",
+        title: "Login Success",
       ).show();
       Timer(const Duration(seconds: 1), () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -409,7 +409,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             _cekUser(idpegawai.text, password.text);
                             getData(destination.text, idpegawai.text);
                             getReservation(destination.text, idpegawai.text);
-                            _showNotification();
+                            // _showNotification();
                           }),
                     ],
                   ),
@@ -446,7 +446,7 @@ void sweatAlertDenied(BuildContext context) {
     type: AlertType.error,
     title: "Login Gagal, sudah registrasi?",
   ).show();
-  Timer(const Duration(seconds: 2), () {
+  Timer(const Duration(seconds: 1), () {
     Navigator.pop(context);
   });
   return;

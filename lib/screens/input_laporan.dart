@@ -14,21 +14,23 @@ class InputLaporan extends StatefulWidget {
   var data1;
   var data2;
   var data3;
+  var data4;
 
   InputLaporan(
       {super.key,
       required this.data,
       required this.data1,
       required this.data2,
-      required this.data3});
+      required this.data3,
+      required this.data4});
 
   @override
   State<InputLaporan> createState() =>
-      _InputLaporanState(data, data1, data2, data3);
+      _InputLaporanState(data, data1, data2, data3, data4);
 }
 
 class _InputLaporanState extends State<InputLaporan> {
-  _InputLaporanState(this.data, this.data1, this.data2, this.data3);
+  _InputLaporanState(this.data, this.data1, this.data2, this.data3, this.data4);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -40,33 +42,34 @@ class _InputLaporanState extends State<InputLaporan> {
   List data1 = [];
   List data2 = [];
   List data3 = [];
+  List data4 = [];
 
   List result = [];
   String userInput = "";
 
   final TextEditingController vidx = TextEditingController();
-  final TextEditingController category = TextEditingController();
   final TextEditingController description = TextEditingController();
 
   DateTime selectDate = DateTime.now();
   DateTimeRange dateRange = DateTimeRange(
-    start: DateTime(2023, 1, 1),
-    end: DateTime(2023, 1, 1),
+    start: DateTime.now(),
+    end: DateTime.now().add(const Duration(days: 7)),
   );
 
   Future pickDateRange() async {
     DateTimeRange? newDateRange = await showDateRangePicker(
       context: context,
       initialDateRange: dateRange,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
     );
     if (newDateRange == null) return; //for button X
 
     setState(() => dateRange = newDateRange); //for button SAVE
   }
 
-  String? value;
+  String? location;
+  String category = 'KEAMANAN/KETERTIBAN';
 
   DropdownMenuItem<String> buildmenuItem(String item) => DropdownMenuItem(
         value: item,
@@ -77,8 +80,13 @@ class _InputLaporanState extends State<InputLaporan> {
       );
 
   final items = ['Balaraja', 'Makassar', 'Manado'];
+  List<String> listCategory = [
+    'KEAMANAN/KETERTIBAN',
+    'KEBERSIHAN',
+    'KERUSAKAN BARANG'
+  ];
 
-  void _addReport(String vidx, String category, String description) async {
+  void _addReport(String vidx, String description) async {
     String namaasli = data[0]['namaasli'];
 
     final String soapEnvelope = '<?xml version="1.0" encoding="utf-8"?>' +
@@ -87,7 +95,7 @@ class _InputLaporanState extends State<InputLaporan> {
         '<TenantReport_Entry xmlns="http://tempuri.org/">' +
         '<UsernameAPI>admin</UsernameAPI>' +
         '<PasswordAPI>admin</PasswordAPI>' +
-        '<Destination>BLJ</Destination>' +
+        '<Destination>$location</Destination>' +
         '<VIDX>$vidx</VIDX>' +
         '<CATEGORY>$category</CATEGORY>' +
         '<DESCRIPTION>$description</DESCRIPTION>' +
@@ -108,19 +116,16 @@ class _InputLaporanState extends State<InputLaporan> {
     if (response.statusCode == 200) {
       final responseBody = response.body;
       final parsedResponse = xml.XmlDocument.parse(responseBody);
-      final result = parsedResponse
-          .findAllElements('InputWebReservationResult')
-          .single
-          .text;
+      final result = parsedResponse.findAllElements('_x002D_').single.text;
       debugPrint('Result: $result');
     } else {
       debugPrint('Error: ${response.statusCode}');
       Alert(
         context: context,
         type: AlertType.error,
-        title: "Login Gagal, ${response.statusCode}",
+        title: "Error, ${response.statusCode}",
       ).show();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;
@@ -130,12 +135,12 @@ class _InputLaporanState extends State<InputLaporan> {
   @override
   Widget build(BuildContext context) {
     final start = dateRange.start;
-    final end = dateRange.end;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
+          key: _formKey,
           child: Padding(
             padding: const EdgeInsets.all(30.0),
             child: Center(
@@ -145,36 +150,19 @@ class _InputLaporanState extends State<InputLaporan> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Select Date",
+                      "Date",
                       style: TextStyle(fontSize: 25),
                     ),
                     const SizedBox(height: 20),
                     Column(
                       children: [
-                        // const SizedBox(height: 20),
-                        const Text('Start Date:'),
+                        const Text('Today'),
                         Text(
                           DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY)
                               .format(start),
                           style: const TextStyle(fontSize: 20),
                         ),
-                        // const Text(" --- "),
-                        const SizedBox(height: 20),
-                        const Text('End Date:'),
-                        Text(
-                          DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY)
-                              .format(end),
-                          style: const TextStyle(fontSize: 20),
-                        ),
                       ],
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton.icon(
-                      onPressed: pickDateRange,
-                      icon: const Icon(Icons.calendar_month_outlined),
-                      label: const Text(
-                        "Choose",
-                      ),
                     ),
                     const SizedBox(height: 30),
                     const Text("Mess Location"),
@@ -189,12 +177,12 @@ class _InputLaporanState extends State<InputLaporan> {
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: value,
+                            value: location,
                             iconSize: 23,
                             isExpanded: true,
                             items: items.map(buildmenuItem).toList(),
                             onChanged: (value) =>
-                                setState(() => this.value = value),
+                                setState(() => location = value),
                           ),
                         ),
                       ),
@@ -204,19 +192,32 @@ class _InputLaporanState extends State<InputLaporan> {
                       controller: vidx,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'VIDX',
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: '${data3[0]['idx']}',
                       ),
                     ),
                     const SizedBox(height: 30.0),
-                    TextField(
-                      controller: category,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Category',
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.black, width: 2),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                              value: category,
+                              iconSize: 23,
+                              isExpanded: true,
+                              items: listCategory.map(buildmenuItem).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  category = value!;
+                                });
+                              }),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30.0),
@@ -232,13 +233,14 @@ class _InputLaporanState extends State<InputLaporan> {
                     const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: () async {
-                        _addReport(vidx.text, category.text, description.text);
+                        _addReport(vidx.text, description.text);
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => LihatDataEmployee(
+                          builder: (context) => Lihatlaporan(
                               data: data,
                               data1: data1,
                               data2: data2,
-                              data3: data3),
+                              data3: data3,
+                              data4: data4),
                         ));
                       },
                       child: const Text("Submit"),
@@ -246,7 +248,6 @@ class _InputLaporanState extends State<InputLaporan> {
                     const SizedBox(
                       height: 50,
                     ),
-                    // Text("$dateRange"),
                   ],
                 ),
               ),
@@ -261,12 +262,13 @@ class _InputLaporanState extends State<InputLaporan> {
                 data1: data1,
                 data2: data2,
                 data3: data3,
+                data4: data4,
               ),
             ));
           },
           backgroundColor: Colors.red,
           elevation: 12,
-          tooltip: "Back to HomeScreen",
+          tooltip: "Back to Report",
           child: const Icon(
             Icons.cancel_outlined,
             size: 45,

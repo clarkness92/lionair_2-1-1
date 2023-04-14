@@ -111,9 +111,9 @@ class _HomeScreenState extends State<HomeScreen> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "Update Gagal, ${response.statusCode}",
+        title: "Update Failed, ${response.statusCode}",
       ).show();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;
@@ -210,9 +210,9 @@ class _HomeScreenState extends State<HomeScreen> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "${response.statusCode}",
+        title: "Error: ${response.statusCode}",
       ).show();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;
@@ -321,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(height: 20),
                             Text("Nama : ${data[index]['namaasli']}"),
                             const SizedBox(height: 5),
-                            Text("Username : ${data[index]['idemployee']}"),
+                            Text("Username : ${data[index]['username']}"),
                             const SizedBox(height: 5),
                             Text("ID Employee : ${data[index]['idemployee']}"),
                             const SizedBox(height: 10),
@@ -581,7 +581,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Row(children: [
                                                         const Text("Area"),
                                                         Text(
-                                                          "     ${data2[index]['areamess']}",
+                                                          "      ${data2[index]['areamess']}",
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -591,7 +591,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Row(children: [
                                                         const Text("Blok"),
                                                         Text(
-                                                          "     ${data2[index]['blok']}",
+                                                          "      ${data2[index]['blok']}",
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -601,7 +601,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Row(children: [
                                                         const Text("Nomor"),
                                                         Text(
-                                                          " ${data2[index]['nokamar']}",
+                                                          "  ${data2[index]['nokamar']}",
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -611,7 +611,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Row(children: [
                                                         const Text("Bed"),
                                                         Text(
-                                                          "      ${data2[index]['namabed']}",
+                                                          "       ${data2[index]['namabed']}",
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight

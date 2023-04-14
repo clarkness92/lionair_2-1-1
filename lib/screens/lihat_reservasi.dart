@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:lionair_2/screens/laporan.dart';
+import 'laporan.dart';
 import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
@@ -36,11 +36,13 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   List data1 = [];
   List data2 = [];
   List data3 = [];
+  List data4 = [];
   List dataBaru3 = [];
   var hasilJson;
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
+  TextEditingController vidx = TextEditingController();
 
   void updateData3(String destination, String idpegawai) async {
     final temporaryList4 = [];
@@ -79,6 +81,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       final listResultAll4 = document.findAllElements('_x002D_');
 
       for (final list_result in listResultAll4) {
+        final vidx = list_result.findElements('VIDX').first.text;
         final idx = list_result.findElements('IDX').first.text;
         final idkamar = list_result.findElements('IDKAMAR').first.text;
         final areamess = list_result.findElements('AREAMESS').first.text;
@@ -90,6 +93,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         final checkin = list_result.findElements('CHECKIN').first.text;
         final checkout = list_result.findElements('CHECKOUT').first.text;
         temporaryList4.add({
+          'vidx': vidx,
           'idx': idx,
           'idkamar': idkamar,
           'areamess': areamess,
@@ -113,9 +117,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "Error, ${response.statusCode}",
+        title: "Update Failed, ${response.statusCode}",
       ).show();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;
@@ -139,6 +143,89 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => LihatDataEmployee(
           data: data, data1: data1, data2: data2, data3: mergedList),
+    ));
+  }
+
+  void getReport(String destination, String vidx) async {
+    final temporaryList5 = [];
+    vidx = data3[0]['idx'];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<TenantReport_GetDataVIDX xmlns="http://tempuri.org/">' +
+        '<UsernameAPI>admin</UsernameAPI>' +
+        '<PasswordAPI>admin</PasswordAPI>' +
+        '<Destination>BLJ</Destination>' +
+        '<VIDX>$vidx</VIDX>' +
+        '</TenantReport_GetDataVIDX>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_TenantReport_GetDataVIDX),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/TenantReport_GetDataVIDX',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      debugPrint("=================");
+      debugPrint(
+          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      debugPrint("=================");
+
+      final listResultAll5 = document.findAllElements('_x002D_');
+
+      for (final list_result in listResultAll5) {
+        final idx = list_result.findElements('IDX').first.text;
+        final category = list_result.findElements('CATEGORY').first.text;
+        final description = list_result.findElements('DESCRIPTION').first.text;
+        final date = list_result.findElements('DATE').first.text;
+        final userinsert = list_result.findElements('USERINSERT').first.text;
+        temporaryList5.add({
+          'idx': idx,
+          'category': category,
+          'description': description,
+          'date': date,
+          'userinsert': userinsert
+        });
+        debugPrint("object 4");
+        hasilJson = jsonEncode(temporaryList5);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 4");
+      }
+      loading = false;
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "Error, ${response.statusCode}",
+      ).show();
+      Timer(const Duration(seconds: 1), () {
+        Navigator.pop(context);
+      });
+      return;
+    }
+    setState(() {
+      data4 = temporaryList5;
+      loading = true;
+    });
+
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => Lihatlaporan(
+        data: data,
+        data1: data1,
+        data2: data2,
+        data3: data3,
+        data4: data4,
+      ),
     ));
   }
 
@@ -183,7 +270,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         key: _formKey,
         itemCount: data3.length,
         itemBuilder: (context, index) {
-          if (data3.isEmpty) {
+          if (data3.length.isNaN) {
             return const Center(
                 child: SizedBox(height: 15, child: Text("No Data")));
           } else {
@@ -220,7 +307,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                               Row(children: [
                                 const Text("Area"),
                                 Text(
-                                  "     ${data3[index]['areamess']}",
+                                  "      ${data3[index]['areamess']}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 )
@@ -228,7 +315,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                               Row(children: [
                                 const Text("Blok"),
                                 Text(
-                                  "     ${data3[index]['blok']}",
+                                  "      ${data3[index]['blok']}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -236,7 +323,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                               Row(children: [
                                 const Text("Nomor"),
                                 Text(
-                                  " ${data3[index]['nokamar']}",
+                                  "  ${data3[index]['nokamar']}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 )
@@ -249,14 +336,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                           children: [
                             ElevatedButton(
                               onPressed: () async {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Lihatlaporan(
-                                    data: data,
-                                    data1: data1,
-                                    data2: data2,
-                                    data3: data3,
-                                  ),
-                                ));
+                                getReport(destination.text, vidx.text);
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.redAccent,
@@ -280,14 +360,14 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                     Row(children: [
                       const Text("Book-In"),
                       Text(
-                        "    : ${data3[index]['bookin']}",
+                        "      : ${data3[index]['bookin']}",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ]),
                     Row(children: [
                       const Text("Book-Out"),
                       Text(
-                        "    : ${data3[index]['bookout']}",
+                        "   : ${data3[index]['bookout']}",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ]),

@@ -122,9 +122,9 @@ class _ReservasiMessState extends State<ReservasiMess> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "Login Gagal, ${response.statusCode}",
+        title: "Error, ${response.statusCode}",
       ).show();
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;

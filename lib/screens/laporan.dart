@@ -24,21 +24,23 @@ class Lihatlaporan extends StatefulWidget {
   var data1;
   var data2;
   var data3;
+  var data4;
 
   Lihatlaporan(
       {super.key,
       required this.data,
       required this.data1,
       required this.data2,
-      required this.data3});
+      required this.data3,
+      required this.data4});
 
   @override
   State<Lihatlaporan> createState() =>
-      _Lihatlaporanstate(data, data1, data2, data3);
+      _Lihatlaporanstate(data, data1, data2, data3, data4);
 }
 
 class _Lihatlaporanstate extends State<Lihatlaporan> {
-  _Lihatlaporanstate(this.data, this.data1, this.data2, this.data3);
+  _Lihatlaporanstate(this.data, this.data1, this.data2, this.data3, this.data4);
 
   final _formKey = GlobalKey<FormState>();
   var loading = false;
@@ -46,7 +48,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   List data1 = [];
   List data2 = [];
   List data3 = [];
-  List dataBaru = [];
+  List data4 = [];
+  List dataBaru4 = [];
   var hasilJson;
 
   TextEditingController idx = TextEditingController();
@@ -67,7 +70,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         '</soap:Body>' +
         '</soap:Envelope>';
 
-    final response = await http.post(Uri.parse(url_TenantReport_GetDataIDX),
+    final response = await http.post(Uri.parse(url_TenantReport_GetDataVIDX),
         headers: <String, String>{
           "Access-Control-Allow-Origin": "*",
           'SOAPAction': 'http://tempuri.org/TenantReport_GetDataIDX',
@@ -121,22 +124,22 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       Alert(
         context: context,
         type: AlertType.error,
-        title: "Error, ${response.statusCode}",
+        title: "Update Failed, ${response.statusCode}",
       ).show();
-      Timer(Duration(seconds: 2), () {
+      Timer(Duration(seconds: 1), () {
         Navigator.pop(context);
       });
       return;
     }
     setState(() {
-      dataBaru = temporaryList1;
+      dataBaru4 = temporaryList1;
       loading = true;
-      debugPrint('$dataBaru');
+      debugPrint('$dataBaru4');
     });
 
-    Map<String, dynamic> map1 = Map.fromIterable(data1, key: (e) => e['idx']);
+    Map<String, dynamic> map1 = Map.fromIterable(data4, key: (e) => e['idx']);
     Map<String, dynamic> map2 =
-        Map.fromIterable(dataBaru, key: (e) => e['idx']);
+        Map.fromIterable(dataBaru4, key: (e) => e['idx']);
 
     map1.addAll(map2);
 
@@ -146,7 +149,12 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
 
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => Lihatlaporan(
-          data: data, data1: data1, data2: data2, data3: mergedList),
+        data: data,
+        data1: data1,
+        data2: data2,
+        data3: data3,
+        data4: mergedList,
+      ),
     ));
   }
 
@@ -168,7 +176,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
           },
           tooltip: "Home Screen",
         ),
-        title: const Text("Laporan"),
+        title: const Text("Report"),
         actions: <Widget>[
           IconButton(
             icon: new Icon(Icons.refresh, color: Colors.white),
@@ -190,9 +198,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       ),
       body: ListView.builder(
         key: _formKey,
-        itemCount: data1.length,
+        itemCount: 1,
         itemBuilder: (context, index) {
-          if (data1.isEmpty) {
+          if (data4.isEmpty) {
             return Center(child: Text("No Data"));
           } else {
             return Center(
@@ -214,7 +222,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                           children: <Widget>[
                             const SizedBox(height: 25),
                             Text(
-                              "${data3[index]['vidx']}",
+                              "${data3[0]['idx']}",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
@@ -232,44 +240,29 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                 scrollDirection: Axis.horizontal,
                                 child: DataTable(
                                   columns: <DataColumn>[
-                                    DataColumn(label: Text("VIDX")),
+                                    DataColumn(label: Text("IDX")),
                                     DataColumn(label: Text("Category")),
                                     DataColumn(label: Text("Description")),
                                     DataColumn(label: Text("Date")),
-                                    DataColumn(label: Text("Status")),
+                                    DataColumn(label: Text("User Insert")),
                                   ],
-                                  rows: <DataRow>[
-                                    DataRow(
+                                  rows: List<DataRow>.generate(
+                                    data4.length,
+                                    (index) => DataRow(
                                       cells: <DataCell>[
-                                        DataCell(Text("MBR01230027")),
-                                        DataCell(Text("KEAMANAN/KETERTIBAN")),
-                                        DataCell(Text("TESTING")),
                                         DataCell(
-                                            Text("2023-04-03 00:00:00.000")),
-                                        DataCell(Text("OPEN")),
+                                            Text("${data4[index]['idx']}")),
+                                        DataCell(Text(
+                                            "${data4[index]['category']}")),
+                                        DataCell(Text(
+                                            "${data4[index]['description']}")),
+                                        DataCell(
+                                            Text("${data4[index]['date']}")),
+                                        DataCell(Text(
+                                            "${data4[index]['userinsert']}")),
                                       ],
                                     ),
-                                    DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(Text("MBR01230027")),
-                                        DataCell(Text("KEAMANAN/KETERTIBAN")),
-                                        DataCell(Text("TESTING")),
-                                        DataCell(
-                                            Text("2023-04-03 00:00:00.000")),
-                                        DataCell(Text("OPEN")),
-                                      ],
-                                    ),
-                                    DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(Text("MBR01230027")),
-                                        DataCell(Text("KEAMANAN/KETERTIBAN")),
-                                        DataCell(Text("TESTING")),
-                                        DataCell(
-                                            Text("2023-04-03 00:00:00.000")),
-                                        DataCell(Text("OPEN")),
-                                      ],
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -292,6 +285,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
               data1: data1,
               data2: data2,
               data3: data3,
+              data4: data4,
             ),
           ));
         },
