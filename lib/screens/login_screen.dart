@@ -244,12 +244,13 @@ class _LoginScreenState extends State<LoginScreen> {
       loading = false;
     } else {
       debugPrint('Error: ${response.statusCode}');
-      StatusAlert.show(context,
-          duration: Duration(seconds: 1),
-          configuration:
-              IconConfiguration(icon: Icons.error, color: Colors.red),
-          title: "Login Failed",
-          backgroundColor: Colors.grey[300]);
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Login Failed",
+        backgroundColor: Colors.grey[300],
+      );
     }
     setState(() {
       hasil_result2 = temporaryList2;
@@ -440,13 +441,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void sweatAlertDenied(BuildContext context) {
-    StatusAlert.show(
-      context,
-      duration: Duration(seconds: 1),
-      configuration: IconConfiguration(icon: Icons.error, color: Colors.red),
-      title: "Login gagal, sudah registrasi?",
-      backgroundColor: Colors.grey[300],
-    );
-  }
+void sweatAlertDenied(BuildContext context) {
+  StatusAlert.show(
+    context,
+    duration: Duration(seconds: 1),
+    configuration: IconConfiguration(icon: Icons.error, color: Colors.red),
+    title: "Login gagal, sudah registrasi?",
+    backgroundColor: Colors.grey[300],
+  );
 }

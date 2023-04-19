@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
 import 'package:status_alert/status_alert.dart';
+import 'package:status_alert/status_alert.dart';
 import 'reservasi_mess.dart';
 import '../constants.dart';
 import 'package:http/http.dart' as http;
@@ -115,6 +116,13 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Update Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
         configuration: IconConfiguration(icon: Icons.error),
         title: "Login Failed",
         backgroundColor: Colors.grey[300],
@@ -212,8 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.error),
-        title: "Login Failed",
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Get Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
