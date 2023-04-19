@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
                 data2: '',
                 data3: '',
                 data4: '',
+                vidx4: '',
               ),
           'laporan': (_) => Lihatlaporan(
                 data: '',
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
                 data2: '',
                 data3: '',
                 data4: '',
+                vidx4: '',
               ),
           'home': (_) => HomeScreen(
                 data: '',

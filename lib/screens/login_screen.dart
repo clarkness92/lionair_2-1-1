@@ -9,6 +9,7 @@ import 'package:xml2json/xml2json.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_upgrader/flutter_upgrader.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -22,7 +23,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  // late String name, password;
+
   var loading = false;
   List hasil_result = [];
   List hasil_result1 = [];
@@ -146,13 +147,19 @@ class _LoginScreenState extends State<LoginScreen> {
         final gender = list_result.findElements('GENDER').first.text;
         final checkin = list_result.findElements('CHECKIN').first.text;
         final checkout = list_result.findElements('CHECKOUT').first.text;
+        final necessary = list_result.findElements('NECESSARY').first.text;
+        final notes = list_result.findElements('NOTES').first.text;
+        final insertdate = list_result.findElements('INSERTDATE').first.text;
         temporaryList1.add({
           'idx': idx,
           'idstaff': idstaff,
           'name': name,
           'gender': gender,
           'checkin': checkin,
-          'checkout': checkout
+          'checkout': checkout,
+          'necessary': necessary,
+          'notes': notes,
+          'insertdate': insertdate,
         });
         debugPrint("object 2");
         hasilJson = jsonEncode(temporaryList1);
@@ -294,6 +301,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  @override
   void initstate() {
     super.initState();
     _showNotification();

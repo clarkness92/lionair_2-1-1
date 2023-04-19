@@ -7,9 +7,9 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
-import 'lihat_reservasi.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:image_picker/image_picker.dart';
+import 'package:date_time_format/date_time_format.dart';
 
 class InputLaporan extends StatefulWidget {
   var data;
@@ -17,6 +17,7 @@ class InputLaporan extends StatefulWidget {
   var data2;
   var data3;
   var data4;
+  var vidx4;
 
   InputLaporan(
       {super.key,
@@ -24,15 +25,17 @@ class InputLaporan extends StatefulWidget {
       required this.data1,
       required this.data2,
       required this.data3,
-      required this.data4});
+      required this.data4,
+      required this.vidx4});
 
   @override
   State<InputLaporan> createState() =>
-      _InputLaporanState(data, data1, data2, data3, data4);
+      _InputLaporanState(data, data1, data2, data3, data4, vidx4);
 }
 
 class _InputLaporanState extends State<InputLaporan> {
-  _InputLaporanState(this.data, this.data1, this.data2, this.data3, this.data4);
+  _InputLaporanState(
+      this.data, this.data1, this.data2, this.data3, this.data4, this.vidx4);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -44,12 +47,12 @@ class _InputLaporanState extends State<InputLaporan> {
   List data2 = [];
   List data3 = [];
   List data4 = [];
-
   List result = [];
-  String userInput = "";
+  var vidx4;
 
   final TextEditingController vidx = TextEditingController();
   final TextEditingController description = TextEditingController();
+  final TextEditingController destination = TextEditingController();
 
   DateTime selectDate = DateTime.now();
   DateTimeRange dateRange = DateTimeRange(
@@ -89,7 +92,7 @@ class _InputLaporanState extends State<InputLaporan> {
 
   void _addReport(String vidx, String description) async {
     String namaasli = data[0]['namaasli'];
-    vidx = data4[0]['vidx'];
+    vidx = vidx4;
 
     final String soapEnvelope = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -135,6 +138,13 @@ class _InputLaporanState extends State<InputLaporan> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    vidx.text = vidx4;
+    destination.text = location;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final start = dateRange.start;
 
@@ -152,43 +162,29 @@ class _InputLaporanState extends State<InputLaporan> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Report",
+                      "Report/Complaint",
                       style:
-                          TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 33, fontWeight: FontWeight.bold),
                     ),
+                    const SizedBox(height: 20),
                     Column(
                       children: [
-                        const Text('Today'),
+                        const Text('Date'),
                         Text(
-                          DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY)
-                              .format(start),
+                          DateFormat('MMM dd, yyyy').format(start),
                           style: const TextStyle(fontSize: 20),
                         ),
                       ],
                     ),
                     const SizedBox(height: 30),
-                    const Text("Mess Location"),
-                    const SizedBox(height: 15),
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.black, width: 2),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                              value: location,
-                              iconSize: 23,
-                              isExpanded: true,
-                              items: items.map(buildmenuItem).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  location = value!;
-                                });
-                              }),
-                        ),
+                    TextField(
+                      enabled: false,
+                      controller: destination,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Mess Location",
                       ),
                     ),
                     const SizedBox(height: 30.0),
@@ -198,8 +194,8 @@ class _InputLaporanState extends State<InputLaporan> {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: '${data3[0]['idx']}',
+                        border: OutlineInputBorder(),
+                        labelText: "Reservation ID",
                       ),
                     ),
                     const SizedBox(height: 30.0),
@@ -245,7 +241,8 @@ class _InputLaporanState extends State<InputLaporan> {
                               data1: data1,
                               data2: data2,
                               data3: data3,
-                              data4: data4),
+                              data4: data4,
+                              vidx4: vidx4),
                         ));
                       },
                       child: const Text("Submit"),
@@ -268,6 +265,7 @@ class _InputLaporanState extends State<InputLaporan> {
                 data2: data2,
                 data3: data3,
                 data4: data4,
+                vidx4: vidx4,
               ),
             ));
           },

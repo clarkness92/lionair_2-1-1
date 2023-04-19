@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
 import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
@@ -15,6 +16,7 @@ class Lihatlaporan extends StatefulWidget {
   var data2;
   var data3;
   var data4;
+  var vidx4;
 
   Lihatlaporan(
       {super.key,
@@ -22,15 +24,17 @@ class Lihatlaporan extends StatefulWidget {
       required this.data1,
       required this.data2,
       required this.data3,
-      required this.data4});
+      required this.data4,
+      required this.vidx4});
 
   @override
   State<Lihatlaporan> createState() =>
-      _Lihatlaporanstate(data, data1, data2, data3, data4);
+      _Lihatlaporanstate(data, data1, data2, data3, data4, vidx4);
 }
 
 class _Lihatlaporanstate extends State<Lihatlaporan> {
-  _Lihatlaporanstate(this.data, this.data1, this.data2, this.data3, this.data4);
+  _Lihatlaporanstate(
+      this.data, this.data1, this.data2, this.data3, this.data4, this.vidx4);
 
   final _formKey = GlobalKey<FormState>();
   var loading = false;
@@ -41,13 +45,14 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   List data4 = [];
   List dataBaru4 = [];
   var hasilJson;
+  var vidx4;
 
   TextEditingController destination = TextEditingController();
   TextEditingController vidx = TextEditingController();
 
   void updateData4(String destination, String vidx) async {
     final temporaryList6 = [];
-    vidx = data4[0]['idx'];
+    vidx = vidx4;
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -88,6 +93,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         final description = list_result.findElements('DESCRIPTION').first.text;
         final resolution = list_result.findElements('RESOLUTION').first.text;
         final userinsert = list_result.findElements('USERINSERT').first.text;
+        final status = list_result.findElements('STATUS').first.text;
         temporaryList6.add({
           'idx': idx,
           'vidx': vidx,
@@ -95,7 +101,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
           'category': category,
           'description': description,
           'resolution': resolution,
-          'userinsert': userinsert
+          'userinsert': userinsert,
+          'status': status
         });
         debugPrint("object 6");
         hasilJson = jsonEncode(temporaryList6);
@@ -139,6 +146,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         data2: data2,
         data3: data3,
         data4: mergedList,
+        vidx4: vidx4,
       ),
     ));
   }
@@ -195,67 +203,57 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                 child: Column(
                   children: <Widget>[
                     const SizedBox(height: 20),
-                    SizedBox(
-                      width: 350,
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      child: Card(
-                        color: Colors.white,
-                        elevation: 8.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            const SizedBox(height: 25),
-                            Text(
-                              "${data4[index]['vidx']}",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
-                            const SizedBox(height: 50),
-                            Container(
-                              alignment: Alignment.bottomLeft,
-                              margin: const EdgeInsets.only(left: 24),
-                              child: const Text(
-                                "Status: OPEN",
-                                style: TextStyle(fontSize: 15),
-                              ),
-                            ),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: DataTable(
-                                  columns: const <DataColumn>[
-                                    DataColumn(label: Text("IDX")),
-                                    DataColumn(label: Text("Category")),
-                                    DataColumn(label: Text("Description")),
-                                    DataColumn(label: Text("Resolution")),
-                                    DataColumn(label: Text("Date")),
-                                    DataColumn(label: Text("User Insert")),
-                                  ],
-                                  rows: List<DataRow>.generate(
-                                    data4.length,
-                                    (index) => DataRow(
-                                      cells: <DataCell>[
-                                        DataCell(
-                                            Text("${data4[index]['idx']}")),
-                                        DataCell(Text(
-                                            "${data4[index]['category']}")),
-                                        DataCell(Text(
-                                            "${data4[index]['description']}")),
-                                        DataCell(Text(
-                                            "${data4[index]['resolution']}")),
-                                        DataCell(
-                                            Text("${data4[index]['date']}")),
-                                        DataCell(Text(
-                                            "${data4[index]['userinsert']}")),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                    Text(
+                      "${data4[index]['vidx']}",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    const SizedBox(height: 50),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      margin: const EdgeInsets.only(left: 24),
+                      child: Text(
+                        "Total Rows: ${data4.length}",
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columns: const <DataColumn>[
+                          DataColumn(label: Text("IDX")),
+                          DataColumn(label: Text("Category")),
+                          DataColumn(label: Text("Date")),
+                          DataColumn(label: Text("Description")),
+                          DataColumn(label: Text("Resolution")),
+                          DataColumn(label: Text("Status")),
+                        ],
+                        rows: List<DataRow>.generate(
+                          data4.length,
+                          (index) => DataRow(
+                            color: MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
+                              // Even rows will have a grey color.
+                              if (index.isOdd) {
+                                return Colors.grey.withOpacity(0.3);
+                              }
+                              return null; // Use default value for other states and odd rows.
+                            }),
+                            cells: <DataCell>[
+                              DataCell(Text("${data4[index]['idx']}")),
+                              DataCell(Text("${data4[index]['category']}")),
+                              DataCell(Text(DateFormat('MMM dd, yyyy').format(
+                                  DateTime.parse(data4[index]['date'])))),
+                              DataCell(Text("${data4[index]['description']}")),
+                              DataCell(Text("${data4[index]['resolution']}")),
+                              DataCell(Text(
+                                "${data4[index]['status']}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red),
+                              )),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -275,6 +273,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
               data2: data2,
               data3: data3,
               data4: data4,
+              vidx4: vidx4,
             ),
           ));
         },

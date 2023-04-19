@@ -38,6 +38,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
   List result = [];
   String userInput = "";
 
+  final TextEditingController destination = TextEditingController();
   final TextEditingController notes = TextEditingController();
   final TextEditingController necessary = TextEditingController();
 
@@ -132,6 +133,12 @@ class _ReservasiMessState extends State<ReservasiMess> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    destination.text = location;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final start = dateRange.start;
     final end = dateRange.end;
@@ -182,28 +189,14 @@ class _ReservasiMessState extends State<ReservasiMess> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    const Text("Mess Location"),
-                    const SizedBox(height: 15),
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.black, width: 2),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                              value: location,
-                              iconSize: 23,
-                              isExpanded: true,
-                              items: items.map(buildmenuItem).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  location = value!;
-                                });
-                              }),
-                        ),
+                    TextField(
+                      enabled: false,
+                      controller: destination,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Mess Location",
                       ),
                     ),
                     const SizedBox(height: 20),

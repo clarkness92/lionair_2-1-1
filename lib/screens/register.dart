@@ -1,7 +1,5 @@
-import 'dart:convert';
 // import 'dart:ffi';
 
-import 'dart:convert';
 // import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -12,15 +10,6 @@ import '../widgets/input_decoration.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'login_screen.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
-import 'package:http/http.dart' as http;
-import 'package:xml2json/xml2json.dart';
-import '../constants.dart';
-import '../widgets/input_decoration.dart';
-import 'package:xml/xml.dart' as xml;
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'login_screen.dart';
-import 'package:flutter/foundation.dart' show debugPrint;
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -134,7 +123,8 @@ class RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 10),
-                Text('Register', style: Theme.of(context).textTheme.headline4),
+                Text('Register',
+                    style: Theme.of(context).textTheme.headlineMedium),
                 const SizedBox(height: 30),
                 Form(
                   child: Column(
@@ -243,12 +233,12 @@ void sweatAlertAccess(BuildContext context) {
     title: "Registrasi berhasil",
     buttons: [
       DialogButton(
-          child: Text(
+          child: const Text(
             "Login",
             style: TextStyle(color: Colors.white, fontSize: 14),
           ),
-          onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => LoginScreen()))),
+          onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const LoginScreen()))),
     ],
   ).show();
   return;
@@ -261,12 +251,12 @@ void sweatAlertDenied(BuildContext context) {
     title: "Registrasi Gagal",
     buttons: [
       DialogButton(
-          child: Text(
+          child: const Text(
             "Try Again",
             style: TextStyle(color: Colors.white, fontSize: 14),
           ),
-          onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => RegisterScreen()))),
+          onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const RegisterScreen()))),
     ],
   ).show();
   return;

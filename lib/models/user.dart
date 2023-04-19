@@ -10,10 +10,10 @@ class User {
   User({required this.idemployee, this.namaasli});
 
   Map<String, dynamic> data() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     // data['username'] = this.username;
-    data['idemployee'] = this.idemployee;
-    data['namaasli'] = this.namaasli;
+    data['idemployee'] = idemployee;
+    data['namaasli'] = namaasli;
     return data;
   }
 

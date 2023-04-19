@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'laporan.dart';
 import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
@@ -8,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'home_screen.dart' show HomeScreen;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'reservasi_mess.dart';
+import 'package:clipboard/clipboard.dart';
 
 class LihatDataEmployee extends StatefulWidget {
   var data;
@@ -39,6 +41,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   List data4 = [];
   List dataBaru3 = [];
   var hasilJson;
+  var vidxBaru;
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
@@ -187,6 +190,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         final description = list_result.findElements('DESCRIPTION').first.text;
         final resolution = list_result.findElements('RESOLUTION').first.text;
         final userinsert = list_result.findElements('USERINSERT').first.text;
+        final status = list_result.findElements('STATUS').first.text;
         temporaryList5.add({
           'idx': idx,
           'vidx': vidx,
@@ -194,7 +198,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
           'category': category,
           'description': description,
           'resolution': resolution,
-          'userinsert': userinsert
+          'userinsert': userinsert,
+          'status': status
         });
         debugPrint("object 4");
         hasilJson = jsonEncode(temporaryList5);
@@ -217,6 +222,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     }
     setState(() {
       data4 = temporaryList5;
+      vidxBaru = vidx;
       loading = true;
     });
 
@@ -227,6 +233,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         data2: data2,
         data3: data3,
         data4: data4,
+        vidx4: vidxBaru,
       ),
     ));
   }
@@ -284,22 +291,45 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Row(children: [
-                      Text(
-                        "${data3[index]['idx']}",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      const Spacer(
-                        flex: 1,
-                      ),
-                      Text(
-                        "${data3[index]['idkamar']}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ]),
+                    Container(
+                      color: Colors.black12,
+                      height: 45,
+                      child: Row(children: [
+                        GestureDetector(
+                          child: Row(
+                            children: [
+                              Text(
+                                "${data3[index]['idx']} ",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              const Icon(
+                                Icons.copy_rounded,
+                                color: Colors.black38,
+                              ),
+                            ],
+                          ),
+                          onTap: () {
+                            FlutterClipboard.copy(
+                                '${data3[index]['idx']}'); // copy teks ke clipboard
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Reservation ID copied!'),
+                              ),
+                            );
+                          },
+                        ),
+                        const Spacer(
+                          flex: 1,
+                        ),
+                        Text(
+                          "${data3[index]['idkamar']}",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ]),
+                    ),
                     const Divider(
-                      thickness: 43,
+                      thickness: 2,
                     ),
                     Row(
                       children: [
@@ -308,28 +338,52 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                             children: [
                               Row(children: [
                                 const Text("Area"),
+                              ]),
+                              Row(children: [
+                                const Text("Block"),
+                              ]),
+                              Row(children: [
+                                const Text("Number"),
+                              ]),
+                              Row(
+                                children: [
+                                  const Text("Bed"),
+                                ],
+                              ),
+                            ]),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(children: [
                                 Text(
-                                  "        ${data3[index]['areamess']}",
+                                  " ${data3[index]['areamess']}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 )
                               ]),
                               Row(children: [
-                                const Text("Block"),
                                 Text(
-                                  "       ${data3[index]['blok']}",
+                                  " ${data3[index]['blok']}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
                               ]),
                               Row(children: [
-                                const Text("Number"),
                                 Text(
-                                  "  ${data3[index]['nokamar']}",
+                                  " ${data3[index]['nokamar']}",
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 )
                               ]),
+                              Row(
+                                children: [
+                                  Text(
+                                    " ${data3[index]['namabed']}",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              )
                             ]),
                         const Spacer(
                           flex: 1,
@@ -349,43 +403,68 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                         )
                       ],
                     ),
-                    Row(children: [
-                      const Text("Bed"),
-                      Text(
-                        "      ${data3[index]['namabed']}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    ]),
                     const Divider(
                       thickness: 2,
                     ),
-                    Row(children: [
-                      const Text("Book-In"),
-                      Text(
-                        "      : ${data3[index]['bookin']}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ]),
-                    Row(children: [
-                      const Text("Book-Out"),
-                      Text(
-                        "   : ${data3[index]['bookout']}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ]),
-                    Row(children: [
-                      const Text("Check-In"),
-                      Text(
-                        "    : ${data3[index]['checkin']}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ]),
                     Row(
                       children: [
-                        const Text("Check-Out"),
-                        Text(
-                          " : ${data3[index]['checkout']}",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(children: [
+                              const Text("Book-In"),
+                            ]),
+                            Row(children: [
+                              const Text("Book-Out"),
+                            ]),
+                            Row(children: [
+                              const Text("Check-In"),
+                            ]),
+                            Row(
+                              children: [
+                                const Text("Check-Out"),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(children: [
+                              Text(
+                                DateFormat(' : MMM dd, yyyy').format(
+                                    DateTime.parse(data3[index]['bookin'])),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                            Row(children: [
+                              Text(
+                                DateFormat(' : MMM dd, yyyy').format(
+                                    DateTime.parse(data3[index]['bookout'])),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                            Row(children: [
+                              Text(
+                                DateFormat(' : MMM dd, yyyy HH:mm').format(
+                                    DateTime.parse(data3[index]['checkin'])),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                            Row(
+                              children: [
+                                Text(
+                                  DateFormat(' : MMM dd, yyyy HH:mm').format(
+                                      DateTime.parse(data3[index]['checkout'])),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ],
                     ),
