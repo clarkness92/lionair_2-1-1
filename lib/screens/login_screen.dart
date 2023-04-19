@@ -440,6 +440,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
 
 void sweatAlertDenied(BuildContext context) {
   StatusAlert.show(
