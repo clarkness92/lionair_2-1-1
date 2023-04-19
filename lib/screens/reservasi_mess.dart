@@ -194,7 +194,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
                       controller: destination,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Mess Location",
                       ),

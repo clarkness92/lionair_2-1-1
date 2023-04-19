@@ -1,5 +1,4 @@
 import "dart:async";
-import 'dart:io';
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
 import 'package:lionair_2/screens/laporan.dart';
@@ -9,7 +8,6 @@ import 'package:http/http.dart' as http;
 import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:image_picker/image_picker.dart';
-import 'package:date_time_format/date_time_format.dart';
 
 class InputLaporan extends StatefulWidget {
   var data;
@@ -182,7 +180,7 @@ class _InputLaporanState extends State<InputLaporan> {
                       controller: destination,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Mess Location",
                       ),
@@ -193,7 +191,7 @@ class _InputLaporanState extends State<InputLaporan> {
                       controller: vidx,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: "Reservation ID",
                       ),

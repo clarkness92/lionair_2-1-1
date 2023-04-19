@@ -336,18 +336,18 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(children: [
-                                const Text("Area"),
+                              Row(children: const [
+                                Text("Area"),
                               ]),
-                              Row(children: [
-                                const Text("Block"),
+                              Row(children: const [
+                                Text("Block"),
                               ]),
-                              Row(children: [
-                                const Text("Number"),
+                              Row(children: const [
+                                Text("Number"),
                               ]),
                               Row(
-                                children: [
-                                  const Text("Bed"),
+                                children: const [
+                                  Text("Bed"),
                                 ],
                               ),
                             ]),
@@ -411,18 +411,18 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(children: [
-                              const Text("Book-In"),
+                            Row(children: const [
+                              Text("Book-In"),
                             ]),
-                            Row(children: [
-                              const Text("Book-Out"),
+                            Row(children: const [
+                              Text("Book-Out"),
                             ]),
-                            Row(children: [
-                              const Text("Check-In"),
+                            Row(children: const [
+                              Text("Check-In"),
                             ]),
                             Row(
-                              children: [
-                                const Text("Check-Out"),
+                              children: const [
+                                Text("Check-Out"),
                               ],
                             ),
                           ],
