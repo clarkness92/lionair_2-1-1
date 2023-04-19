@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
+import 'package:status_alert/status_alert.dart';
 import 'reservasi_mess.dart';
 import '../constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 import 'package:xml/xml.dart' as xml;
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -112,15 +112,13 @@ class _HomeScreenState extends State<HomeScreen> {
       loading = false;
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
         title: "Update Failed, ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+        backgroundColor: Colors.grey[300],
+      );
     }
     setState(() {
       dataBaru2 = temporaryList2;
@@ -211,15 +209,13 @@ class _HomeScreenState extends State<HomeScreen> {
       loading = false;
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Error: ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Get Data Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
     }
     setState(() {
       data3 = temporaryList3;
