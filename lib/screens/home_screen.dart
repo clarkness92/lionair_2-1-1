@@ -645,18 +645,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Row(children: [
-                                                        const Text("Area"),
+                                                      Row(children: const [
+                                                        Text("Area"),
                                                       ]),
-                                                      Row(children: [
-                                                        const Text("Block"),
+                                                      Row(children: const [
+                                                        Text("Block"),
                                                       ]),
-                                                      Row(children: [
-                                                        const Text("Number"),
+                                                      Row(children: const [
+                                                        Text("Number"),
                                                       ]),
                                                       Row(
-                                                        children: [
-                                                          const Text("Bed"),
+                                                        children: const [
+                                                          Text("Bed"),
                                                         ],
                                                       ),
                                                     ]),
@@ -732,11 +732,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Row(children: [
-                                                      const Text("Book-In"),
+                                                    Row(children: const [
+                                                      Text("Book-In"),
                                                     ]),
-                                                    Row(children: [
-                                                      const Text("Book-Out"),
+                                                    Row(children: const [
+                                                      Text("Book-Out"),
                                                     ]),
                                                   ],
                                                 ),
@@ -967,11 +967,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Row(children: [
-                                                        const Text("Necessary"),
+                                                      Row(children: const [
+                                                        Text("Necessary"),
                                                       ]),
-                                                      Row(children: [
-                                                        const Text("Notes"),
+                                                      Row(children: const [
+                                                        Text("Notes"),
                                                       ]),
                                                     ]),
                                                 Column(
@@ -1009,12 +1009,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Row(children: [
-                                                      const Text("Book-In"),
+                                                    Row(children: const [
+                                                      Text("Book-In"),
                                                     ]),
                                                     Row(
-                                                      children: [
-                                                        const Text("Book-Out"),
+                                                      children: const [
+                                                        Text("Book-Out"),
                                                       ],
                                                     ),
                                                   ],
@@ -1275,11 +1275,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Row(children: [
-                                                        const Text("Necessary"),
+                                                      Row(children: const [
+                                                        Text("Necessary"),
                                                       ]),
-                                                      Row(children: [
-                                                        const Text("Notes"),
+                                                      Row(children: const [
+                                                        Text("Notes"),
                                                       ]),
                                                     ]),
                                                 Column(
@@ -1317,12 +1317,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Row(children: [
-                                                      const Text("Book-In"),
+                                                    Row(children: const [
+                                                      Text("Book-In"),
                                                     ]),
                                                     Row(
-                                                      children: [
-                                                        const Text("Book-Out"),
+                                                      children: const [
+                                                        Text("Book-Out"),
                                                       ],
                                                     ),
                                                   ],
@@ -1451,18 +1451,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Row(children: [
-                                                        const Text("Area"),
+                                                      Row(children: const [
+                                                        Text("Area"),
                                                       ]),
-                                                      Row(children: [
-                                                        const Text("Block"),
+                                                      Row(children: const [
+                                                        Text("Block"),
                                                       ]),
-                                                      Row(children: [
-                                                        const Text("Number"),
+                                                      Row(children: const [
+                                                        Text("Number"),
                                                       ]),
                                                       Row(
-                                                        children: [
-                                                          const Text("Bed"),
+                                                        children: const [
+                                                          Text("Bed"),
                                                         ],
                                                       ),
                                                     ]),
@@ -1538,11 +1538,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Row(children: [
-                                                      const Text("Book-In"),
+                                                    Row(children: const [
+                                                      Text("Book-In"),
                                                     ]),
-                                                    Row(children: [
-                                                      const Text("Book-Out"),
+                                                    Row(children: const [
+                                                      Text("Book-Out"),
                                                     ]),
                                                   ],
                                                 ),
