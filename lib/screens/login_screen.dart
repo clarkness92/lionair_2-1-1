@@ -7,7 +7,7 @@ import '../screens/home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 import 'package:xml/xml.dart' as xml;
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:status_alert/status_alert.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_upgrader/flutter_upgrader.dart';
 
@@ -90,15 +90,13 @@ class _LoginScreenState extends State<LoginScreen> {
       loading = false;
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Login Failed, ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.error),
+        title: "Login Failed",
+        backgroundColor: Colors.grey[300],
+      );
     }
     setState(() {
       hasil_result = temporaryList;
@@ -170,15 +168,13 @@ class _LoginScreenState extends State<LoginScreen> {
       loading = false;
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Login Failed, ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Login Failed",
+        backgroundColor: Colors.grey[300],
+      );
     }
     setState(() {
       hasil_result1 = temporaryList1;
@@ -248,15 +244,13 @@ class _LoginScreenState extends State<LoginScreen> {
       loading = false;
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Login Failed, ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Login Failed",
+        backgroundColor: Colors.grey[300],
+      );
     }
     setState(() {
       hasil_result2 = temporaryList2;
@@ -266,18 +260,18 @@ class _LoginScreenState extends State<LoginScreen> {
     if (hasil_result.isEmpty) {
       sweatAlertDenied(context);
     } else {
-      Alert(
-        context: context,
-        type: AlertType.success,
-        title: "Login Success",
-      ).show();
+      StatusAlert.show(context,
+          duration: Duration(seconds: 1),
+          configuration:
+              IconConfiguration(icon: Icons.done, color: Colors.green),
+          title: "Login Success",
+          backgroundColor: Colors.grey[300]);
       Timer(const Duration(seconds: 1), () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => HomeScreen(
               data: hasil_result, data1: hasil_result1, data2: hasil_result2),
         ));
       });
-      return;
     }
   }
 
@@ -449,13 +443,11 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 void sweatAlertDenied(BuildContext context) {
-  Alert(
-    context: context,
-    type: AlertType.error,
-    title: "Login Gagal, sudah registrasi?",
-  ).show();
-  Timer(const Duration(seconds: 1), () {
-    Navigator.pop(context);
-  });
-  return;
+  StatusAlert.show(
+    context,
+    duration: Duration(seconds: 1),
+    configuration: IconConfiguration(icon: Icons.error, color: Colors.red),
+    title: "Login gagal, sudah registrasi?",
+    backgroundColor: Colors.grey[300],
+  );
 }

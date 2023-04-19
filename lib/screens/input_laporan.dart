@@ -2,7 +2,7 @@ import "dart:async";
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
 import 'package:lionair_2/screens/laporan.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:status_alert/status_alert.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
@@ -16,6 +16,8 @@ class InputLaporan extends StatefulWidget {
   var data3;
   var data4;
   var vidx4;
+  var checkin3;
+  var checkout3;
 
   InputLaporan(
       {super.key,
@@ -24,16 +26,18 @@ class InputLaporan extends StatefulWidget {
       required this.data2,
       required this.data3,
       required this.data4,
-      required this.vidx4});
+      required this.vidx4,
+      required this.checkin3,
+      required this.checkout3});
 
   @override
-  State<InputLaporan> createState() =>
-      _InputLaporanState(data, data1, data2, data3, data4, vidx4);
+  State<InputLaporan> createState() => _InputLaporanState(
+      data, data1, data2, data3, data4, vidx4, checkin3, checkout3);
 }
 
 class _InputLaporanState extends State<InputLaporan> {
-  _InputLaporanState(
-      this.data, this.data1, this.data2, this.data3, this.data4, this.vidx4);
+  _InputLaporanState(this.data, this.data1, this.data2, this.data3, this.data4,
+      this.vidx4, this.checkin3, this.checkout3);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -47,27 +51,26 @@ class _InputLaporanState extends State<InputLaporan> {
   List data4 = [];
   List result = [];
   var vidx4;
+  var checkin3;
+  var checkout3;
 
   final TextEditingController vidx = TextEditingController();
   final TextEditingController description = TextEditingController();
   final TextEditingController destination = TextEditingController();
 
   DateTime selectDate = DateTime.now();
-  DateTimeRange dateRange = DateTimeRange(
-    start: DateTime.now(),
-    end: DateTime.now().add(const Duration(days: 7)),
-  );
 
-  Future pickDateRange() async {
-    DateTimeRange? newDateRange = await showDateRangePicker(
+  Future pickDate() async {
+    final DateTime? newDate = await showDatePicker(
       context: context,
-      initialDateRange: dateRange,
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
+      initialDate: selectDate,
+      firstDate: DateTime.parse(checkin3).toLocal(),
+      lastDate:
+          DateTime.parse(checkout3).toLocal().add(const Duration(days: 7)),
     );
-    if (newDateRange == null) return; //for button X
+    if (newDate == null) return; //for button X
 
-    setState(() => dateRange = newDateRange); //for button SAVE
+    setState(() => selectDate = newDate); //for button SAVE
   }
 
   String location = 'Balaraja';
@@ -123,15 +126,13 @@ class _InputLaporanState extends State<InputLaporan> {
       debugPrint('Result: $result');
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Error, ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Login Failed",
+        backgroundColor: Colors.grey[300],
+      );
     }
   }
 
@@ -144,8 +145,6 @@ class _InputLaporanState extends State<InputLaporan> {
 
   @override
   Widget build(BuildContext context) {
-    final start = dateRange.start;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -169,10 +168,20 @@ class _InputLaporanState extends State<InputLaporan> {
                       children: [
                         const Text('Date'),
                         Text(
-                          DateFormat('MMM dd, yyyy').format(start),
+                          DateFormat('MMM dd, yyyy').format(selectDate),
                           style: const TextStyle(fontSize: 20),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        pickDate();
+                      },
+                      icon: const Icon(Icons.calendar_month_outlined),
+                      label: const Text(
+                        "Choose",
+                      ),
                     ),
                     const SizedBox(height: 30),
                     TextField(
@@ -240,7 +249,9 @@ class _InputLaporanState extends State<InputLaporan> {
                               data2: data2,
                               data3: data3,
                               data4: data4,
-                              vidx4: vidx4),
+                              vidx4: vidx4,
+                              checkin3: checkin3,
+                              checkout3: checkout3),
                         ));
                       },
                       child: const Text("Submit"),
@@ -264,6 +275,8 @@ class _InputLaporanState extends State<InputLaporan> {
                 data3: data3,
                 data4: data4,
                 vidx4: vidx4,
+                checkin3: checkin3,
+                checkout3: checkout3,
               ),
             ));
           },

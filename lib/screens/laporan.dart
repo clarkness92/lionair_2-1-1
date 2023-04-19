@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
+import 'package:status_alert/status_alert.dart';
 import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'input_laporan.dart';
 
@@ -17,6 +17,8 @@ class Lihatlaporan extends StatefulWidget {
   var data3;
   var data4;
   var vidx4;
+  var checkin3;
+  var checkout3;
 
   Lihatlaporan(
       {super.key,
@@ -25,16 +27,18 @@ class Lihatlaporan extends StatefulWidget {
       required this.data2,
       required this.data3,
       required this.data4,
-      required this.vidx4});
+      required this.vidx4,
+      required this.checkin3,
+      required this.checkout3});
 
   @override
-  State<Lihatlaporan> createState() =>
-      _Lihatlaporanstate(data, data1, data2, data3, data4, vidx4);
+  State<Lihatlaporan> createState() => _Lihatlaporanstate(
+      data, data1, data2, data3, data4, vidx4, checkin3, checkout3);
 }
 
 class _Lihatlaporanstate extends State<Lihatlaporan> {
-  _Lihatlaporanstate(
-      this.data, this.data1, this.data2, this.data3, this.data4, this.vidx4);
+  _Lihatlaporanstate(this.data, this.data1, this.data2, this.data3, this.data4,
+      this.vidx4, this.checkin3, this.checkout3);
 
   final _formKey = GlobalKey<FormState>();
   var loading = false;
@@ -46,6 +50,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   List dataBaru4 = [];
   var hasilJson;
   var vidx4;
+  var checkin3;
+  var checkout3;
 
   TextEditingController destination = TextEditingController();
   TextEditingController vidx = TextEditingController();
@@ -113,15 +119,13 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       loading = false;
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Update Failed, ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Login Failed",
+        backgroundColor: Colors.grey[300],
+      );
     }
     setState(() {
       dataBaru4 = temporaryList6;
@@ -147,6 +151,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         data3: data3,
         data4: mergedList,
         vidx4: vidx4,
+        checkin3: checkin3,
+        checkout3: checkout3,
       ),
     ));
   }
@@ -275,6 +281,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
               data3: data3,
               data4: data4,
               vidx4: vidx4,
+              checkin3: checkin3,
+              checkout3: checkout3,
             ),
           ));
         },

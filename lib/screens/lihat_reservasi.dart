@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:status_alert/status_alert.dart';
 import 'laporan.dart';
 import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
 import 'home_screen.dart' show HomeScreen;
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'reservasi_mess.dart';
 import 'package:clipboard/clipboard.dart';
 
@@ -42,6 +42,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   List dataBaru3 = [];
   var hasilJson;
   var vidxBaru;
+  var checkinBaru;
+  var checkoutBaru;
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
@@ -115,15 +117,13 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       loading = false;
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Update Failed, ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Login Failed",
+        backgroundColor: Colors.grey[300],
+      );
     }
     setState(() {
       dataBaru3 = temporaryList4;
@@ -150,6 +150,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   void getReport(String destination, String vidx, index) async {
     final temporaryList5 = [];
     vidx = data3[index]['idx'];
+    String checkin = data3[index]['checkin'];
+    String checkout = data3[index]['checkout'];
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -210,19 +212,19 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       loading = false;
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Error, ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+      StatusAlert.show(
+        context,
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
+        title: "Login Failed",
+        backgroundColor: Colors.grey[300],
+      );
     }
     setState(() {
       data4 = temporaryList5;
       vidxBaru = vidx;
+      checkinBaru = checkin;
+      checkoutBaru = checkout;
       loading = true;
     });
 
@@ -234,6 +236,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         data3: data3,
         data4: data4,
         vidx4: vidxBaru,
+        checkin3: checkinBaru,
+        checkout3: checkoutBaru,
       ),
     ));
   }
