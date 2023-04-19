@@ -118,13 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
         title: "Update Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
-      StatusAlert.show(
-        context,
-        duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.error),
-        title: "Login Failed",
-        backgroundColor: Colors.grey[300],
-      );
     }
     setState(() {
       dataBaru2 = temporaryList2;
