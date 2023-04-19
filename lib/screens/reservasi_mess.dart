@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import "dart:async";
 import "package:intl/intl.dart";
 import 'package:lionair_2/screens/home_screen.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:status_alert/status_alert.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
@@ -120,15 +120,13 @@ class _ReservasiMessState extends State<ReservasiMess> {
       debugPrint('Result: $result');
     } else {
       debugPrint('Error: ${response.statusCode}');
-      Alert(
-        context: context,
-        type: AlertType.error,
-        title: "Error, ${response.statusCode}",
-      ).show();
-      Timer(const Duration(seconds: 1), () {
-        Navigator.pop(context);
-      });
-      return;
+      StatusAlert.show(
+        context,
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
+        title: "Input Data Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
     }
   }
 
