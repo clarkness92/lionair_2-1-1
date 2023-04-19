@@ -242,8 +242,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                             cells: <DataCell>[
                               DataCell(Text("${data4[index]['idx']}")),
                               DataCell(Text("${data4[index]['category']}")),
-                              DataCell(Text(DateFormat('MMM dd, yyyy').format(
-                                  DateTime.parse(data4[index]['date'])))),
+                              DataCell(Text(DateFormat('MMM d, yyyy').format(
+                                  DateTime.parse(data4[index]['date'])
+                                      .toLocal()))),
                               DataCell(Text("${data4[index]['description']}")),
                               DataCell(Text("${data4[index]['resolution']}")),
                               DataCell(Text(

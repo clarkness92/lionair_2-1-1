@@ -433,7 +433,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                             Row(children: [
                               Text(
                                 DateFormat(' : MMM dd, yyyy').format(
-                                    DateTime.parse(data3[index]['bookin'])),
+                                    DateTime.parse(data3[index]['bookin'])
+                                        .toLocal()),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -441,7 +442,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                             Row(children: [
                               Text(
                                 DateFormat(' : MMM dd, yyyy').format(
-                                    DateTime.parse(data3[index]['bookout'])),
+                                    DateTime.parse(data3[index]['bookout'])
+                                        .toLocal()),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -449,7 +451,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                             Row(children: [
                               Text(
                                 DateFormat(' : MMM dd, yyyy HH:mm').format(
-                                    DateTime.parse(data3[index]['checkin'])),
+                                    DateTime.parse(data3[index]['checkin'])
+                                        .toLocal()),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -458,7 +461,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                               children: [
                                 Text(
                                   DateFormat(' : MMM dd, yyyy HH:mm').format(
-                                      DateTime.parse(data3[index]['checkout'])),
+                                      DateTime.parse(data3[index]['checkout'])
+                                          .toLocal()),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),

@@ -748,10 +748,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Text(
                                                         DateFormat(
                                                                 ' : MMM dd, yyyy')
-                                                            .format(DateTime
-                                                                .parse(data2[
-                                                                        index][
-                                                                    'bookin'])),
+                                                            .format(DateTime.parse(
+                                                                    data2[index]
+                                                                        [
+                                                                        'bookin'])
+                                                                .toLocal()),
                                                         style: const TextStyle(
                                                             fontWeight:
                                                                 FontWeight
@@ -762,10 +763,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Text(
                                                         DateFormat(
                                                                 ' : MMM dd, yyyy')
-                                                            .format(DateTime
-                                                                .parse(data2[
-                                                                        index][
-                                                                    'bookout'])),
+                                                            .format(DateTime.parse(
+                                                                    data2[index]
+                                                                        [
+                                                                        'bookout'])
+                                                                .toLocal()),
                                                         style: const TextStyle(
                                                             fontWeight:
                                                                 FontWeight
@@ -949,8 +951,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Text(
                                                   DateFormat('MMM dd, yyyy')
                                                       .format(DateTime.parse(
-                                                          data1[index]
-                                                              ['insertdate'])),
+                                                              data1[index][
+                                                                  'insertdate'])
+                                                          .toLocal()),
                                                   style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -1024,10 +1027,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Text(
                                                         DateFormat(
                                                                 ' : MMM dd, yyyy')
-                                                            .format(DateTime
-                                                                .parse(data1[
-                                                                        index][
-                                                                    'checkin'])),
+                                                            .format(DateTime.parse(
+                                                                    data1[index]
+                                                                        [
+                                                                        'checkin'])
+                                                                .toLocal()),
                                                         style: const TextStyle(
                                                             fontWeight:
                                                                 FontWeight
@@ -1039,11 +1043,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         Text(
                                                           DateFormat(
                                                                   ' : MMM dd, yyyy')
-                                                              .format(DateTime
-                                                                  .parse(data1[
-                                                                          index]
-                                                                      [
-                                                                      'checkout'])),
+                                                              .format(DateTime.parse(
+                                                                      data1[index]
+                                                                          [
+                                                                          'checkout'])
+                                                                  .toLocal()),
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -1255,8 +1259,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Text(
                                                   DateFormat('MMM dd, yyyy')
                                                       .format(DateTime.parse(
-                                                          data1[index]
-                                                              ['insertdate'])),
+                                                              data1[index][
+                                                                  'insertdate'])
+                                                          .toLocal()),
                                                   style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -1330,10 +1335,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Text(
                                                         DateFormat(
                                                                 ' : MMM dd, yyyy')
-                                                            .format(DateTime
-                                                                .parse(data1[
-                                                                        index][
-                                                                    'checkin'])),
+                                                            .format(DateTime.parse(
+                                                                    data1[index]
+                                                                        [
+                                                                        'checkin'])
+                                                                .toLocal()),
                                                         style: const TextStyle(
                                                             fontWeight:
                                                                 FontWeight
@@ -1345,11 +1351,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         Text(
                                                           DateFormat(
                                                                   ' : MMM dd, yyyy')
-                                                              .format(DateTime
-                                                                  .parse(data1[
-                                                                          index]
-                                                                      [
-                                                                      'checkout'])),
+                                                              .format(DateTime.parse(
+                                                                      data1[index]
+                                                                          [
+                                                                          'checkout'])
+                                                                  .toLocal()),
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
@@ -1548,10 +1554,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Text(
                                                         DateFormat(
                                                                 ' : MMM dd, yyyy')
-                                                            .format(DateTime
-                                                                .parse(data2[
-                                                                        index][
-                                                                    'bookin'])),
+                                                            .format(DateTime.parse(
+                                                                    data2[index]
+                                                                        [
+                                                                        'bookin'])
+                                                                .toLocal()),
                                                         style: const TextStyle(
                                                             fontWeight:
                                                                 FontWeight
@@ -1562,10 +1569,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       Text(
                                                         DateFormat(
                                                                 ' : MMM dd, yyyy')
-                                                            .format(DateTime
-                                                                .parse(data2[
-                                                                        index][
-                                                                    'bookout'])),
+                                                            .format(DateTime.parse(
+                                                                    data2[index]
+                                                                        [
+                                                                        'bookout'])
+                                                                .toLocal()),
                                                         style: const TextStyle(
                                                             fontWeight:
                                                                 FontWeight
