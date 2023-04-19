@@ -128,9 +128,9 @@ class _InputLaporanState extends State<InputLaporan> {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
         context,
-        duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.done),
-        title: "Login Failed",
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
+        title: "Input Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }

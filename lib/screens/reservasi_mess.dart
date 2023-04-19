@@ -3,6 +3,7 @@ import "dart:async";
 import "package:intl/intl.dart";
 import 'package:lionair_2/screens/home_screen.dart';
 import 'package:status_alert/status_alert.dart';
+import 'package:status_alert/status_alert.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';

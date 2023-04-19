@@ -92,9 +92,9 @@ class _LoginScreenState extends State<LoginScreen> {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
         context,
-        duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.error),
-        title: "Login Failed",
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.error),
+        title: "Cek User Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -170,9 +170,9 @@ class _LoginScreenState extends State<LoginScreen> {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
         context,
-        duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.done),
-        title: "Login Failed",
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
+        title: "Get Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -246,9 +246,9 @@ class _LoginScreenState extends State<LoginScreen> {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
         context,
-        duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.done),
-        title: "Login Failed",
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
+        title: "Get Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -261,9 +261,9 @@ class _LoginScreenState extends State<LoginScreen> {
       sweatAlertDenied(context);
     } else {
       StatusAlert.show(context,
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
           configuration:
-              IconConfiguration(icon: Icons.done, color: Colors.green),
+              const IconConfiguration(icon: Icons.done, color: Colors.green),
           title: "Login Success",
           backgroundColor: Colors.grey[300]);
       Timer(const Duration(seconds: 1), () {
@@ -445,8 +445,9 @@ class _LoginScreenState extends State<LoginScreen> {
 void sweatAlertDenied(BuildContext context) {
   StatusAlert.show(
     context,
-    duration: Duration(seconds: 1),
-    configuration: IconConfiguration(icon: Icons.error, color: Colors.red),
+    duration: const Duration(seconds: 1),
+    configuration:
+        const IconConfiguration(icon: Icons.error, color: Colors.red),
     title: "Login gagal, sudah registrasi?",
     backgroundColor: Colors.grey[300],
   );

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
@@ -114,8 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
         context,
-        duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.done),
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
         title: "Update Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -218,8 +217,8 @@ class _HomeScreenState extends State<HomeScreen> {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
         context,
-        duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.done),
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
         title: "Get Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );

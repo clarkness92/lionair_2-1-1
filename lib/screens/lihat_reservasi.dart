@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -119,9 +118,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
         context,
-        duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.done),
-        title: "Login Failed",
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
+        title: "Update Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -214,9 +213,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
         context,
-        duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.done),
-        title: "Login Failed",
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
+        title: "Get Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
