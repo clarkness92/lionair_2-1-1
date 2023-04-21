@@ -9,7 +9,6 @@ import 'package:xml2json/xml2json.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:status_alert/status_alert.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_upgrader/flutter_upgrader.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -290,7 +289,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  @override
   void initstate() {
     super.initState();
     _showNotification();

@@ -7,7 +7,6 @@ import 'package:xml2json/xml2json.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
-import 'package:image_picker/image_picker.dart';
 
 class InputLaporan extends StatefulWidget {
   var data;
@@ -17,7 +16,7 @@ class InputLaporan extends StatefulWidget {
   var data4;
   var vidx4;
   var bookin3;
-  var checkout3;
+  var bookout3;
 
   InputLaporan(
       {super.key,
@@ -28,16 +27,16 @@ class InputLaporan extends StatefulWidget {
       required this.data4,
       required this.vidx4,
       required this.bookin3,
-      required this.checkout3});
+      required this.bookout3});
 
   @override
   State<InputLaporan> createState() => _InputLaporanState(
-      data, data1, data2, data3, data4, vidx4, bookin3, checkout3);
+      data, data1, data2, data3, data4, vidx4, bookin3, bookout3);
 }
 
 class _InputLaporanState extends State<InputLaporan> {
   _InputLaporanState(this.data, this.data1, this.data2, this.data3, this.data4,
-      this.vidx4, this.bookin3, this.checkout3);
+      this.vidx4, this.bookin3, this.bookout3);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -52,7 +51,7 @@ class _InputLaporanState extends State<InputLaporan> {
   List result = [];
   var vidx4;
   var bookin3;
-  var checkout3;
+  var bookout3;
 
   final TextEditingController vidx = TextEditingController();
   final TextEditingController description = TextEditingController();
@@ -65,8 +64,7 @@ class _InputLaporanState extends State<InputLaporan> {
       context: context,
       initialDate: selectDate,
       firstDate: DateTime.parse(bookin3).toLocal(),
-      lastDate:
-          DateTime.parse(checkout3).toLocal().add(const Duration(days: 7)),
+      lastDate: DateTime.parse(bookout3).toLocal().add(const Duration(days: 7)),
     );
     if (newDate == null) return; //for button X
 
@@ -251,7 +249,7 @@ class _InputLaporanState extends State<InputLaporan> {
                               data4: data4,
                               vidx4: vidx4,
                               bookin3: bookin3,
-                              checkout3: checkout3),
+                              bookout3: bookout3),
                         ));
                       },
                       child: const Text("Submit"),
@@ -276,7 +274,7 @@ class _InputLaporanState extends State<InputLaporan> {
                 data4: data4,
                 vidx4: vidx4,
                 bookin3: bookin3,
-                checkout3: checkout3,
+                bookout3: bookout3,
               ),
             ));
           },

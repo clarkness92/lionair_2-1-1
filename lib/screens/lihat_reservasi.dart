@@ -42,7 +42,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   var hasilJson;
   var vidxBaru;
   var bookinBaru;
-  var checkoutBaru;
+  var bookoutBaru;
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
@@ -51,6 +51,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   void updateData3(String destination, String idpegawai) async {
     final temporaryList4 = [];
     String idpegawai = data[0]['idemployee'];
+    data3.clear();
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -150,7 +151,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     final temporaryList5 = [];
     vidx = data3[index]['idx'];
     String bookin = data3[index]['bookin'];
-    String checkout = data3[index]['checkout'];
+    String bookout = data3[index]['bookout'];
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -223,7 +224,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       data4 = temporaryList5;
       vidxBaru = vidx;
       bookinBaru = bookin;
-      checkoutBaru = checkout;
+      bookoutBaru = bookout;
       loading = true;
     });
 
@@ -236,7 +237,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         data4: data4,
         vidx4: vidxBaru,
         bookin3: bookinBaru,
-        checkout3: checkoutBaru,
+        bookout3: bookoutBaru,
       ),
     ));
   }

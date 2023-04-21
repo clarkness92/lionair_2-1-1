@@ -9,7 +9,6 @@ import '../constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 import 'package:xml/xml.dart' as xml;
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class HomeScreen extends StatefulWidget {
   var data;
@@ -29,7 +28,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   _HomeScreenState(this.data, this.data1, this.data2);
   late PageController _pageController;
-  late PageController _pageController1;
   int activePage = 0;
   int maxLimit = 19;
   int indiLength = 0;
@@ -47,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var hasilJson;
   var vidxBaru;
   var bookinBaru;
-  var checkoutBaru;
+  var bookoutBaru;
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
@@ -56,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void updateData1(String destination, String idpegawai) async {
     final temporaryList1 = [];
     idpegawai = data[0]['idemployee'];
+    data1.clear();
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -104,11 +103,11 @@ class _HomeScreenState extends State<HomeScreen> {
           'notes': notes,
           'insertdate': insertdate,
         });
-        debugPrint("object 2");
+        debugPrint("object 1.1");
         hasilJson = jsonEncode(temporaryList1);
 
         debugPrint(hasilJson);
-        debugPrint("object_hasilJson 2");
+        debugPrint("object_hasilJson 1.1");
       }
       loading = false;
     } else {
@@ -126,26 +125,12 @@ class _HomeScreenState extends State<HomeScreen> {
       loading = true;
       debugPrint('$dataBaru1');
     });
-
-    Map<String, dynamic> map1 = Map.fromIterable(data1, key: (e) => e['idx']);
-    Map<String, dynamic> map2 =
-        Map.fromIterable(dataBaru1, key: (e) => e['idx']);
-
-    map1.addAll(map2);
-
-    List mergedList = map1.values.toList();
-
-    debugPrint('$mergedList');
-
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) =>
-          HomeScreen(data: data, data1: mergedList, data2: data2),
-    ));
   }
 
   void updateData2(String destination, String idpegawai) async {
     final temporaryList2 = [];
     idpegawai = data[0]['idemployee'];
+    data2.clear();
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -220,19 +205,29 @@ class _HomeScreenState extends State<HomeScreen> {
       debugPrint('$dataBaru2');
     });
 
-    Map<String, dynamic> map1 = Map.fromIterable(data2, key: (e) => e['idx']);
+    Map<String, dynamic> map1 = Map.fromIterable(data1, key: (e) => e['idx']);
     Map<String, dynamic> map2 =
-        Map.fromIterable(dataBaru2, key: (e) => e['idx']);
+        Map.fromIterable(dataBaru1, key: (e) => e['idx']);
 
     map1.addAll(map2);
 
-    List mergedList2 = map1.values.toList();
+    List mergedList = map1.values.toList();
+
+    debugPrint('$mergedList');
+
+    Map<String, dynamic> map3 = Map.fromIterable(data2, key: (e) => e['idx']);
+    Map<String, dynamic> map4 =
+        Map.fromIterable(dataBaru2, key: (e) => e['idx']);
+
+    map3.addAll(map4);
+
+    List mergedList2 = map3.values.toList();
 
     debugPrint('$mergedList2');
 
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) =>
-          HomeScreen(data: data, data1: data1, data2: mergedList2),
+          HomeScreen(data: data, data1: mergedList, data2: mergedList2),
     ));
   }
 
@@ -330,7 +325,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final temporaryList5 = [];
     vidx = data2[index]['idx'];
     String bookin = data2[index]['bookin'];
-    String checkout = data2[index]['checkout'];
+    String bookout = data2[index]['bookout'];
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -403,7 +398,7 @@ class _HomeScreenState extends State<HomeScreen> {
       data4 = temporaryList5;
       vidxBaru = vidx;
       bookinBaru = bookin;
-      checkoutBaru = checkout;
+      bookoutBaru = bookout;
       loading = true;
     });
 
@@ -416,7 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
         data4: data4,
         vidx4: vidxBaru,
         bookin3: bookinBaru,
-        checkout3: checkoutBaru,
+        bookout3: bookoutBaru,
       ),
     ));
   }
@@ -509,11 +504,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             const SizedBox(height: 20),
-                            Text("Name : ${data[index]['namaasli']}"),
+                            Text("Name : ${data[index]['namaasli']}".trim()),
                             const SizedBox(height: 5),
                             Text("Username : ${data[index]['username']}"),
                             const SizedBox(height: 5),
-                            Text("ID Employee : ${data[index]['idemployee']}"),
+                            Text("ID Employee : ${data[index]['idemployee']}"
+                                .trim()),
                             const SizedBox(height: 10),
                             // Text("Divisi: ${data[index]['namaasli']}"),
                             // const SizedBox(height: 20),
@@ -672,11 +668,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             const SizedBox(height: 20),
-                            Text("Name : ${data[index]['namaasli']}"),
+                            Text("Name : ${data[index]['namaasli']}".trim()),
                             const SizedBox(height: 5),
-                            Text("Username : ${data[index]['idemployee']}"),
+                            Text(
+                                "Username : ${data[index]['username']}".trim()),
                             const SizedBox(height: 5),
-                            Text("ID Employee : ${data[index]['idemployee']}"),
+                            Text("ID Employee : ${data[index]['idemployee']}"
+                                .trim()),
                             const SizedBox(height: 10),
                             // Text("Divisi: ${data[index]['namaasli']}"),
                             // const SizedBox(height: 20),
@@ -1030,16 +1028,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             const SizedBox(height: 20),
-                            Text("Name : ${data[index]['namaasli']}"),
+                            Text("Name : ${data[index]['namaasli']}".trim()),
                             const SizedBox(height: 5),
-                            Text("Username : ${data[index]['idemployee']}"),
+                            Text(
+                                "Username : ${data[index]['username']}".trim()),
                             const SizedBox(height: 5),
-                            Text("ID Employee : ${data[index]['idemployee']}"),
+                            Text("ID Employee : ${data[index]['idemployee']}"
+                                .trim()),
                             const SizedBox(height: 10),
-                            // Text("Divisi: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
-                            // Text("Email: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
                             Container(
                               margin: const EdgeInsets.all(15),
                               child: Row(
@@ -1346,11 +1342,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             const SizedBox(height: 20),
-                            Text("Name : ${data[index]['namaasli']}"),
+                            Text("Name : ${data[index]['namaasli']}".trim()),
                             const SizedBox(height: 5),
-                            Text("Username : ${data[index]['idemployee']}"),
+                            Text(
+                                "Username : ${data[index]['username']}".trim()),
                             const SizedBox(height: 5),
-                            Text("ID Employee : ${data[index]['idemployee']}"),
+                            Text("ID Employee : ${data[index]['idemployee']}"
+                                .trim()),
                             const SizedBox(height: 10),
                             // Text("Divisi: ${data[index]['namaasli']}"),
                             // const SizedBox(height: 20),
