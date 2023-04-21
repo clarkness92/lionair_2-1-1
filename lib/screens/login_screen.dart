@@ -110,39 +110,37 @@ class _LoginScreenState extends State<LoginScreen> {
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
-        '<GetReservationByIDSTaff xmlns="http://tempuri.org/">' +
+        '<GetReservationByIDSTaffPending xmlns="http://tempuri.org/">' +
         '<UsernameApi>admin</UsernameApi>' +
         '<PasswordApi>admin</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' + //dibuat statis agar mudah bolak balik page => ganti dengan $idpegawai jika ingin dinamis
-        '</GetReservationByIDSTaff>' +
+        '</GetReservationByIDSTaffPending>' +
         '</soap:Body>' +
         '</soap:Envelope>';
 
-    final response = await http.post(Uri.parse(url_GetReservationByIDSTaff),
-        headers: <String, String>{
-          "Access-Control-Allow-Origin": "*",
-          'SOAPAction': 'http://tempuri.org/GetReservationByIDSTaff',
-          "Access-Control-Allow-Credentials": "true",
-          'Content-type': 'text/xml; charset=utf-8',
-        },
-        body: objBody);
+    final response =
+        await http.post(Uri.parse(url_GetReservationByIDSTaffPending),
+            headers: <String, String>{
+              "Access-Control-Allow-Origin": "*",
+              'SOAPAction': 'http://tempuri.org/GetReservationByIDSTaffPending',
+              "Access-Control-Allow-Credentials": "true",
+              'Content-type': 'text/xml; charset=utf-8',
+            },
+            body: objBody);
 
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
 
-      debugPrint("=================");
-      debugPrint(
-          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      debugPrint("=================");
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
 
       final listResultAll1 = document.findAllElements('_x002D_');
 
       for (final list_result in listResultAll1) {
         final idx = list_result.findElements('IDX').first.text;
-        final idstaff = list_result.findElements('IDSTAFF').first.text;
-        final name = list_result.findElements('NAME').first.text;
-        final gender = list_result.findElements('GENDER').first.text;
         final checkin = list_result.findElements('CHECKIN').first.text;
         final checkout = list_result.findElements('CHECKOUT').first.text;
         final necessary = list_result.findElements('NECESSARY').first.text;
@@ -150,9 +148,6 @@ class _LoginScreenState extends State<LoginScreen> {
         final insertdate = list_result.findElements('INSERTDATE').first.text;
         temporaryList1.add({
           'idx': idx,
-          'idstaff': idstaff,
-          'name': name,
-          'gender': gender,
           'checkin': checkin,
           'checkout': checkout,
           'necessary': necessary,
@@ -209,10 +204,10 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
 
-      debugPrint("=================");
-      debugPrint(
-          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      debugPrint("=================");
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
 
       final listResultAll2 = document.findAllElements('_x002D_');
 

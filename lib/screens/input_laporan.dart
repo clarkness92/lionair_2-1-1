@@ -16,7 +16,7 @@ class InputLaporan extends StatefulWidget {
   var data3;
   var data4;
   var vidx4;
-  var checkin3;
+  var bookin3;
   var checkout3;
 
   InputLaporan(
@@ -27,17 +27,17 @@ class InputLaporan extends StatefulWidget {
       required this.data3,
       required this.data4,
       required this.vidx4,
-      required this.checkin3,
+      required this.bookin3,
       required this.checkout3});
 
   @override
   State<InputLaporan> createState() => _InputLaporanState(
-      data, data1, data2, data3, data4, vidx4, checkin3, checkout3);
+      data, data1, data2, data3, data4, vidx4, bookin3, checkout3);
 }
 
 class _InputLaporanState extends State<InputLaporan> {
   _InputLaporanState(this.data, this.data1, this.data2, this.data3, this.data4,
-      this.vidx4, this.checkin3, this.checkout3);
+      this.vidx4, this.bookin3, this.checkout3);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -51,7 +51,7 @@ class _InputLaporanState extends State<InputLaporan> {
   List data4 = [];
   List result = [];
   var vidx4;
-  var checkin3;
+  var bookin3;
   var checkout3;
 
   final TextEditingController vidx = TextEditingController();
@@ -64,7 +64,7 @@ class _InputLaporanState extends State<InputLaporan> {
     final DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: selectDate,
-      firstDate: DateTime.parse(checkin3).toLocal(),
+      firstDate: DateTime.parse(bookin3).toLocal(),
       lastDate:
           DateTime.parse(checkout3).toLocal().add(const Duration(days: 7)),
     );
@@ -250,7 +250,7 @@ class _InputLaporanState extends State<InputLaporan> {
                               data3: data3,
                               data4: data4,
                               vidx4: vidx4,
-                              checkin3: checkin3,
+                              bookin3: bookin3,
                               checkout3: checkout3),
                         ));
                       },
@@ -275,7 +275,7 @@ class _InputLaporanState extends State<InputLaporan> {
                 data3: data3,
                 data4: data4,
                 vidx4: vidx4,
-                checkin3: checkin3,
+                bookin3: bookin3,
                 checkout3: checkout3,
               ),
             ));

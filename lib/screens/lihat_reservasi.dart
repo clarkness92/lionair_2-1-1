@@ -41,7 +41,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   List dataBaru3 = [];
   var hasilJson;
   var vidxBaru;
-  var checkinBaru;
+  var bookinBaru;
   var checkoutBaru;
 
   TextEditingController destination = TextEditingController();
@@ -149,7 +149,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   void getReport(String destination, String vidx, index) async {
     final temporaryList5 = [];
     vidx = data3[index]['idx'];
-    String checkin = data3[index]['checkin'];
+    String bookin = data3[index]['bookin'];
     String checkout = data3[index]['checkout'];
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
@@ -222,7 +222,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     setState(() {
       data4 = temporaryList5;
       vidxBaru = vidx;
-      checkinBaru = checkin;
+      bookinBaru = bookin;
       checkoutBaru = checkout;
       loading = true;
     });
@@ -235,7 +235,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         data3: data3,
         data4: data4,
         vidx4: vidxBaru,
-        checkin3: checkinBaru,
+        bookin3: bookinBaru,
         checkout3: checkoutBaru,
       ),
     ));
@@ -282,9 +282,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         key: _formKey,
         itemCount: data3.length,
         itemBuilder: (context, index) {
-          if (data3.length.isNaN) {
-            return const Center(
-                child: SizedBox(height: 15, child: Text("No Data")));
+          if (data3.isEmpty) {
+            return const Center(child: Text("No Data"));
           } else {
             return Card(
               margin: const EdgeInsets.all(8),
@@ -453,7 +452,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                             ]),
                             Row(children: [
                               Text(
-                                DateFormat(' : MMM dd, yyyy HH:mm').format(
+                                DateFormat(' : MMM dd, yyyy').format(
                                     DateTime.parse(data3[index]['checkin'])
                                         .toLocal()),
                                 style: const TextStyle(
@@ -463,7 +462,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                             Row(
                               children: [
                                 Text(
-                                  DateFormat(' : MMM dd, yyyy HH:mm').format(
+                                  DateFormat(' : MMM dd, yyyy').format(
                                       DateTime.parse(data3[index]['checkout'])
                                           .toLocal()),
                                   style: const TextStyle(

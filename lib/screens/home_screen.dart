@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
 import 'package:status_alert/status_alert.dart';
+import 'laporan.dart';
 import 'reservasi_mess.dart';
 import '../constants.dart';
 import 'package:http/http.dart' as http;
@@ -30,10 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late PageController _pageController;
   late PageController _pageController1;
   int activePage = 0;
-  int activePage1 = 0;
   int maxLimit = 19;
   int indiLength = 0;
-  int indiLength1 = 0;
 
   final _formKey = GlobalKey<FormState>();
   var loading = false;
@@ -41,12 +40,108 @@ class _HomeScreenState extends State<HomeScreen> {
   List data1 = [];
   List data2 = [];
   List data3 = [];
+  List data4 = [];
+  List dataBaru1 = [];
   List dataBaru2 = [];
   Xml2Json xml2json = Xml2Json();
   var hasilJson;
+  var vidxBaru;
+  var bookinBaru;
+  var checkoutBaru;
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
+  TextEditingController vidx = TextEditingController();
+
+  void updateData1(String destination, String idpegawai) async {
+    final temporaryList1 = [];
+    idpegawai = data[0]['idemployee'];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<GetReservationByIDSTaffPending xmlns="http://tempuri.org/">' +
+        '<UsernameApi>admin</UsernameApi>' +
+        '<PasswordApi>admin</PasswordApi>' +
+        '<DESTINATION>BLJ</DESTINATION>' +
+        '<IDSTAFF>$idpegawai</IDSTAFF>' +
+        '</GetReservationByIDSTaffPending>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response =
+        await http.post(Uri.parse(url_GetReservationByIDSTaffPending),
+            headers: <String, String>{
+              "Access-Control-Allow-Origin": "*",
+              'SOAPAction': 'http://tempuri.org/GetReservationByIDSTaffPending',
+              "Access-Control-Allow-Credentials": "true",
+              'Content-type': 'text/xml; charset=utf-8',
+            },
+            body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
+
+      final listResultAll1 = document.findAllElements('_x002D_');
+
+      for (final list_result in listResultAll1) {
+        final idx = list_result.findElements('IDX').first.text;
+        final checkin = list_result.findElements('CHECKIN').first.text;
+        final checkout = list_result.findElements('CHECKOUT').first.text;
+        final necessary = list_result.findElements('NECESSARY').first.text;
+        final notes = list_result.findElements('NOTES').first.text;
+        final insertdate = list_result.findElements('INSERTDATE').first.text;
+        temporaryList1.add({
+          'idx': idx,
+          'checkin': checkin,
+          'checkout': checkout,
+          'necessary': necessary,
+          'notes': notes,
+          'insertdate': insertdate,
+        });
+        debugPrint("object 2");
+        hasilJson = jsonEncode(temporaryList1);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 2");
+      }
+      loading = false;
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      StatusAlert.show(
+        context,
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
+        title: "Update Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
+    }
+    setState(() {
+      dataBaru1 = temporaryList1;
+      loading = true;
+      debugPrint('$dataBaru1');
+    });
+
+    Map<String, dynamic> map1 = Map.fromIterable(data1, key: (e) => e['idx']);
+    Map<String, dynamic> map2 =
+        Map.fromIterable(dataBaru1, key: (e) => e['idx']);
+
+    map1.addAll(map2);
+
+    List mergedList = map1.values.toList();
+
+    debugPrint('$mergedList');
+
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) =>
+          HomeScreen(data: data, data1: mergedList, data2: data2),
+    ));
+  }
 
   void updateData2(String destination, String idpegawai) async {
     final temporaryList2 = [];
@@ -76,10 +171,10 @@ class _HomeScreenState extends State<HomeScreen> {
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
 
-      debugPrint("=================");
-      debugPrint(
-          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      debugPrint("=================");
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
 
       final listResultAll2 = document.findAllElements('_x002D_');
 
@@ -131,17 +226,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
     map1.addAll(map2);
 
-    List mergedList = map1.values.toList();
+    List mergedList2 = map1.values.toList();
 
-    debugPrint('$mergedList');
+    debugPrint('$mergedList2');
 
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) =>
-          HomeScreen(data: data, data1: data1, data2: mergedList),
+          HomeScreen(data: data, data1: data1, data2: mergedList2),
     ));
   }
 
-  void getReservationHist(String destination, String idpegawai) async {
+  void getReserveHist(String destination, String idpegawai) async {
     final temporaryList3 = [];
     idpegawai = data[0]['idemployee'];
 
@@ -169,10 +264,10 @@ class _HomeScreenState extends State<HomeScreen> {
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
 
-      debugPrint("=================");
-      debugPrint(
-          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      debugPrint("=================");
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
 
       final listResultAll3 = document.findAllElements('_x002D_');
 
@@ -231,20 +326,108 @@ class _HomeScreenState extends State<HomeScreen> {
     ));
   }
 
+  void getReport(String destination, String vidx, index) async {
+    final temporaryList5 = [];
+    vidx = data2[index]['idx'];
+    String bookin = data2[index]['bookin'];
+    String checkout = data2[index]['checkout'];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<TenantReport_GetDataVIDX xmlns="http://tempuri.org/">' +
+        '<UsernameAPI>admin</UsernameAPI>' +
+        '<PasswordAPI>admin</PasswordAPI>' +
+        '<Destination>BLJ</Destination>' +
+        '<VIDX>$vidx</VIDX>' +
+        '</TenantReport_GetDataVIDX>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_TenantReport_GetDataVIDX),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/TenantReport_GetDataVIDX',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
+
+      final listResultAll5 = document.findAllElements('_x002D_');
+
+      for (final list_result in listResultAll5) {
+        final idx = list_result.findElements('IDX').first.text;
+        final vidx = list_result.findElements('VIDX').first.text;
+        final date = list_result.findElements('DATE').first.text;
+        final category = list_result.findElements('CATEGORY').first.text;
+        final description = list_result.findElements('DESCRIPTION').first.text;
+        final resolution = list_result.findElements('RESOLUTION').first.text;
+        final userinsert = list_result.findElements('USERINSERT').first.text;
+        final status = list_result.findElements('STATUS').first.text;
+        temporaryList5.add({
+          'idx': idx,
+          'vidx': vidx,
+          'date': date,
+          'category': category,
+          'description': description,
+          'resolution': resolution,
+          'userinsert': userinsert,
+          'status': status
+        });
+        debugPrint("object 4");
+        hasilJson = jsonEncode(temporaryList5);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 4");
+      }
+      loading = false;
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      StatusAlert.show(
+        context,
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
+        title: "Get Data Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
+    }
+    setState(() {
+      data4 = temporaryList5;
+      vidxBaru = vidx;
+      bookinBaru = bookin;
+      checkoutBaru = checkout;
+      loading = true;
+    });
+
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => Lihatlaporan(
+        data: data,
+        data1: data1,
+        data2: data2,
+        data3: data3,
+        data4: data4,
+        vidx4: vidxBaru,
+        bookin3: bookinBaru,
+        checkout3: checkoutBaru,
+      ),
+    ));
+  }
+
   @override
   void initState() {
     super.initState();
     _pageController = PageController(viewportFraction: 1.0);
-    _pageController1 = PageController(viewportFraction: 1.0);
 
     if (data1.length <= maxLimit) {
-      indiLength1 = data1.length;
-    } else {
-      indiLength1 = maxLimit;
-    }
-
-    if (data2.length <= maxLimit) {
-      indiLength = data2.length;
+      indiLength = data1.length;
     } else {
       indiLength = maxLimit;
     }
@@ -273,6 +456,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () async {
+              updateData1(destination.text, idpegawai.text);
               updateData2(destination.text, idpegawai.text);
             },
             tooltip: "Refresh Data",
@@ -339,47 +523,55 @@ class _HomeScreenState extends State<HomeScreen> {
                               margin: const EdgeInsets.all(15),
                               child: Row(
                                 children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      elevation: 10.0,
-                                      side: const BorderSide(
-                                          color: Colors.red, width: 2),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => ReservasiMess(
-                                          data: data,
-                                          data1: data1,
-                                          data2: data2,
-                                        ),
-                                      ));
-                                    },
-                                    child: const Text(
-                                      "\nMess\nReservation\n",
-                                      style: TextStyle(color: Colors.black54),
-                                      textAlign: TextAlign.center,
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) => ReservasiMess(
+                                            data: data,
+                                            data1: data1,
+                                            data2: data2,
+                                          ),
+                                        ));
+                                      },
+                                      child: const Text(
+                                        "Mess Reservation",
+                                        style: TextStyle(color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                   const Spacer(
                                     flex: 1,
                                   ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      elevation: 10.0,
-                                      side: const BorderSide(
-                                          color: Colors.red, width: 2),
-                                    ),
-                                    onPressed: () async {
-                                      getReservationHist(
-                                          destination.text, idpegawai.text);
-                                    },
-                                    child: const Text(
-                                      "\nReservation\nHistory\n",
-                                      style: TextStyle(color: Colors.black54),
-                                      textAlign: TextAlign.center,
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () async {
+                                        getReserveHist(
+                                            destination.text, idpegawai.text);
+                                      },
+                                      child: const Text(
+                                        "Reservation History",
+                                        style: TextStyle(color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -494,47 +686,55 @@ class _HomeScreenState extends State<HomeScreen> {
                               margin: const EdgeInsets.all(15),
                               child: Row(
                                 children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      elevation: 10.0,
-                                      side: const BorderSide(
-                                          color: Colors.red, width: 2),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => ReservasiMess(
-                                          data: data,
-                                          data1: data1,
-                                          data2: data2,
-                                        ),
-                                      ));
-                                    },
-                                    child: const Text(
-                                      "\nMess\nReservation\n",
-                                      style: TextStyle(color: Colors.black54),
-                                      textAlign: TextAlign.center,
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) => ReservasiMess(
+                                            data: data,
+                                            data1: data1,
+                                            data2: data2,
+                                          ),
+                                        ));
+                                      },
+                                      child: const Text(
+                                        "Mess Reservation",
+                                        style: TextStyle(color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                   const Spacer(
                                     flex: 1,
                                   ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      elevation: 10.0,
-                                      side: const BorderSide(
-                                          color: Colors.red, width: 2),
-                                    ),
-                                    onPressed: () async {
-                                      getReservationHist(
-                                          destination.text, idpegawai.text);
-                                    },
-                                    child: const Text(
-                                      "\nReservation\nHistory\n",
-                                      style: TextStyle(color: Colors.black54),
-                                      textAlign: TextAlign.center,
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () async {
+                                        getReserveHist(
+                                            destination.text, idpegawai.text);
+                                      },
+                                      child: const Text(
+                                        "Reservation History",
+                                        style: TextStyle(color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -705,14 +905,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Column(
                                                   children: [
                                                     ElevatedButton(
-                                                      onPressed: null,
+                                                      onPressed: () async {
+                                                        getReport(
+                                                            destination.text,
+                                                            vidx.text,
+                                                            index);
+                                                      },
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
                                                             Colors.redAccent,
                                                       ),
-                                                      child: const Text(
-                                                          "CHECK-IN"),
+                                                      child:
+                                                          const Text("REPORT"),
                                                     ),
                                                   ],
                                                 )
@@ -839,47 +1044,55 @@ class _HomeScreenState extends State<HomeScreen> {
                               margin: const EdgeInsets.all(15),
                               child: Row(
                                 children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      elevation: 10.0,
-                                      side: const BorderSide(
-                                          color: Colors.red, width: 2),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => ReservasiMess(
-                                          data: data,
-                                          data1: data1,
-                                          data2: data2,
-                                        ),
-                                      ));
-                                    },
-                                    child: const Text(
-                                      "\nMess\nReservation\n",
-                                      style: TextStyle(color: Colors.black54),
-                                      textAlign: TextAlign.center,
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) => ReservasiMess(
+                                            data: data,
+                                            data1: data1,
+                                            data2: data2,
+                                          ),
+                                        ));
+                                      },
+                                      child: const Text(
+                                        "Mess Reservation",
+                                        style: TextStyle(color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                   const Spacer(
                                     flex: 1,
                                   ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      elevation: 10.0,
-                                      side: const BorderSide(
-                                          color: Colors.red, width: 2),
-                                    ),
-                                    onPressed: () async {
-                                      getReservationHist(
-                                          destination.text, idpegawai.text);
-                                    },
-                                    child: const Text(
-                                      "\nReservation\nHistory\n",
-                                      style: TextStyle(color: Colors.black54),
-                                      textAlign: TextAlign.center,
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () async {
+                                        getReserveHist(
+                                            destination.text, idpegawai.text);
+                                      },
+                                      child: const Text(
+                                        "Reservation History",
+                                        style: TextStyle(color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -910,9 +1123,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   itemCount: data1.length,
                                   pageSnapping: true,
                                   controller: _pageController,
-                                  onPageChanged: (page1) {
+                                  onPageChanged: (page) {
                                     setState(() {
-                                      activePage1 = page1;
+                                      activePage = page;
                                     });
                                   },
                                   itemBuilder: (context, index) {
@@ -1063,7 +1276,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(height: 15),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: indicators(indiLength1, activePage1),
+                              children: indicators(indiLength, activePage),
                             ),
                           ],
                         ),
@@ -1147,47 +1360,55 @@ class _HomeScreenState extends State<HomeScreen> {
                               margin: const EdgeInsets.all(15),
                               child: Row(
                                 children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      elevation: 10.0,
-                                      side: const BorderSide(
-                                          color: Colors.red, width: 2),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) => ReservasiMess(
-                                          data: data,
-                                          data1: data1,
-                                          data2: data2,
-                                        ),
-                                      ));
-                                    },
-                                    child: const Text(
-                                      "\nMess\nReservation\n",
-                                      style: TextStyle(color: Colors.black54),
-                                      textAlign: TextAlign.center,
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) => ReservasiMess(
+                                            data: data,
+                                            data1: data1,
+                                            data2: data2,
+                                          ),
+                                        ));
+                                      },
+                                      child: const Text(
+                                        "Mess Reservation",
+                                        style: TextStyle(color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                   const Spacer(
                                     flex: 1,
                                   ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      elevation: 10.0,
-                                      side: const BorderSide(
-                                          color: Colors.red, width: 2),
-                                    ),
-                                    onPressed: () async {
-                                      getReservationHist(
-                                          destination.text, idpegawai.text);
-                                    },
-                                    child: const Text(
-                                      "\nReservation\nHistory\n",
-                                      style: TextStyle(color: Colors.black54),
-                                      textAlign: TextAlign.center,
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () async {
+                                        getReserveHist(
+                                            destination.text, idpegawai.text);
+                                      },
+                                      child: const Text(
+                                        "Reservation History",
+                                        style: TextStyle(color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -1218,9 +1439,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   itemCount: data1.length,
                                   pageSnapping: true,
                                   controller: _pageController,
-                                  onPageChanged: (page1) {
+                                  onPageChanged: (page) {
                                     setState(() {
-                                      activePage1 = page1;
+                                      activePage = page;
                                     });
                                   },
                                   itemBuilder: (context, index) {
@@ -1371,7 +1592,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(height: 15),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: indicators(indiLength1, activePage1),
+                              children: indicators(indiLength, activePage),
                             ),
                           ],
                         ),
@@ -1394,15 +1615,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               width: 350,
                               height: 250,
-                              child: PageView.builder(
+                              child: ListView.builder(
                                   itemCount: data2.length,
-                                  pageSnapping: true,
-                                  controller: _pageController,
-                                  onPageChanged: (page) {
-                                    setState(() {
-                                      activePage = page;
-                                    });
-                                  },
                                   itemBuilder: (context, index) {
                                     return Card(
                                       color: Colors.white,
@@ -1438,6 +1652,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           FontWeight.bold),
                                                 ),
                                               ]),
+                                            ),
+                                            const Divider(
+                                              thickness: 2,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
                                             ),
                                             Row(
                                               children: [
@@ -1511,21 +1731,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Column(
                                                   children: [
                                                     ElevatedButton(
-                                                      onPressed: null,
+                                                      onPressed: () async {
+                                                        getReport(
+                                                            destination.text,
+                                                            vidx.text,
+                                                            index);
+                                                      },
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
                                                             Colors.redAccent,
                                                       ),
-                                                      child: const Text(
-                                                          "CHECK-IN"),
+                                                      child:
+                                                          const Text("REPORT"),
                                                     ),
                                                   ],
                                                 )
                                               ],
                                             ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
                                             const Divider(
                                               thickness: 2,
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
                                             ),
                                             Row(
                                               children: [
@@ -1584,11 +1815,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     );
                                   }),
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: indicators(indiLength, activePage),
                             ),
                           ],
                         ),

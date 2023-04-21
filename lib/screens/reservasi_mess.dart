@@ -224,6 +224,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
                     ),
                     const SizedBox(height: 30.0),
                     TextField(
+                      maxLength: 20,
                       controller: necessary,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
@@ -234,6 +235,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
                     ),
                     const SizedBox(height: 30.0),
                     TextField(
+                      maxLength: 20,
                       controller: notes,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,

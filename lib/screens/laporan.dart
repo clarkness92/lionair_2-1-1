@@ -16,7 +16,7 @@ class Lihatlaporan extends StatefulWidget {
   var data3;
   var data4;
   var vidx4;
-  var checkin3;
+  var bookin3;
   var checkout3;
 
   Lihatlaporan(
@@ -27,17 +27,17 @@ class Lihatlaporan extends StatefulWidget {
       required this.data3,
       required this.data4,
       required this.vidx4,
-      required this.checkin3,
+      required this.bookin3,
       required this.checkout3});
 
   @override
   State<Lihatlaporan> createState() => _Lihatlaporanstate(
-      data, data1, data2, data3, data4, vidx4, checkin3, checkout3);
+      data, data1, data2, data3, data4, vidx4, bookin3, checkout3);
 }
 
 class _Lihatlaporanstate extends State<Lihatlaporan> {
   _Lihatlaporanstate(this.data, this.data1, this.data2, this.data3, this.data4,
-      this.vidx4, this.checkin3, this.checkout3);
+      this.vidx4, this.bookin3, this.checkout3);
 
   final _formKey = GlobalKey<FormState>();
   var loading = false;
@@ -49,7 +49,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   List dataBaru4 = [];
   var hasilJson;
   var vidx4;
-  var checkin3;
+  var bookin3;
   var checkout3;
 
   TextEditingController destination = TextEditingController();
@@ -150,7 +150,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         data3: data3,
         data4: mergedList,
         vidx4: vidx4,
-        checkin3: checkin3,
+        bookin3: bookin3,
         checkout3: checkout3,
       ),
     ));
@@ -280,7 +280,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
               data3: data3,
               data4: data4,
               vidx4: vidx4,
-              checkin3: checkin3,
+              bookin3: bookin3,
               checkout3: checkout3,
             ),
           ));

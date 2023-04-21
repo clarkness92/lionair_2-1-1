@@ -6,8 +6,8 @@ const url_InputWebReservation =
     'https://lgapvfncacc.com/mess/prc.asmx?op=InputWebReservation';
 
 // ignore: constant_identifier_names
-const url_GetReservationByIDSTaff =
-    'https://lgapvfncacc.com/mess/prc.asmx?op=GetReservationByIDSTaff';
+const url_GetReservationByIDSTaffPending =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=GetReservationByIDSTaffPending';
 
 // ignore: constant_identifier_names
 const url_Checktime_GetCurrentStay =
