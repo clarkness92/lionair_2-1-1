@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lgapvfncacc.apps">
+
+   <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
    <application
         android:label="Lion Reserve"
         android:name="${applicationName}"

@@ -74,11 +74,13 @@ class _LoginScreenState extends State<LoginScreen> {
         final idemployee = list_result.findElements('IDEMPLOYEE').first.text;
         final namaasli = list_result.findElements('NAMAASLI').first.text;
         final division = list_result.findElements('DIVISION').first.text;
+        final gender = list_result.findElements('GENDER').first.text;
         temporaryList.add({
           'username': username,
           'idemployee': idemployee,
           'namaasli': namaasli,
           'division': division,
+          'gender': gender,
         });
         debugPrint("object");
         hasilJson = jsonEncode(temporaryList);

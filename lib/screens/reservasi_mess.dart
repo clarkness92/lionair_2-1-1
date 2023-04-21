@@ -34,11 +34,11 @@ class _ReservasiMessState extends State<ReservasiMess> {
   List data = [];
   List data1 = [];
   List data2 = [];
-
   List result = [];
-  String userInput = "";
+  var gender1;
 
   final TextEditingController destination = TextEditingController();
+  final TextEditingController gender = TextEditingController();
   final TextEditingController notes = TextEditingController();
   final TextEditingController necessary = TextEditingController();
 
@@ -63,7 +63,6 @@ class _ReservasiMessState extends State<ReservasiMess> {
   }
 
   String location = 'Balaraja';
-  String gender = 'MALE';
 
   DropdownMenuItem<String> buildmenuItem(String item) => DropdownMenuItem(
         value: item,
@@ -74,7 +73,6 @@ class _ReservasiMessState extends State<ReservasiMess> {
       );
 
   List<String> items = ['Balaraja'];
-  List<String> listGender = ['MALE', 'FEMALE'];
 
   void _sendReservation(String necessary, String notes) async {
     String idpegawai = data[0]['idemployee'];
@@ -134,6 +132,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
   void initState() {
     super.initState();
     destination.text = location;
+    gender.text = data[0]['gender'];
   }
 
   @override
@@ -197,29 +196,15 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         labelText: "Mess Location",
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    const Text("Gender"),
-                    const SizedBox(height: 15),
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.black, width: 2),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                              value: gender,
-                              iconSize: 23,
-                              isExpanded: true,
-                              items: listGender.map(buildmenuItem).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  gender = value!;
-                                });
-                              }),
-                        ),
+                    const SizedBox(height: 30),
+                    TextField(
+                      enabled: false,
+                      controller: gender,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Gender",
                       ),
                     ),
                     const SizedBox(height: 30.0),

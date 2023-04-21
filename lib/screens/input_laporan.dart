@@ -157,9 +157,10 @@ class _InputLaporanState extends State<InputLaporan> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Report/Complaint",
+                      "Report\n/\nComplaint",
                       style:
                           TextStyle(fontSize: 33, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
                     Column(
