@@ -115,7 +115,35 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 6");
       }
-      loading = false;
+
+      Future.delayed(Duration(seconds: 3), () {
+        Map<String, dynamic> map1 =
+            Map.fromIterable(data4, key: (e) => e['idx']);
+        Map<String, dynamic> map2 =
+            Map.fromIterable(dataBaru4, key: (e) => e['idx']);
+
+        map1.addAll(map2);
+
+        List mergedList = map1.values.toList();
+
+        debugPrint('$mergedList');
+
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Lihatlaporan(
+            data: data,
+            data1: data1,
+            data2: data2,
+            data3: data3,
+            data4: mergedList,
+            vidx4: vidx4,
+            bookin3: bookin3,
+            bookout3: bookout3,
+          ),
+        ));
+        setState(() {
+          loading = false;
+        });
+      });
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -131,29 +159,6 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       loading = true;
       debugPrint('$dataBaru4');
     });
-
-    Map<String, dynamic> map1 = Map.fromIterable(data4, key: (e) => e['idx']);
-    Map<String, dynamic> map2 =
-        Map.fromIterable(dataBaru4, key: (e) => e['idx']);
-
-    map1.addAll(map2);
-
-    List mergedList = map1.values.toList();
-
-    debugPrint('$mergedList');
-
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => Lihatlaporan(
-        data: data,
-        data1: data1,
-        data2: data2,
-        data3: data3,
-        data4: mergedList,
-        vidx4: vidx4,
-        bookin3: bookin3,
-        bookout3: bookout3,
-      ),
-    ));
   }
 
   logout1() {

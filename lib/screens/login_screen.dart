@@ -237,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 3");
       }
-      Future.delayed(Duration(seconds: 5), () {
+      Future.delayed(const Duration(seconds: 5), () {
         if (hasil_result.isEmpty) {
           sweatAlertDenied(context);
         } else {
@@ -276,30 +276,30 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  Future<void> _showNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      importance: Importance.max,
-      priority: Priority.high,
-      ticker: 'ticker',
-    );
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'New Notification',
-      'Hi, ${idpegawai.text}',
-      platformChannelSpecifics,
-      payload: 'item x',
-    );
-  }
+  // Future<void> _showNotification() async {
+  //   const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(
+  //     'your channel id',
+  //     'your channel name',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //     ticker: 'ticker',
+  //   );
+  //   const NotificationDetails platformChannelSpecifics =
+  //       NotificationDetails(android: androidPlatformChannelSpecifics);
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     'New Notification',
+  //     'Hi, ${idpegawai.text}',
+  //     platformChannelSpecifics,
+  //     payload: 'item x',
+  //   );
+  // }
 
-  void initstate() {
-    super.initState();
-    _showNotification();
-  }
+  // void initstate() {
+  //   super.initState();
+  //   _showNotification();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -400,7 +400,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 30),
                       loading
-                          ? CircularProgressIndicator()
+                          ? const CircularProgressIndicator()
                           : MaterialButton(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
@@ -458,17 +458,6 @@ void sweatAlertDenied(BuildContext context) {
     configuration:
         const IconConfiguration(icon: Icons.error, color: Colors.red),
     title: "Login gagal, sudah registrasi?",
-    backgroundColor: Colors.grey[300],
-  );
-}
-
-void loadingProgress(BuildContext context) {
-  StatusAlert.show(
-    context,
-    duration: const Duration(seconds: 3),
-    configuration: const IconConfiguration(
-        icon: Icons.access_time_outlined, color: Colors.black),
-    title: "Loading...",
     backgroundColor: Colors.grey[300],
   );
 }

@@ -558,7 +558,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         setState(() {
                                           loading1 = true;
                                         });
-                                        Future.delayed(Duration(seconds: 3),
+                                        Future.delayed(Duration(seconds: 1),
                                             () {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
@@ -747,7 +747,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         setState(() {
                                           loading1 = true;
                                         });
-                                        Future.delayed(Duration(seconds: 3),
+                                        Future.delayed(Duration(seconds: 1),
                                             () {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
@@ -1130,7 +1130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         setState(() {
                                           loading1 = true;
                                         });
-                                        Future.delayed(Duration(seconds: 3),
+                                        Future.delayed(Duration(seconds: 1),
                                             () {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
@@ -1475,7 +1475,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         setState(() {
                                           loading1 = true;
                                         });
-                                        Future.delayed(Duration(seconds: 3),
+                                        Future.delayed(Duration(seconds: 1),
                                             () {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
