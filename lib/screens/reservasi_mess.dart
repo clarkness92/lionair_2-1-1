@@ -74,7 +74,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
 
   List<String> items = ['Balaraja'];
 
-  void _sendReservation(String necessary, String notes) async {
+  void _sendReservation(String gender, String necessary, String notes) async {
     String idpegawai = data[0]['idemployee'];
     String nama = data[0]['namaasli'];
     String title = data[0]['division'];
@@ -232,7 +232,8 @@ class _ReservasiMessState extends State<ReservasiMess> {
                     const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: () async {
-                        _sendReservation(necessary.text, notes.text);
+                        _sendReservation(
+                            gender.text, necessary.text, notes.text);
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => HomeScreen(
                               data: data, data1: data1, data2: data2),

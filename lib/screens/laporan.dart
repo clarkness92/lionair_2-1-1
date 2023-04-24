@@ -6,7 +6,6 @@ import 'package:status_alert/status_alert.dart';
 import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
-
 import 'input_laporan.dart';
 
 class Lihatlaporan extends StatefulWidget {
@@ -40,7 +39,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       this.vidx4, this.bookin3, this.bookout3);
 
   final _formKey = GlobalKey<FormState>();
-  var loading = false;
+  bool loading = false;
   List data = [];
   List data1 = [];
   List data2 = [];
@@ -157,6 +156,14 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     ));
   }
 
+  logout1() {
+    data.clear();
+    data1.clear();
+    data2.clear();
+    data3.clear();
+    data4.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,13 +187,17 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
             onPressed: () async {
+              setState(() {
+                loading = true;
+              });
               updateData4(destination.text, vidx.text);
             },
             tooltip: "Refresh Data",
           ),
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: () {
+            onPressed: () async {
+              await logout1();
               Navigator.pushReplacementNamed(context, 'login');
             },
             tooltip: "Logout",
@@ -201,72 +212,80 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         itemCount: 1,
         itemBuilder: (context, index) {
           if (data4.isEmpty) {
-            return const Center(child: Text("No Data"));
+            return Center(
+                child: loading ? CircularProgressIndicator() : Text("No Data"));
           } else {
             return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 20),
-                    Text(
-                      "${data4[index]['vidx']}",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    const SizedBox(height: 50),
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      margin: const EdgeInsets.only(left: 24),
-                      child: Text(
-                        "Total Rows: ${data4.length}",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const <DataColumn>[
-                          DataColumn(label: Text("IDX")),
-                          DataColumn(label: Text("Category")),
-                          DataColumn(label: Text("Date")),
-                          DataColumn(label: Text("Description")),
-                          DataColumn(label: Text("Resolution")),
-                          DataColumn(label: Text("Status")),
-                        ],
-                        rows: List<DataRow>.generate(
-                          data4.length,
-                          (index) => DataRow(
-                            color: MaterialStateProperty.resolveWith<Color?>(
-                                (Set<MaterialState> states) {
-                              // Even rows will have a grey color.
-                              if (index.isOdd) {
-                                return Colors.grey.withOpacity(0.3);
-                              }
-                              return null; // Use default value for other states and odd rows.
-                            }),
-                            cells: <DataCell>[
-                              DataCell(Text("${data4[index]['idx']}")),
-                              DataCell(Text("${data4[index]['category']}")),
-                              DataCell(Text(DateFormat('MMM d, yyyy').format(
-                                  DateTime.parse(data4[index]['date'])
-                                      .toLocal()))),
-                              DataCell(Text("${data4[index]['description']}")),
-                              DataCell(Text("${data4[index]['resolution']}")),
-                              DataCell(Text(
-                                "${data4[index]['status']}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red),
-                              )),
-                            ],
+              child: loading
+                  ? CircularProgressIndicator()
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 20),
+                          Text(
+                            "${data4[index]['vidx']}",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
                           ),
-                        ),
+                          const SizedBox(height: 50),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(left: 24),
+                            child: Text(
+                              "Total Rows: ${data4.length}",
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                          ),
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: DataTable(
+                              columns: const <DataColumn>[
+                                DataColumn(label: Text("IDX")),
+                                DataColumn(label: Text("Category")),
+                                DataColumn(label: Text("Date")),
+                                DataColumn(label: Text("Description")),
+                                DataColumn(label: Text("Resolution")),
+                                DataColumn(label: Text("Status")),
+                              ],
+                              rows: List<DataRow>.generate(
+                                data4.length,
+                                (index) => DataRow(
+                                  color:
+                                      MaterialStateProperty.resolveWith<Color?>(
+                                          (Set<MaterialState> states) {
+                                    // Even rows will have a grey color.
+                                    if (index.isOdd) {
+                                      return Colors.grey.withOpacity(0.3);
+                                    }
+                                    return null; // Use default value for other states and odd rows.
+                                  }),
+                                  cells: <DataCell>[
+                                    DataCell(Text("${data4[index]['idx']}")),
+                                    DataCell(
+                                        Text("${data4[index]['category']}")),
+                                    DataCell(Text(DateFormat('MMM d, yyyy')
+                                        .format(
+                                            DateTime.parse(data4[index]['date'])
+                                                .toLocal()))),
+                                    DataCell(
+                                        Text("${data4[index]['description']}")),
+                                    DataCell(
+                                        Text("${data4[index]['resolution']}")),
+                                    DataCell(Text(
+                                      "${data4[index]['status']}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    )),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
             );
           }
         },

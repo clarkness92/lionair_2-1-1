@@ -23,7 +23,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  var loading = false;
+  bool loading = false;
   List hasil_result = [];
   List hasil_result1 = [];
   List hasil_result2 = [];
@@ -62,10 +62,10 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
 
-      debugPrint("=================");
-      debugPrint(
-          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      debugPrint("=================");
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
 
       final listResultAll = document.findAllElements('CekUser');
 
@@ -237,7 +237,29 @@ class _LoginScreenState extends State<LoginScreen> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 3");
       }
-      loading = false;
+      Future.delayed(Duration(seconds: 5), () {
+        if (hasil_result.isEmpty) {
+          sweatAlertDenied(context);
+        } else {
+          StatusAlert.show(context,
+              duration: const Duration(seconds: 1),
+              configuration: const IconConfiguration(
+                  icon: Icons.done, color: Colors.green),
+              title: "Login Success",
+              backgroundColor: Colors.grey[300]);
+          Timer(const Duration(seconds: 1), () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => HomeScreen(
+                  data: hasil_result,
+                  data1: hasil_result1,
+                  data2: hasil_result2),
+            ));
+          });
+        }
+        setState(() {
+          loading = false;
+        });
+      });
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -252,23 +274,6 @@ class _LoginScreenState extends State<LoginScreen> {
       hasil_result2 = temporaryList2;
       loading = true;
     });
-
-    if (hasil_result.isEmpty) {
-      sweatAlertDenied(context);
-    } else {
-      StatusAlert.show(context,
-          duration: const Duration(seconds: 1),
-          configuration:
-              const IconConfiguration(icon: Icons.done, color: Colors.green),
-          title: "Login Success",
-          backgroundColor: Colors.grey[300]);
-      Timer(const Duration(seconds: 1), () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => HomeScreen(
-              data: hasil_result, data1: hasil_result1, data2: hasil_result2),
-        ));
-      });
-    }
   }
 
   Future<void> _showNotification() async {
@@ -299,23 +304,26 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/logo.png'),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/logo.png'),
+                  ),
                 ),
+                width: double.infinity,
+                height: size.height * 0.4,
               ),
-              width: double.infinity,
-              height: size.height * 0.4,
-            ),
-            loginForm(context),
-          ],
+              loginForm(context),
+            ],
+          ),
         ),
       ),
     );
@@ -391,23 +399,29 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       const SizedBox(height: 30),
-                      MaterialButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          disabledColor: Colors.grey,
-                          color: Colors.blueAccent,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 80, vertical: 15),
-                            child: const Text('Submit',
-                                style: TextStyle(color: Colors.white)),
-                          ),
-                          onPressed: () async {
-                            _cekUser(idpegawai.text, password.text);
-                            getData(destination.text, idpegawai.text);
-                            getReservation(destination.text, idpegawai.text);
-                            // _showNotification();
-                          }),
+                      loading
+                          ? CircularProgressIndicator()
+                          : MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              disabledColor: Colors.grey,
+                              color: Colors.blueAccent,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 80, vertical: 15),
+                                child: const Text('Submit',
+                                    style: TextStyle(color: Colors.white)),
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  loading = true;
+                                });
+                                _cekUser(idpegawai.text, password.text);
+                                getData(destination.text, idpegawai.text);
+                                getReservation(
+                                    destination.text, idpegawai.text);
+                                // _showNotification();
+                              }),
                     ],
                   ),
                 ),
@@ -444,6 +458,17 @@ void sweatAlertDenied(BuildContext context) {
     configuration:
         const IconConfiguration(icon: Icons.error, color: Colors.red),
     title: "Login gagal, sudah registrasi?",
+    backgroundColor: Colors.grey[300],
+  );
+}
+
+void loadingProgress(BuildContext context) {
+  StatusAlert.show(
+    context,
+    duration: const Duration(seconds: 3),
+    configuration: const IconConfiguration(
+        icon: Icons.access_time_outlined, color: Colors.black),
+    title: "Loading...",
     backgroundColor: Colors.grey[300],
   );
 }
