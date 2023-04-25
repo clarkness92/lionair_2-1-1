@@ -36,6 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading = false;
   bool loading1 = false;
   bool loading2 = false;
+  bool loading3 = false;
+
   List data = [];
   List data1 = [];
   List data2 = [];
@@ -190,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 2.1");
       }
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Map<String, dynamic> map1 =
             Map.fromIterable(data1, key: (e) => e['idx']);
         Map<String, dynamic> map2 =
@@ -200,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         List mergedList = map1.values.toList();
 
-        debugPrint('$mergedList');
+        // debugPrint('$mergedList');
 
         Map<String, dynamic> map3 =
             Map.fromIterable(data2, key: (e) => e['idx']);
@@ -211,13 +213,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
         List mergedList2 = map3.values.toList();
 
-        debugPrint('$mergedList2');
+        // debugPrint('$mergedList2');
 
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              HomeScreen(data: data, data1: mergedList, data2: mergedList2),
-        ));
         setState(() {
+          data1 = mergedList;
+          data2 = mergedList2;
+          indiLength = data1.length;
+          activePage = 0;
           loading = false;
         });
       });
@@ -234,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       dataBaru2 = temporaryList2;
       loading = true;
-      debugPrint('$dataBaru2');
+      // debugPrint('$dataBaru2');
     });
   }
 
@@ -302,7 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 3");
       }
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 5), () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => LihatDataEmployee(
             data: data,
@@ -393,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 4");
       }
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Lihatlaporan(
             data: data,
@@ -407,7 +409,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ));
         setState(() {
-          loading = false;
+          loading3 = false;
         });
       });
     } else {
@@ -425,7 +427,7 @@ class _HomeScreenState extends State<HomeScreen> {
       vidxBaru = vidx;
       bookinBaru = bookin;
       bookoutBaru = bookout;
-      loading = true;
+      loading3 = true;
     });
   }
 
@@ -558,8 +560,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         setState(() {
                                           loading1 = true;
                                         });
-                                        Future.delayed(Duration(seconds: 1),
-                                            () {
+                                        Future.delayed(
+                                            const Duration(seconds: 1), () {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) => ReservasiMess(
@@ -574,8 +576,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         });
                                       },
                                       child: loading1
-                                          ? CircularProgressIndicator()
-                                          : Text(
+                                          ? const CircularProgressIndicator()
+                                          : const Text(
                                               "Mess Reservation",
                                               style: TextStyle(
                                                   color: Colors.black54),
@@ -604,8 +606,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             destination.text, idpegawai.text);
                                       },
                                       child: loading1
-                                          ? CircularProgressIndicator()
-                                          : Text(
+                                          ? const CircularProgressIndicator()
+                                          : const Text(
                                               "Reservation History",
                                               style: TextStyle(
                                                   color: Colors.black54),
@@ -639,8 +641,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 250,
                               child: Center(
                                   child: loading
-                                      ? CircularProgressIndicator()
-                                      : Text(
+                                      ? const CircularProgressIndicator()
+                                      : const Text(
                                           "NO PENDING RESERVATION",
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500),
@@ -669,8 +671,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 250,
                               child: Center(
                                   child: loading
-                                      ? CircularProgressIndicator()
-                                      : Text(
+                                      ? const CircularProgressIndicator()
+                                      : const Text(
                                           "NO CURRENT RESERVATION",
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500),
@@ -747,8 +749,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         setState(() {
                                           loading1 = true;
                                         });
-                                        Future.delayed(Duration(seconds: 1),
-                                            () {
+                                        Future.delayed(
+                                            const Duration(seconds: 1), () {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) => ReservasiMess(
@@ -763,8 +765,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         });
                                       },
                                       child: loading1
-                                          ? CircularProgressIndicator()
-                                          : Text(
+                                          ? const CircularProgressIndicator()
+                                          : const Text(
                                               "Mess Reservation",
                                               style: TextStyle(
                                                   color: Colors.black54),
@@ -793,8 +795,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             destination.text, idpegawai.text);
                                       },
                                       child: loading2
-                                          ? CircularProgressIndicator()
-                                          : Text(
+                                          ? const CircularProgressIndicator()
+                                          : const Text(
                                               "Reservation History",
                                               style: TextStyle(
                                                   color: Colors.black54),
@@ -828,8 +830,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 250,
                               child: Center(
                                   child: loading
-                                      ? CircularProgressIndicator()
-                                      : Text(
+                                      ? const CircularProgressIndicator()
+                                      : const Text(
                                           "NO PENDING RESERVATION",
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500),
@@ -857,891 +859,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 350,
                               height: 250,
                               child: loading
-                                  ? CircularProgressIndicator()
-                                  : PageView.builder(
-                                      itemCount: data2.length,
-                                      pageSnapping: true,
-                                      controller: _pageController,
-                                      onPageChanged: (page) {
-                                        setState(() {
-                                          activePage = page;
-                                        });
-                                      },
-                                      itemBuilder: (context, index) {
-                                        return Card(
-                                          color: Colors.white,
-                                          elevation: 8.0,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0),
-                                          ),
-                                          child: Container(
-                                            margin: const EdgeInsets.all(10),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Colors.black12,
-                                                  height: 45,
-                                                  child: Row(children: [
-                                                    Text(
-                                                      "${data2[index]['idx']}",
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18),
-                                                    ),
-                                                    const Spacer(
-                                                      flex: 1,
-                                                    ),
-                                                    Text(
-                                                      "${data2[index]['idkamar']}",
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ]),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(children: const [
-                                                            Text("Area"),
-                                                          ]),
-                                                          Row(children: const [
-                                                            Text("Block"),
-                                                          ]),
-                                                          Row(children: const [
-                                                            Text("Number"),
-                                                          ]),
-                                                          Row(
-                                                            children: const [
-                                                              Text("Bed"),
-                                                            ],
-                                                          ),
-                                                        ]),
-                                                    Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(children: [
-                                                            Text(
-                                                              " ${data2[index]['areamess']}",
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            )
-                                                          ]),
-                                                          Row(children: [
-                                                            Text(
-                                                              " ${data2[index]['blok']}",
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          ]),
-                                                          Row(children: [
-                                                            Text(
-                                                              " ${data2[index]['nokamar']}",
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            )
-                                                          ]),
-                                                          Row(
-                                                            children: [
-                                                              Text(
-                                                                " ${data2[index]['namabed']}",
-                                                                style: const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                            ],
-                                                          )
-                                                        ]),
-                                                    const Spacer(
-                                                      flex: 1,
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        ElevatedButton(
-                                                          onPressed: () async {
-                                                            getReport(
-                                                                destination
-                                                                    .text,
-                                                                vidx.text,
-                                                                index);
-                                                          },
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .redAccent,
-                                                          ),
-                                                          child: const Text(
-                                                              "REPORT"),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                                const Divider(
-                                                  thickness: 2,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(children: const [
-                                                          Text("Book-In"),
-                                                        ]),
-                                                        Row(children: const [
-                                                          Text("Book-Out"),
-                                                        ]),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(children: [
-                                                          Text(
-                                                            DateFormat(
-                                                                    ' : MMM dd, yyyy')
-                                                                .format(DateTime.parse(
-                                                                        data2[index]
-                                                                            [
-                                                                            'bookin'])
-                                                                    .toLocal()),
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ]),
-                                                        Row(children: [
-                                                          Text(
-                                                            DateFormat(
-                                                                    ' : MMM dd, yyyy')
-                                                                .format(DateTime.parse(
-                                                                        data2[index]
-                                                                            [
-                                                                            'bookout'])
-                                                                    .toLocal()),
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ]),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: indicators(indiLength, activePage),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          } else if (data1.isNotEmpty && data2.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/logo.png'),
-                        ),
-                      ),
-                      width: double.infinity,
-                      height: size.height * 0.1,
-                    ),
-                    SizedBox(
-                      width: 350,
-                      height: 230,
-                      child: Card(
-                        color: Colors.white,
-                        elevation: 8.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            const SizedBox(height: 10),
-                            const Text(
-                              "WELCOME",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
-                            const SizedBox(height: 20),
-                            Text("Name : ${data[index]['namaasli']}".trim()),
-                            const SizedBox(height: 5),
-                            Text(
-                                "Username : ${data[index]['username']}".trim()),
-                            const SizedBox(height: 5),
-                            Text("ID Employee : ${data[index]['idemployee']}"
-                                .trim()),
-                            const SizedBox(height: 10),
-                            Container(
-                              margin: const EdgeInsets.all(15),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    height: 65,
-                                    width: 110,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        elevation: 10.0,
-                                        side: const BorderSide(
-                                            color: Colors.red, width: 2),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          loading1 = true;
-                                        });
-                                        Future.delayed(Duration(seconds: 1),
-                                            () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (context) => ReservasiMess(
-                                              data: data,
-                                              data1: data1,
-                                              data2: data2,
-                                            ),
-                                          ));
-                                          setState(() {
-                                            loading1 = false;
-                                          });
-                                        });
-                                      },
-                                      child: loading1
-                                          ? CircularProgressIndicator()
-                                          : Text(
-                                              "Mess Reservation",
-                                              style: TextStyle(
-                                                  color: Colors.black54),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                    ),
-                                  ),
-                                  const Spacer(
-                                    flex: 1,
-                                  ),
-                                  SizedBox(
-                                    height: 65,
-                                    width: 110,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        elevation: 10.0,
-                                        side: const BorderSide(
-                                            color: Colors.red, width: 2),
-                                      ),
-                                      onPressed: () async {
-                                        setState(() {
-                                          loading2 = true;
-                                        });
-                                        getReserveHist(
-                                            destination.text, idpegawai.text);
-                                      },
-                                      child: loading2
-                                          ? CircularProgressIndicator()
-                                          : Text(
-                                              "Reservation History",
-                                              style: TextStyle(
-                                                  color: Colors.black54),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    const Text(
-                      "Pending Reservation",
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            SizedBox(
-                              width: 350,
-                              height: 250,
-                              child: loading
-                                  ? CircularProgressIndicator()
-                                  : PageView.builder(
-                                      itemCount: data1.length,
-                                      pageSnapping: true,
-                                      controller: _pageController,
-                                      onPageChanged: (page) {
-                                        setState(() {
-                                          activePage = page;
-                                        });
-                                      },
-                                      itemBuilder: (context, index) {
-                                        return Card(
-                                          color: Colors.white,
-                                          elevation: 8.0,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0),
-                                          ),
-                                          child: Container(
-                                            margin: const EdgeInsets.all(10),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Colors.black12,
-                                                  height: 45,
-                                                  child: Row(children: [
-                                                    Text(
-                                                      "${data1[index]['idx']}",
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18),
-                                                    ),
-                                                    const Spacer(
-                                                      flex: 1,
-                                                    ),
-                                                    Text(
-                                                      DateFormat('MMM dd, yyyy')
-                                                          .format(DateTime
-                                                                  .parse(data1[
-                                                                          index]
-                                                                      [
-                                                                      'insertdate'])
-                                                              .toLocal()),
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ]),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(children: const [
-                                                            Text("Necessary"),
-                                                          ]),
-                                                          Row(children: const [
-                                                            Text("Notes"),
-                                                          ]),
-                                                        ]),
-                                                    Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(children: [
-                                                            Text(
-                                                              " ${data1[index]['necessary']}",
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            )
-                                                          ]),
-                                                          Row(children: [
-                                                            Text(
-                                                              " ${data1[index]['notes']}",
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          ]),
-                                                        ]),
-                                                  ],
-                                                ),
-                                                const Divider(
-                                                  thickness: 2,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(children: const [
-                                                          Text("Book-In"),
-                                                        ]),
-                                                        Row(
-                                                          children: const [
-                                                            Text("Book-Out"),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(children: [
-                                                          Text(
-                                                            DateFormat(
-                                                                    ' : MMM dd, yyyy')
-                                                                .format(DateTime.parse(
-                                                                        data1[index]
-                                                                            [
-                                                                            'checkin'])
-                                                                    .toLocal()),
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ]),
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              DateFormat(
-                                                                      ' : MMM dd, yyyy')
-                                                                  .format(DateTime.parse(
-                                                                          data1[index]
-                                                                              [
-                                                                              'checkout'])
-                                                                      .toLocal()),
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: indicators(indiLength, activePage),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 40),
-                    const Text(
-                      "Current Reservation",
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            SizedBox(
-                              width: 350,
-                              height: 250,
-                              child: Center(
-                                  child: loading
-                                      ? CircularProgressIndicator()
-                                      : Text(
-                                          "NO CURRENT RESERVATION",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        )),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            );
-          } else {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/logo.png'),
-                        ),
-                      ),
-                      width: double.infinity,
-                      height: size.height * 0.1,
-                    ),
-                    SizedBox(
-                      width: 350,
-                      height: 230,
-                      child: Card(
-                        color: Colors.white,
-                        elevation: 8.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            const SizedBox(height: 10),
-                            const Text(
-                              "WELCOME",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
-                            const SizedBox(height: 20),
-                            Text("Name : ${data[index]['namaasli']}".trim()),
-                            const SizedBox(height: 5),
-                            Text(
-                                "Username : ${data[index]['username']}".trim()),
-                            const SizedBox(height: 5),
-                            Text("ID Employee : ${data[index]['idemployee']}"
-                                .trim()),
-                            const SizedBox(height: 10),
-                            // Text("Divisi: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
-                            // Text("Email: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
-                            Container(
-                              margin: const EdgeInsets.all(15),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    height: 65,
-                                    width: 110,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        elevation: 10.0,
-                                        side: const BorderSide(
-                                            color: Colors.red, width: 2),
-                                      ),
-                                      onPressed: () async {
-                                        setState(() {
-                                          loading1 = true;
-                                        });
-                                        Future.delayed(Duration(seconds: 1),
-                                            () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (context) => ReservasiMess(
-                                              data: data,
-                                              data1: data1,
-                                              data2: data2,
-                                            ),
-                                          ));
-                                          setState(() {
-                                            loading1 = false;
-                                          });
-                                        });
-                                      },
-                                      child: loading1
-                                          ? CircularProgressIndicator()
-                                          : Text(
-                                              "Mess Reservation",
-                                              style: TextStyle(
-                                                  color: Colors.black54),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                    ),
-                                  ),
-                                  const Spacer(
-                                    flex: 1,
-                                  ),
-                                  SizedBox(
-                                    height: 65,
-                                    width: 110,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        elevation: 10.0,
-                                        side: const BorderSide(
-                                            color: Colors.red, width: 2),
-                                      ),
-                                      onPressed: () async {
-                                        setState(() {
-                                          loading2 = true;
-                                        });
-                                        getReserveHist(
-                                            destination.text, idpegawai.text);
-                                      },
-                                      child: loading2
-                                          ? CircularProgressIndicator()
-                                          : Text(
-                                              "Reservation History",
-                                              style: TextStyle(
-                                                  color: Colors.black54),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    const Text(
-                      "Pending Reservation",
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            SizedBox(
-                              width: 350,
-                              height: 250,
-                              child: loading
-                                  ? CircularProgressIndicator()
-                                  : PageView.builder(
-                                      itemCount: data1.length,
-                                      pageSnapping: true,
-                                      controller: _pageController,
-                                      onPageChanged: (page) {
-                                        setState(() {
-                                          activePage = page;
-                                        });
-                                      },
-                                      itemBuilder: (context, index) {
-                                        return Card(
-                                          color: Colors.white,
-                                          elevation: 8.0,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0),
-                                          ),
-                                          child: Container(
-                                            margin: const EdgeInsets.all(10),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Colors.black12,
-                                                  height: 45,
-                                                  child: Row(children: [
-                                                    Text(
-                                                      "${data1[index]['idx']}",
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18),
-                                                    ),
-                                                    const Spacer(
-                                                      flex: 1,
-                                                    ),
-                                                    Text(
-                                                      DateFormat('MMM dd, yyyy')
-                                                          .format(DateTime
-                                                                  .parse(data1[
-                                                                          index]
-                                                                      [
-                                                                      'insertdate'])
-                                                              .toLocal()),
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ]),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(children: const [
-                                                            Text("Necessary"),
-                                                          ]),
-                                                          Row(children: const [
-                                                            Text("Notes"),
-                                                          ]),
-                                                        ]),
-                                                    Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(children: [
-                                                            Text(
-                                                              " ${data1[index]['necessary']}",
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            )
-                                                          ]),
-                                                          Row(children: [
-                                                            Text(
-                                                              " ${data1[index]['notes']}",
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          ]),
-                                                        ]),
-                                                  ],
-                                                ),
-                                                const Divider(
-                                                  thickness: 2,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(children: const [
-                                                          Text("Book-In"),
-                                                        ]),
-                                                        Row(
-                                                          children: const [
-                                                            Text("Book-Out"),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(children: [
-                                                          Text(
-                                                            DateFormat(
-                                                                    ' : MMM dd, yyyy')
-                                                                .format(DateTime.parse(
-                                                                        data1[index]
-                                                                            [
-                                                                            'checkin'])
-                                                                    .toLocal()),
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ]),
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              DateFormat(
-                                                                      ' : MMM dd, yyyy')
-                                                                  .format(DateTime.parse(
-                                                                          data1[index]
-                                                                              [
-                                                                              'checkout'])
-                                                                      .toLocal()),
-                                                              style: const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: indicators(indiLength, activePage),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 40),
-                    const Text(
-                      "Current Reservation",
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            SizedBox(
-                              width: 350,
-                              height: 250,
-                              child: loading
-                                  ? CircularProgressIndicator()
+                                  ? const CircularProgressIndicator()
                                   : ListView.builder(
                                       itemCount: data2.length,
                                       itemBuilder: (context, index) {
@@ -1859,6 +977,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       children: [
                                                         ElevatedButton(
                                                           onPressed: () async {
+                                                            setState(() {
+                                                              loading3 = true;
+                                                            });
                                                             getReport(
                                                                 destination
                                                                     .text,
@@ -1871,8 +992,908 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 Colors
                                                                     .redAccent,
                                                           ),
-                                                          child: const Text(
-                                                              "REPORT"),
+                                                          child: loading3
+                                                              ? const CircularProgressIndicator()
+                                                              : Text("REPORT"),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                const Divider(
+                                                  thickness: 2,
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(children: const [
+                                                          Text("Book-In"),
+                                                        ]),
+                                                        Row(children: const [
+                                                          Text("Book-Out"),
+                                                        ]),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(children: [
+                                                          Text(
+                                                            DateFormat(
+                                                                    ' : MMM dd, yyyy')
+                                                                .format(DateTime.parse(
+                                                                        data2[index]
+                                                                            [
+                                                                            'bookin'])
+                                                                    .toLocal()),
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ]),
+                                                        Row(children: [
+                                                          Text(
+                                                            DateFormat(
+                                                                    ' : MMM dd, yyyy')
+                                                                .format(DateTime.parse(
+                                                                        data2[index]
+                                                                            [
+                                                                            'bookout'])
+                                                                    .toLocal()),
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ]),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else if (data1.isNotEmpty && data2.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/logo.png'),
+                        ),
+                      ),
+                      width: double.infinity,
+                      height: size.height * 0.1,
+                    ),
+                    SizedBox(
+                      width: 350,
+                      height: 230,
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 8.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(height: 10),
+                            const Text(
+                              "WELCOME",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            const SizedBox(height: 20),
+                            Text("Name : ${data[index]['namaasli']}".trim()),
+                            const SizedBox(height: 5),
+                            Text(
+                                "Username : ${data[index]['username']}".trim()),
+                            const SizedBox(height: 5),
+                            Text("ID Employee : ${data[index]['idemployee']}"
+                                .trim()),
+                            const SizedBox(height: 10),
+                            Container(
+                              margin: const EdgeInsets.all(15),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          loading1 = true;
+                                        });
+                                        Future.delayed(
+                                            const Duration(seconds: 1), () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) => ReservasiMess(
+                                              data: data,
+                                              data1: data1,
+                                              data2: data2,
+                                            ),
+                                          ));
+                                          setState(() {
+                                            loading1 = false;
+                                          });
+                                        });
+                                      },
+                                      child: loading1
+                                          ? const CircularProgressIndicator()
+                                          : const Text(
+                                              "Mess Reservation",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                    ),
+                                  ),
+                                  const Spacer(
+                                    flex: 1,
+                                  ),
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () async {
+                                        setState(() {
+                                          loading2 = true;
+                                        });
+                                        getReserveHist(
+                                            destination.text, idpegawai.text);
+                                      },
+                                      child: loading2
+                                          ? const CircularProgressIndicator()
+                                          : const Text(
+                                              "Reservation History",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    const Text(
+                      "Pending Reservation",
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 350,
+                              height: 250,
+                              child: loading
+                                  ? const CircularProgressIndicator()
+                                  : PageView.builder(
+                                      itemCount: data1.length,
+                                      pageSnapping: true,
+                                      controller: _pageController,
+                                      onPageChanged: (page) {
+                                        setState(() {
+                                          activePage = page;
+                                        });
+                                      },
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          color: Colors.white,
+                                          elevation: 8.0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          child: Container(
+                                            margin: const EdgeInsets.all(10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Colors.black12,
+                                                  height: 45,
+                                                  child: Row(children: [
+                                                    Text(
+                                                      "${data1[index]['idx']}",
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    ),
+                                                    const Spacer(
+                                                      flex: 1,
+                                                    ),
+                                                    Text(
+                                                      DateFormat('MMM dd, yyyy')
+                                                          .format(DateTime
+                                                                  .parse(data1[
+                                                                          index]
+                                                                      [
+                                                                      'insertdate'])
+                                                              .toLocal()),
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ]),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(children: const [
+                                                            Text("Necessary"),
+                                                          ]),
+                                                          Row(children: const [
+                                                            Text("Notes"),
+                                                          ]),
+                                                        ]),
+                                                    Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(children: [
+                                                            Text(
+                                                              " ${data1[index]['necessary']}",
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )
+                                                          ]),
+                                                          Row(children: [
+                                                            Text(
+                                                              " ${data1[index]['notes']}",
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ]),
+                                                        ]),
+                                                  ],
+                                                ),
+                                                const Divider(
+                                                  thickness: 2,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(children: const [
+                                                          Text("Book-In"),
+                                                        ]),
+                                                        Row(
+                                                          children: const [
+                                                            Text("Book-Out"),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(children: [
+                                                          Text(
+                                                            DateFormat(
+                                                                    ' : MMM dd, yyyy')
+                                                                .format(DateTime.parse(
+                                                                        data1[index]
+                                                                            [
+                                                                            'checkin'])
+                                                                    .toLocal()),
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ]),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              DateFormat(
+                                                                      ' : MMM dd, yyyy')
+                                                                  .format(DateTime.parse(
+                                                                          data1[index]
+                                                                              [
+                                                                              'checkout'])
+                                                                      .toLocal()),
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                            ),
+                            const SizedBox(height: 15),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: indicators(indiLength, activePage),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 40),
+                    const Text(
+                      "Current Reservation",
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 350,
+                              height: 250,
+                              child: Center(
+                                  child: loading
+                                      ? const CircularProgressIndicator()
+                                      : const Text(
+                                          "NO CURRENT RESERVATION",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/logo.png'),
+                        ),
+                      ),
+                      width: double.infinity,
+                      height: size.height * 0.1,
+                    ),
+                    SizedBox(
+                      width: 350,
+                      height: 230,
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 8.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(height: 10),
+                            const Text(
+                              "WELCOME",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                            const SizedBox(height: 20),
+                            Text("Name : ${data[index]['namaasli']}".trim()),
+                            const SizedBox(height: 5),
+                            Text(
+                                "Username : ${data[index]['username']}".trim()),
+                            const SizedBox(height: 5),
+                            Text("ID Employee : ${data[index]['idemployee']}"
+                                .trim()),
+                            const SizedBox(height: 10),
+                            // Text("Divisi: ${data[index]['namaasli']}"),
+                            // const SizedBox(height: 20),
+                            // Text("Email: ${data[index]['namaasli']}"),
+                            // const SizedBox(height: 20),
+                            Container(
+                              margin: const EdgeInsets.all(15),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () async {
+                                        setState(() {
+                                          loading1 = true;
+                                        });
+                                        Future.delayed(
+                                            const Duration(seconds: 1), () {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) => ReservasiMess(
+                                              data: data,
+                                              data1: data1,
+                                              data2: data2,
+                                            ),
+                                          ));
+                                          setState(() {
+                                            loading1 = false;
+                                          });
+                                        });
+                                      },
+                                      child: loading1
+                                          ? const CircularProgressIndicator()
+                                          : const Text(
+                                              "Mess Reservation",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                    ),
+                                  ),
+                                  const Spacer(
+                                    flex: 1,
+                                  ),
+                                  SizedBox(
+                                    height: 65,
+                                    width: 110,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.white,
+                                        elevation: 10.0,
+                                        side: const BorderSide(
+                                            color: Colors.red, width: 2),
+                                      ),
+                                      onPressed: () async {
+                                        setState(() {
+                                          loading2 = true;
+                                        });
+                                        getReserveHist(
+                                            destination.text, idpegawai.text);
+                                      },
+                                      child: loading2
+                                          ? const CircularProgressIndicator()
+                                          : const Text(
+                                              "Reservation History",
+                                              style: TextStyle(
+                                                  color: Colors.black54),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    const Text(
+                      "Pending Reservation",
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 350,
+                              height: 250,
+                              child: loading
+                                  ? const CircularProgressIndicator()
+                                  : PageView.builder(
+                                      itemCount: data1.length,
+                                      pageSnapping: true,
+                                      controller: _pageController,
+                                      onPageChanged: (page) {
+                                        setState(() {
+                                          activePage = page;
+                                        });
+                                      },
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          color: Colors.white,
+                                          elevation: 8.0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          child: Container(
+                                            margin: const EdgeInsets.all(10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Colors.black12,
+                                                  height: 45,
+                                                  child: Row(children: [
+                                                    Text(
+                                                      "${data1[index]['idx']}",
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    ),
+                                                    const Spacer(
+                                                      flex: 1,
+                                                    ),
+                                                    Text(
+                                                      DateFormat('MMM dd, yyyy')
+                                                          .format(DateTime
+                                                                  .parse(data1[
+                                                                          index]
+                                                                      [
+                                                                      'insertdate'])
+                                                              .toLocal()),
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ]),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(children: const [
+                                                            Text("Necessary"),
+                                                          ]),
+                                                          Row(children: const [
+                                                            Text("Notes"),
+                                                          ]),
+                                                        ]),
+                                                    Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(children: [
+                                                            Text(
+                                                              " ${data1[index]['necessary']}",
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )
+                                                          ]),
+                                                          Row(children: [
+                                                            Text(
+                                                              " ${data1[index]['notes']}",
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ]),
+                                                        ]),
+                                                  ],
+                                                ),
+                                                const Divider(
+                                                  thickness: 2,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(children: const [
+                                                          Text("Book-In"),
+                                                        ]),
+                                                        Row(
+                                                          children: const [
+                                                            Text("Book-Out"),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(children: [
+                                                          Text(
+                                                            DateFormat(
+                                                                    ' : MMM dd, yyyy')
+                                                                .format(DateTime.parse(
+                                                                        data1[index]
+                                                                            [
+                                                                            'checkin'])
+                                                                    .toLocal()),
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ]),
+                                                        Row(
+                                                          children: [
+                                                            Text(
+                                                              DateFormat(
+                                                                      ' : MMM dd, yyyy')
+                                                                  .format(DateTime.parse(
+                                                                          data1[index]
+                                                                              [
+                                                                              'checkout'])
+                                                                      .toLocal()),
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                            ),
+                            const SizedBox(height: 15),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: indicators(indiLength, activePage),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 40),
+                    const Text(
+                      "Current Reservation",
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 350,
+                              height: 250,
+                              child: loading
+                                  ? const CircularProgressIndicator()
+                                  : ListView.builder(
+                                      itemCount: data2.length,
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          color: Colors.white,
+                                          elevation: 8.0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          child: Container(
+                                            margin: const EdgeInsets.all(10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Colors.black12,
+                                                  height: 45,
+                                                  child: Row(children: [
+                                                    Text(
+                                                      "${data2[index]['idx']}",
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18),
+                                                    ),
+                                                    const Spacer(
+                                                      flex: 1,
+                                                    ),
+                                                    Text(
+                                                      "${data2[index]['idkamar']}",
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ]),
+                                                ),
+                                                const Divider(
+                                                  thickness: 2,
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(children: const [
+                                                            Text("Area"),
+                                                          ]),
+                                                          Row(children: const [
+                                                            Text("Block"),
+                                                          ]),
+                                                          Row(children: const [
+                                                            Text("Number"),
+                                                          ]),
+                                                          Row(
+                                                            children: const [
+                                                              Text("Bed"),
+                                                            ],
+                                                          ),
+                                                        ]),
+                                                    Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(children: [
+                                                            Text(
+                                                              " ${data2[index]['areamess']}",
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )
+                                                          ]),
+                                                          Row(children: [
+                                                            Text(
+                                                              " ${data2[index]['blok']}",
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ]),
+                                                          Row(children: [
+                                                            Text(
+                                                              " ${data2[index]['nokamar']}",
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            )
+                                                          ]),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                " ${data2[index]['namabed']}",
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ]),
+                                                    const Spacer(
+                                                      flex: 1,
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 35,
+                                                          width: 85,
+                                                          child: ElevatedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              setState(() {
+                                                                loading3 = true;
+                                                              });
+                                                              getReport(
+                                                                  destination
+                                                                      .text,
+                                                                  vidx.text,
+                                                                  index);
+                                                            },
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .redAccent,
+                                                            ),
+                                                            child: loading3
+                                                                ? Container(
+                                                                    height: 28,
+                                                                    width: 30,
+                                                                    child:
+                                                                        const CircularProgressIndicator())
+                                                                : Text(
+                                                                    "REPORT"),
+                                                          ),
                                                         ),
                                                       ],
                                                     )

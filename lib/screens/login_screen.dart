@@ -44,8 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
         '<CekUser xmlns="http://tempuri.org/">' +
         '<Usernameapi>admin</Usernameapi>' +
         '<Passwordapi>admin</Passwordapi>' +
-        '<Username>$idpegawai</Username>' + //dibuat statis agar mudah bolak balik page => ganti dengan $idpegawai jika ingin dinamis
-        '<Password>$password</Password>' + //dibuat statis agar mudah bolak balik page => ganti dengan $password jika ingin dinamis
+        '<Username>$idpegawai</Username>' +
+        '<Password>$password</Password>' +
         '</CekUser>' +
         '</soap:Body>' +
         '</soap:Envelope>';

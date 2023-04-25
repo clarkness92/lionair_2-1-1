@@ -33,6 +33,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
 
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
+  bool loading1 = false;
+
   List data = [];
   List data1 = [];
   List data2 = [];
@@ -114,7 +116,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 3.1");
       }
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Map<String, dynamic> map1 =
             Map.fromIterable(data3, key: (e) => e['idx']);
         Map<String, dynamic> map2 =
@@ -124,13 +126,10 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
 
         List mergedList = map1.values.toList();
 
-        debugPrint('$mergedList');
+        // debugPrint('$mergedList');
 
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => LihatDataEmployee(
-              data: data, data1: data1, data2: data2, data3: mergedList),
-        ));
         setState(() {
+          data3 = mergedList;
           loading = false;
         });
       });
@@ -147,7 +146,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     setState(() {
       dataBaru3 = temporaryList4;
       loading = true;
-      debugPrint('$dataBaru3');
+      // debugPrint('$dataBaru3');
     });
   }
 
@@ -213,7 +212,23 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 4");
       }
-      loading = false;
+      Future.delayed(Duration(seconds: 3), () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Lihatlaporan(
+            data: data,
+            data1: data1,
+            data2: data2,
+            data3: data3,
+            data4: data4,
+            vidx4: vidxBaru,
+            bookin3: bookinBaru,
+            bookout3: bookoutBaru,
+          ),
+        ));
+        setState(() {
+          loading1 = false;
+        });
+      });
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -229,21 +244,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       vidxBaru = vidx;
       bookinBaru = bookin;
       bookoutBaru = bookout;
-      loading = true;
+      loading1 = true;
     });
-
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => Lihatlaporan(
-        data: data,
-        data1: data1,
-        data2: data2,
-        data3: data3,
-        data4: data4,
-        vidx4: vidxBaru,
-        bookin3: bookinBaru,
-        bookout3: bookoutBaru,
-      ),
-    ));
   }
 
   logout() {
@@ -297,7 +299,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       ),
       body: Center(
         child: loading
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : ListView.builder(
                 key: _formKey,
                 itemCount: data3.length,
@@ -414,19 +416,32 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                 const Spacer(
                                   flex: 1,
                                 ),
-                                Column(
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        getReport(
-                                            destination.text, vidx.text, index);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.redAccent,
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Column(
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          setState(() {
+                                            loading1 = true;
+                                          });
+                                          getReport(destination.text, vidx.text,
+                                              index);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.redAccent,
+                                        ),
+                                        child: loading1
+                                            ? Container(
+                                                height: 28,
+                                                width: 30,
+                                                child:
+                                                    const CircularProgressIndicator())
+                                            : Text("REPORT"),
                                       ),
-                                      child: const Text("REPORT"),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 )
                               ],
                             ),

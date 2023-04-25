@@ -83,10 +83,10 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
 
-      debugPrint("=================");
-      debugPrint(
-          "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      debugPrint("=================");
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
 
       final list_result_all6 = document.findAllElements('_x002D_');
 
@@ -116,7 +116,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         debugPrint("object_hasilJson 6");
       }
 
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Map<String, dynamic> map1 =
             Map.fromIterable(data4, key: (e) => e['idx']);
         Map<String, dynamic> map2 =
@@ -126,21 +126,10 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
 
         List mergedList = map1.values.toList();
 
-        debugPrint('$mergedList');
+        // debugPrint('$mergedList');
 
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Lihatlaporan(
-            data: data,
-            data1: data1,
-            data2: data2,
-            data3: data3,
-            data4: mergedList,
-            vidx4: vidx4,
-            bookin3: bookin3,
-            bookout3: bookout3,
-          ),
-        ));
         setState(() {
+          data4 = mergedList;
           loading = false;
         });
       });
@@ -157,7 +146,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     setState(() {
       dataBaru4 = temporaryList6;
       loading = true;
-      debugPrint('$dataBaru4');
+      // debugPrint('$dataBaru4');
     });
   }
 
@@ -218,79 +207,74 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         itemBuilder: (context, index) {
           if (data4.isEmpty) {
             return Center(
-                child: loading ? CircularProgressIndicator() : Text("No Data"));
+                child: loading
+                    ? const CircularProgressIndicator()
+                    : const Text("No Data"));
           } else {
             return Center(
-              child: loading
-                  ? CircularProgressIndicator()
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(height: 20),
-                          Text(
-                            "${data4[index]['vidx']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
-                          const SizedBox(height: 50),
-                          Container(
-                            alignment: Alignment.bottomLeft,
-                            margin: const EdgeInsets.only(left: 24),
-                            child: Text(
-                              "Total Rows: ${data4.length}",
-                              style: const TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-                              columns: const <DataColumn>[
-                                DataColumn(label: Text("IDX")),
-                                DataColumn(label: Text("Category")),
-                                DataColumn(label: Text("Date")),
-                                DataColumn(label: Text("Description")),
-                                DataColumn(label: Text("Resolution")),
-                                DataColumn(label: Text("Status")),
-                              ],
-                              rows: List<DataRow>.generate(
-                                data4.length,
-                                (index) => DataRow(
-                                  color:
-                                      MaterialStateProperty.resolveWith<Color?>(
-                                          (Set<MaterialState> states) {
-                                    // Even rows will have a grey color.
-                                    if (index.isOdd) {
-                                      return Colors.grey.withOpacity(0.3);
-                                    }
-                                    return null; // Use default value for other states and odd rows.
-                                  }),
-                                  cells: <DataCell>[
-                                    DataCell(Text("${data4[index]['idx']}")),
-                                    DataCell(
-                                        Text("${data4[index]['category']}")),
-                                    DataCell(Text(DateFormat('MMM d, yyyy')
-                                        .format(
-                                            DateTime.parse(data4[index]['date'])
-                                                .toLocal()))),
-                                    DataCell(
-                                        Text("${data4[index]['description']}")),
-                                    DataCell(
-                                        Text("${data4[index]['resolution']}")),
-                                    DataCell(Text(
-                                      "${data4[index]['status']}",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red),
-                                    )),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    const SizedBox(height: 20),
+                    Text(
+                      "${data4[index]['vidx']}",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    const SizedBox(height: 50),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      margin: const EdgeInsets.only(left: 24),
+                      child: Text(
+                        "Total Rows: ${data4.length}",
+                        style: const TextStyle(fontSize: 15),
                       ),
                     ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columns: const <DataColumn>[
+                          DataColumn(label: Text("IDX")),
+                          DataColumn(label: Text("Category")),
+                          DataColumn(label: Text("Date")),
+                          DataColumn(label: Text("Description")),
+                          DataColumn(label: Text("Resolution")),
+                          DataColumn(label: Text("Status")),
+                        ],
+                        rows: List<DataRow>.generate(
+                          data4.length,
+                          (index) => DataRow(
+                            color: MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
+                              // Even rows will have a grey color.
+                              if (index.isOdd) {
+                                return Colors.grey.withOpacity(0.3);
+                              }
+                              return null; // Use default value for other states and odd rows.
+                            }),
+                            cells: <DataCell>[
+                              DataCell(Text("${data4[index]['idx']}")),
+                              DataCell(Text("${data4[index]['category']}")),
+                              DataCell(Text(DateFormat('MMM d, yyyy').format(
+                                  DateTime.parse(data4[index]['date'])
+                                      .toLocal()))),
+                              DataCell(Text("${data4[index]['description']}")),
+                              DataCell(Text("${data4[index]['resolution']}")),
+                              DataCell(Text(
+                                "${data4[index]['status']}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red),
+                              )),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             );
           }
         },
