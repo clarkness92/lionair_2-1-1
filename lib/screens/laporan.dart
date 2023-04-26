@@ -7,6 +7,9 @@ import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
 import 'input_laporan.dart';
+import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 
 class Lihatlaporan extends StatefulWidget {
   var data;
@@ -225,16 +228,20 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                     const SizedBox(height: 50),
                     Container(
                       alignment: Alignment.bottomLeft,
-                      margin: const EdgeInsets.only(left: 24),
+                      margin: const EdgeInsets.only(left: 10),
                       child: Text(
                         "Total Rows: ${data4.length}",
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const <DataColumn>[
+                    SizedBox(
+                      height: 545,
+                      // width: 300,
+                      child: DataTable2(
+                        columnSpacing: 12,
+                        horizontalMargin: 12,
+                        minWidth: 600,
+                        columns: [
                           DataColumn(label: Text("IDX")),
                           DataColumn(label: Text("Category")),
                           DataColumn(label: Text("Date")),
