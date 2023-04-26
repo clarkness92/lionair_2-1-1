@@ -219,13 +219,13 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Text(
                       "${data4[index]['vidx']}",
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
                     Container(
                       alignment: Alignment.bottomLeft,
                       margin: const EdgeInsets.only(left: 10),
@@ -234,20 +234,19 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
-                    SizedBox(
-                      height: 545,
-                      // width: 300,
-                      child: DataTable2(
-                        columnSpacing: 12,
-                        horizontalMargin: 12,
-                        minWidth: 600,
-                        columns: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columns: const <DataColumn>[
                           DataColumn(label: Text("IDX")),
                           DataColumn(label: Text("Category")),
                           DataColumn(label: Text("Date")),
-                          DataColumn(label: Text("Description")),
-                          DataColumn(label: Text("Resolution")),
-                          DataColumn(label: Text("Status")),
+                          DataColumn2(
+                              label: Text("Description"), size: ColumnSize.L),
+                          DataColumn2(
+                              label: Text("Resolution"), size: ColumnSize.L),
+                          DataColumn2(
+                              label: Text("Status"), size: ColumnSize.S),
                         ],
                         rows: List<DataRow>.generate(
                           data4.length,
