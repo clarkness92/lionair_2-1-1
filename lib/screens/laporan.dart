@@ -42,6 +42,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       this.vidx4, this.bookin3, this.bookout3);
 
   final _formKey = GlobalKey<FormState>();
+  GlobalKey dataTableKey = GlobalKey();
   bool loading = false;
   List data = [];
   List data1 = [];
@@ -235,9 +236,10 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                       ),
                     ),
                     SizedBox(
-                      height: 545,
+                      height: MediaQuery.of(context).size.height * 0.72,
                       // width: 300,
                       child: DataTable2(
+                        key: dataTableKey,
                         columnSpacing: 12,
                         horizontalMargin: 12,
                         minWidth: 700,
