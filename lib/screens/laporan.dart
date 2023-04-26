@@ -234,10 +234,14 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const <DataColumn>[
+                    SizedBox(
+                      height: 545,
+                      // width: 300,
+                      child: DataTable2(
+                        columnSpacing: 12,
+                        horizontalMargin: 12,
+                        minWidth: 700,
+                        columns: [
                           DataColumn(label: Text("IDX")),
                           DataColumn(label: Text("Category")),
                           DataColumn(label: Text("Date")),
