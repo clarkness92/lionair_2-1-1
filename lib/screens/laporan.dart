@@ -7,6 +7,9 @@ import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
 import 'input_laporan.dart';
+import 'package:data_table_2/data_table_2.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 
 class Lihatlaporan extends StatefulWidget {
   var data;
@@ -216,31 +219,38 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Text(
                       "${data4[index]['vidx']}",
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 20),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
                     Container(
                       alignment: Alignment.bottomLeft,
-                      margin: const EdgeInsets.only(left: 24),
+                      margin: const EdgeInsets.only(left: 10),
                       child: Text(
                         "Total Rows: ${data4.length}",
                         style: const TextStyle(fontSize: 15),
                       ),
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: const <DataColumn>[
+                    SizedBox(
+                      height: 545,
+                      // width: 300,
+                      child: DataTable2(
+                        columnSpacing: 12,
+                        horizontalMargin: 12,
+                        minWidth: 700,
+                        columns: [
                           DataColumn(label: Text("IDX")),
                           DataColumn(label: Text("Category")),
                           DataColumn(label: Text("Date")),
-                          DataColumn(label: Text("Description")),
-                          DataColumn(label: Text("Resolution")),
-                          DataColumn(label: Text("Status")),
+                          DataColumn2(
+                              label: Text("Description"), size: ColumnSize.L),
+                          DataColumn2(
+                              label: Text("Resolution"), size: ColumnSize.L),
+                          DataColumn2(
+                              label: Text("Status"), size: ColumnSize.S),
                         ],
                         rows: List<DataRow>.generate(
                           data4.length,
