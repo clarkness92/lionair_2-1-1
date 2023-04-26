@@ -3,6 +3,7 @@ import "dart:async";
 import "package:intl/intl.dart";
 import 'package:lionair_2/screens/home_screen.dart';
 import 'package:status_alert/status_alert.dart';
+import 'package:status_alert/status_alert.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
@@ -120,8 +121,8 @@ class _ReservasiMessState extends State<ReservasiMess> {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
         context,
-        duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.done),
+        duration: Duration(seconds: 1),
+        configuration: IconConfiguration(icon: Icons.done),
         title: "Input Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
