@@ -538,10 +538,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text("ID Employee : ${data[index]['idemployee']}"
                                 .trim()),
                             const SizedBox(height: 10),
-                            // Text("Divisi: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
-                            // Text("Email: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
                             Container(
                               margin: const EdgeInsets.all(15),
                               child: Row(
@@ -727,10 +723,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text("ID Employee : ${data[index]['idemployee']}"
                                 .trim()),
                             const SizedBox(height: 10),
-                            // Text("Divisi: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
-                            // Text("Email: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
                             Container(
                               margin: const EdgeInsets.all(15),
                               child: Row(
@@ -1459,10 +1451,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text("ID Employee : ${data[index]['idemployee']}"
                                 .trim()),
                             const SizedBox(height: 10),
-                            // Text("Divisi: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
-                            // Text("Email: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
                             Container(
                               margin: const EdgeInsets.all(15),
                               child: Row(

@@ -54,7 +54,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   List data2 = [];
   List data3 = [];
   List data4 = [];
+  List data5 = [];
   List dataBaru4 = [];
+  List dataBaru5 = [];
   var hasilJson;
   var vidx4;
   var bookin3;
@@ -171,7 +173,91 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     });
   }
 
-  void sendImageToServer(index) async {
+  void updateData5() async {
+    final temporaryList7 = [];
+    String idreff = data4[0]['idx'];
+    data5.clear();
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<File_GetDataFromIDReff xmlns="http://tempuri.org/">' +
+        '<UsernameApi>admin</UsernameApi>' +
+        '<PasswordApi>admin</PasswordApi>' +
+        '<DESTINATION>BLJ</DESTINATION>' +
+        '<IDRESERVATION>$idreff</IDRESERVATION>' +
+        '</File_GetDataFromIDReff>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_File_GetDataFromIDReff),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/File_GetDataFromIDReff',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
+
+      final list_result_all6 = document.findAllElements('_x002D_');
+
+      for (final list_result in list_result_all6) {
+        final idfile = list_result.findElements('IDFILE').first.text;
+        final filename = list_result.findElements('FILENAME').first.text;
+        temporaryList7.add({
+          'idfile': idfile,
+          'filename': filename,
+        });
+        debugPrint("object 7");
+        hasilJson = jsonEncode(temporaryList7);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 7");
+      }
+
+      Future.delayed(const Duration(seconds: 3), () {
+        Map<String, dynamic> map1 =
+            Map.fromIterable(data5, key: (e) => e['idfile']);
+        Map<String, dynamic> map2 =
+            Map.fromIterable(dataBaru5, key: (e) => e['idfile']);
+
+        map1.addAll(map2);
+
+        List mergedList = map1.values.toList();
+
+        // debugPrint('$mergedList');
+
+        setState(() {
+          data5 = mergedList;
+          loading = false;
+        });
+      });
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      StatusAlert.show(
+        context,
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.error),
+        title: "Update Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
+    }
+    setState(() {
+      dataBaru5 = temporaryList7;
+      loading = true;
+      // debugPrint('$dataBaru4');
+    });
+  }
+
+  void addImage(index) async {
     String namaasli = data[0]['namaasli'];
     String idx = data4[index]['idx'];
     String kategori = data4[index]['category'];
@@ -255,6 +341,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                 loading = true;
               });
               updateData4(destination.text, vidx.text);
+              updateData5();
             },
             tooltip: "Refresh Data",
           ),
@@ -307,7 +394,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                       child: DataTable2(
                         columnSpacing: 12,
                         horizontalMargin: 12,
-                        minWidth: 1000,
+                        minWidth: 900,
                         columns: [
                           const DataColumn(label: Text("IDX")),
                           const DataColumn(label: Text("Category")),
@@ -375,15 +462,18 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: <Widget>[
-                                                    ListTile(
-                                                      leading: const Icon(
-                                                          Icons.photo_library),
-                                                      title: const Text(
-                                                          'Choose Image'),
-                                                      onTap: () {
-                                                        _getImage();
-                                                      },
-                                                    ),
+                                                    _image != null
+                                                        ? Image.file(_image!)
+                                                        : ListTile(
+                                                            leading: const Icon(
+                                                                Icons
+                                                                    .photo_library),
+                                                            title: const Text(
+                                                                'Choose Image'),
+                                                            onTap: () {
+                                                              _getImage();
+                                                            },
+                                                          ),
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -392,8 +482,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                                         child: const Text(
                                                             "Submit"),
                                                         onPressed: () {
-                                                          sendImageToServer(
-                                                              index);
+                                                          addImage(index);
                                                         },
                                                       ),
                                                     )
