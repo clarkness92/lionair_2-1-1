@@ -1,4 +1,5 @@
 import "dart:async";
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
 import 'package:lionair_2/screens/laporan.dart';
@@ -53,11 +54,20 @@ class _InputLaporanState extends State<InputLaporan> {
   var bookin3;
   var bookout3;
 
+  DateTime selectDate = DateTime.now();
+
+  String location = 'Balaraja';
+  String category = 'KEAMANAN/KETERTIBAN';
+  final items = ['Balaraja'];
+  List<String> listCategory = [
+    'KEAMANAN/KETERTIBAN',
+    'KEBERSIHAN',
+    'KERUSAKAN BARANG'
+  ];
+
   final TextEditingController vidx = TextEditingController();
   final TextEditingController description = TextEditingController();
   final TextEditingController destination = TextEditingController();
-
-  DateTime selectDate = DateTime.now();
 
   Future pickDate() async {
     final DateTime? newDate = await showDatePicker(
@@ -71,9 +81,6 @@ class _InputLaporanState extends State<InputLaporan> {
     setState(() => selectDate = newDate); //for button SAVE
   }
 
-  String location = 'Balaraja';
-  String category = 'KEAMANAN/KETERTIBAN';
-
   DropdownMenuItem<String> buildmenuItem(String item) => DropdownMenuItem(
         value: item,
         child: Text(
@@ -81,13 +88,6 @@ class _InputLaporanState extends State<InputLaporan> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       );
-
-  final items = ['Balaraja'];
-  List<String> listCategory = [
-    'KEAMANAN/KETERTIBAN',
-    'KEBERSIHAN',
-    'KERUSAKAN BARANG'
-  ];
 
   void _addReport(String vidx, String description) async {
     String namaasli = data[0]['namaasli'];
@@ -149,7 +149,7 @@ class _InputLaporanState extends State<InputLaporan> {
         body: Center(
           key: _formKey,
           child: Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(30),
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(32),
@@ -193,7 +193,7 @@ class _InputLaporanState extends State<InputLaporan> {
                         labelText: "Mess Location",
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 30),
                     TextField(
                       enabled: false,
                       controller: vidx,
@@ -204,7 +204,7 @@ class _InputLaporanState extends State<InputLaporan> {
                         labelText: "Reservation ID",
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 30),
                     Center(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -227,7 +227,7 @@ class _InputLaporanState extends State<InputLaporan> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 30),
                     TextField(
                       controller: description,
                       keyboardType: TextInputType.multiline,

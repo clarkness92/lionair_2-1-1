@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,8 @@ import 'input_laporan.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as Path;
 
 class Lihatlaporan extends StatefulWidget {
   var data;
@@ -42,7 +45,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       this.vidx4, this.bookin3, this.bookout3);
 
   final _formKey = GlobalKey<FormState>();
-  GlobalKey dataTableKey = GlobalKey();
+
+  File? _image;
+
   bool loading = false;
   List data = [];
   List data1 = [];
@@ -57,6 +62,18 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
 
   TextEditingController destination = TextEditingController();
   TextEditingController vidx = TextEditingController();
+
+  void _getImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedImage != null) {
+        _image = File(pickedImage.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
 
   void updateData4(String destination, String vidx) async {
     final temporaryList6 = [];
@@ -154,6 +171,55 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     });
   }
 
+  void sendImageToServer(index) async {
+    String namaasli = data[0]['namaasli'];
+    String idx = data4[index]['idx'];
+    String kategori = data4[index]['kategori'];
+    String base64Image = base64Encode(_image!.readAsBytesSync());
+    String filename = Path.basename(_image as String);
+
+    final String soapEnvelope = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<File_Entry xmlns="http://tempuri.org/">' +
+        '<UsernameApi>admin</UsernameApi>' +
+        '<PasswordApi>admin</PasswordApi>' +
+        '<DESTINATION>BLJ</DESTINATION>' +
+        '<IDREFF>$idx</IDREFF>' +
+        '<FILENAME>$filename</FILENAME>' +
+        '<FILEBYTE>$base64Image</FILEBYTE>' +
+        '<FILECAT>$kategori</FILECAT>' +
+        '<USERINSERT>$namaasli</USERINSERT>' +
+        '</File_Entry>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_TenantReport_Entry),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/TenantReport_Entry',
+          'Access-Control-Allow-Credentials': 'true',
+          'Content-type': 'text/xml; charset=utf-8'
+        },
+        body: soapEnvelope);
+
+    if (response.statusCode == 200) {
+      final responseBody = response.body;
+      final parsedResponse = xml.XmlDocument.parse(responseBody);
+      final result = parsedResponse.findAllElements('_x002D_').single.text;
+      debugPrint('Result: $result');
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      StatusAlert.show(
+        context,
+        duration: const Duration(seconds: 1),
+        configuration: const IconConfiguration(icon: Icons.done),
+        title: "Input Data Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
+    }
+  }
+
   logout1() {
     data.clear();
     data1.clear();
@@ -239,20 +305,21 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                       height: MediaQuery.of(context).size.height * 0.72,
                       // width: 300,
                       child: DataTable2(
-                        key: dataTableKey,
                         columnSpacing: 12,
                         horizontalMargin: 12,
-                        minWidth: 700,
+                        minWidth: 1000,
                         columns: [
-                          DataColumn(label: Text("IDX")),
-                          DataColumn(label: Text("Category")),
-                          DataColumn(label: Text("Date")),
-                          DataColumn2(
+                          const DataColumn(label: Text("IDX")),
+                          const DataColumn(label: Text("Category")),
+                          const DataColumn(label: Text("Date")),
+                          const DataColumn2(
                               label: Text("Description"), size: ColumnSize.L),
-                          DataColumn2(
+                          const DataColumn2(
                               label: Text("Resolution"), size: ColumnSize.L),
-                          DataColumn2(
+                          const DataColumn2(
                               label: Text("Status"), size: ColumnSize.S),
+                          const DataColumn2(
+                              label: Text("Image"), size: ColumnSize.L),
                         ],
                         rows: List<DataRow>.generate(
                           data4.length,
@@ -279,6 +346,79 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.red),
                               )),
+                              DataCell(
+                                TextButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Stack(
+                                              clipBehavior: Clip.none,
+                                              children: <Widget>[
+                                                Positioned(
+                                                  right: -40.0,
+                                                  top: -40.0,
+                                                  child: InkResponse(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: const CircleAvatar(
+                                                      child: Icon(Icons.close),
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    ListTile(
+                                                      leading: const Icon(
+                                                          Icons.photo_library),
+                                                      title: const Text(
+                                                          'Choose Image'),
+                                                      onTap: () {
+                                                        _getImage();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      child: ElevatedButton(
+                                                        child: const Text(
+                                                            "Submit"),
+                                                        onPressed: () {
+                                                          sendImageToServer(
+                                                              index);
+                                                        },
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: Row(children: <Widget>[
+                                    Icon(
+                                      Icons.photo_library,
+                                      color: Colors.grey,
+                                    ),
+                                    SizedBox(width: 5),
+                                    const Text(
+                                      "Choose Image",
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                  ]),
+                                ),
+                              ),
                             ],
                           ),
                         ),

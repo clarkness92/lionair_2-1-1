@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Lion Air Apps',
+        title: 'Lion Reservation',
         routes: {
           'login': (_) => const LoginScreen(),
           // ignore: prefer_const_constructors
