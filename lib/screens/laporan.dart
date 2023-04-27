@@ -159,7 +159,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.done),
+        configuration: const IconConfiguration(icon: Icons.error),
         title: "Update Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -174,9 +174,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   void sendImageToServer(index) async {
     String namaasli = data[0]['namaasli'];
     String idx = data4[index]['idx'];
-    String kategori = data4[index]['kategori'];
+    String kategori = data4[index]['category'];
     String base64Image = base64Encode(_image!.readAsBytesSync());
-    String filename = Path.basename(_image as String);
+    String filename = Path.basename(_image!.path);
 
     final String soapEnvelope = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -194,10 +194,10 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         '</soap:Body>' +
         '</soap:Envelope>';
 
-    final response = await http.post(Uri.parse(url_TenantReport_Entry),
+    final response = await http.post(Uri.parse(url_File_Entry),
         headers: <String, String>{
           "Access-Control-Allow-Origin": "*",
-          'SOAPAction': 'http://tempuri.org/TenantReport_Entry',
+          'SOAPAction': 'http://tempuri.org/File_Entry',
           'Access-Control-Allow-Credentials': 'true',
           'Content-type': 'text/xml; charset=utf-8'
         },
@@ -213,7 +213,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.done),
+        configuration: const IconConfiguration(icon: Icons.error),
         title: "Input Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -382,8 +382,6 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                                           'Choose Image'),
                                                       onTap: () {
                                                         _getImage();
-                                                        Navigator.of(context)
-                                                            .pop();
                                                       },
                                                     ),
                                                     Padding(

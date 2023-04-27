@@ -122,7 +122,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
       StatusAlert.show(
         context,
         duration: Duration(seconds: 1),
-        configuration: IconConfiguration(icon: Icons.done),
+        configuration: IconConfiguration(icon: Icons.error),
         title: "Input Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
