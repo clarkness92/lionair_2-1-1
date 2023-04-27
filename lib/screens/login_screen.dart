@@ -167,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.done),
+        configuration: const IconConfiguration(icon: Icons.error),
         title: "Get Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -265,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.done),
+        configuration: const IconConfiguration(icon: Icons.error),
         title: "Get Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );

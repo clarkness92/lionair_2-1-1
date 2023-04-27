@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.done),
+        configuration: const IconConfiguration(icon: Icons.error),
         title: "Update Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -228,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.done),
+        configuration: const IconConfiguration(icon: Icons.error),
         title: "Update Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -322,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.done),
+        configuration: const IconConfiguration(icon: Icons.error),
         title: "Get Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -417,7 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.done),
+        configuration: const IconConfiguration(icon: Icons.error),
         title: "Get Data Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
