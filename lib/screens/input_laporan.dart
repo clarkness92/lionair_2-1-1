@@ -73,7 +73,7 @@ class _InputLaporanState extends State<InputLaporan> {
 
   String location = 'Balaraja';
   String category = 'KEAMANAN/KETERTIBAN';
-  final items = ['Balaraja'];
+  final items = ['Balaraja', 'Makassar', 'Manado'];
   List<String> listCategory = [
     'KEAMANAN/KETERTIBAN',
     'KEBERSIHAN',
@@ -142,7 +142,8 @@ class _InputLaporanState extends State<InputLaporan> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Input Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -172,7 +173,7 @@ class _InputLaporanState extends State<InputLaporan> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Report\n/\nComplaint",
+                      "Complaint",
                       style:
                           TextStyle(fontSize: 33, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
@@ -198,14 +199,31 @@ class _InputLaporanState extends State<InputLaporan> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    TextField(
-                      enabled: false,
-                      controller: destination,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Mess Location",
+                    const Text(
+                      "Mess Location",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 15),
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.black, width: 2),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                              value: location,
+                              iconSize: 23,
+                              isExpanded: true,
+                              items: items.map(buildmenuItem).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  location = value!;
+                                });
+                              }),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -219,7 +237,12 @@ class _InputLaporanState extends State<InputLaporan> {
                         labelText: "Reservation ID",
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 15),
+                    const Text(
+                      "Category",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 15),
                     Center(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -255,20 +278,38 @@ class _InputLaporanState extends State<InputLaporan> {
                     const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: () async {
-                        _addReport(vidx.text, description.text);
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Lihatlaporan(
-                              userapi: userapi,
-                              passapi: passapi,
-                              data: data,
-                              data1: data1,
-                              data2: data2,
-                              data3: data3,
-                              data4: data4,
-                              vidx4: vidx4,
-                              bookin3: bookin3,
-                              bookout3: bookout3),
-                        ));
+                        if (location == 'Makassar' || location == 'Manado') {
+                          StatusAlert.show(
+                            context,
+                            duration: const Duration(seconds: 1),
+                            configuration: const IconConfiguration(
+                                icon: Icons.error, color: Colors.red),
+                            title: "Still On Progress",
+                            backgroundColor: Colors.grey[300],
+                          );
+                        } else {
+                          _addReport(vidx.text, description.text);
+                          StatusAlert.show(context,
+                              duration: const Duration(seconds: 1),
+                              configuration: const IconConfiguration(
+                                  icon: Icons.done, color: Colors.green),
+                              title: "Input Data Success",
+                              subtitle: "Please Refresh!!",
+                              backgroundColor: Colors.grey[300]);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Lihatlaporan(
+                                userapi: userapi,
+                                passapi: passapi,
+                                data: data,
+                                data1: data1,
+                                data2: data2,
+                                data3: data3,
+                                data4: data4,
+                                vidx4: vidx4,
+                                bookin3: bookin3,
+                                bookout3: bookout3),
+                          ));
+                        }
                       },
                       child: const Text("Submit"),
                     ),

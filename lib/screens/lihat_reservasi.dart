@@ -145,7 +145,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Update3 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -219,7 +220,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 4");
       }
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Lihatlaporan(
             userapi: userapi,
@@ -243,7 +244,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Get Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -429,7 +431,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                 ),
                                 SizedBox(
                                   height: 50,
-                                  width: 100,
+                                  width: 115,
                                   child: Column(
                                     children: [
                                       ElevatedButton(
@@ -444,12 +446,12 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                           backgroundColor: Colors.redAccent,
                                         ),
                                         child: loading1
-                                            ? Container(
+                                            ? const SizedBox(
                                                 height: 28,
                                                 width: 30,
                                                 child:
-                                                    const CircularProgressIndicator())
-                                            : Text("REPORT"),
+                                                    CircularProgressIndicator())
+                                            : const Text("COMPLAINT"),
                                       ),
                                     ],
                                   ),

@@ -176,7 +176,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Update4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -260,7 +261,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Update5 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -314,7 +316,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Input Data5 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );

@@ -45,12 +45,16 @@ class _ReservasiMessState extends State<ReservasiMess> {
   var userapi;
   var passapi;
 
+  DateTime selectDate = DateTime.now();
+
+  String location = 'Balaraja';
+  List<String> items = ['Balaraja', 'Makassar', 'Manado'];
+
   final TextEditingController destination = TextEditingController();
   final TextEditingController gender = TextEditingController();
   final TextEditingController notes = TextEditingController();
   final TextEditingController necessary = TextEditingController();
 
-  DateTime selectDate = DateTime.now();
   DateTimeRange dateRange = DateTimeRange(
     start: DateTime.now(),
     end: DateTime.now().add(const Duration(days: 7)),
@@ -70,8 +74,6 @@ class _ReservasiMessState extends State<ReservasiMess> {
     }); //for button SAVE
   }
 
-  String location = 'Balaraja';
-
   DropdownMenuItem<String> buildmenuItem(String item) => DropdownMenuItem(
         value: item,
         child: Text(
@@ -79,8 +81,6 @@ class _ReservasiMessState extends State<ReservasiMess> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       );
-
-  List<String> items = ['Balaraja'];
 
   void _sendReservation(String gender, String necessary, String notes) async {
     String idpegawai = data[0]['idemployee'];
@@ -93,7 +93,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
         '<InputWebReservation xmlns="http://tempuri.org/">' +
         '<UsernameApi>$userapi</UsernameApi>' +
         '<PasswordApi>$passapi</PasswordApi>' +
-        '<DESTINATION>BLJ</DESTINATION>' +
+        '<DESTINATION>$location</DESTINATION>' +
         '<IDREFF>Android</IDREFF>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
         '<NAME>$nama</NAME>' +
@@ -129,7 +129,8 @@ class _ReservasiMessState extends State<ReservasiMess> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Input Data1 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -194,14 +195,31 @@ class _ReservasiMessState extends State<ReservasiMess> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    TextField(
-                      enabled: false,
-                      controller: destination,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Mess Location",
+                    const Text(
+                      "Mess Location",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 15),
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.black, width: 2),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                              value: location,
+                              iconSize: 23,
+                              isExpanded: true,
+                              items: items.map(buildmenuItem).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  location = value!;
+                                });
+                              }),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -240,16 +258,34 @@ class _ReservasiMessState extends State<ReservasiMess> {
                     const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: () async {
-                        _sendReservation(
-                            gender.text, necessary.text, notes.text);
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => HomeScreen(
-                              userapi: userapi,
-                              passapi: passapi,
-                              data: data,
-                              data1: data1,
-                              data2: data2),
-                        ));
+                        if (location == 'Makassar' || location == 'Manado') {
+                          StatusAlert.show(
+                            context,
+                            duration: const Duration(seconds: 1),
+                            configuration: const IconConfiguration(
+                                icon: Icons.error, color: Colors.red),
+                            title: "Still On Progress",
+                            backgroundColor: Colors.grey[300],
+                          );
+                        } else {
+                          _sendReservation(
+                              gender.text, necessary.text, notes.text);
+                          StatusAlert.show(context,
+                              duration: const Duration(seconds: 1),
+                              configuration: const IconConfiguration(
+                                  icon: Icons.done, color: Colors.green),
+                              title: "Input Data Success",
+                              subtitle: "Please Refresh!!",
+                              backgroundColor: Colors.grey[300]);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => HomeScreen(
+                                userapi: userapi,
+                                passapi: passapi,
+                                data: data,
+                                data1: data1,
+                                data2: data2),
+                          ));
+                        }
                       },
                       child: const Text("Submit"),
                     ),

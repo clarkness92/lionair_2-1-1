@@ -127,7 +127,8 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Update1 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -236,7 +237,8 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Update2 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -332,7 +334,8 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Get Data3 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -429,7 +432,8 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Get Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -990,26 +994,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                     Column(
                                                       children: [
-                                                        ElevatedButton(
-                                                          onPressed: () async {
-                                                            setState(() {
-                                                              loading3 = true;
-                                                            });
-                                                            getReport(
-                                                                destination
-                                                                    .text,
-                                                                vidx.text,
-                                                                index);
-                                                          },
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .redAccent,
+                                                        SizedBox(
+                                                          height: 35,
+                                                          width: 95,
+                                                          child: ElevatedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              setState(() {
+                                                                loading3 = true;
+                                                              });
+                                                              getReport(
+                                                                  destination
+                                                                      .text,
+                                                                  vidx.text,
+                                                                  index);
+                                                            },
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .redAccent,
+                                                            ),
+                                                            child: loading3
+                                                                ? const SizedBox(
+                                                                    height: 28,
+                                                                    width: 30,
+                                                                    child:
+                                                                        CircularProgressIndicator())
+                                                                : const Text(
+                                                                    "COMPLAINT",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            11),
+                                                                  ),
                                                           ),
-                                                          child: loading3
-                                                              ? const CircularProgressIndicator()
-                                                              : Text("REPORT"),
                                                         ),
                                                       ],
                                                     )
@@ -1885,7 +1904,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       children: [
                                                         SizedBox(
                                                           height: 35,
-                                                          width: 85,
+                                                          width: 95,
                                                           child: ElevatedButton(
                                                             onPressed:
                                                                 () async {
@@ -1906,13 +1925,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       .redAccent,
                                                             ),
                                                             child: loading3
-                                                                ? Container(
+                                                                ? const SizedBox(
                                                                     height: 28,
                                                                     width: 30,
                                                                     child:
-                                                                        const CircularProgressIndicator())
-                                                                : Text(
-                                                                    "REPORT"),
+                                                                        CircularProgressIndicator())
+                                                                : const Text(
+                                                                    "COMPLAINT",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            11),
+                                                                  ),
                                                           ),
                                                         ),
                                                       ],

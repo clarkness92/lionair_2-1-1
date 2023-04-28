@@ -96,7 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Cek User Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -169,7 +170,8 @@ class _LoginScreenState extends State<LoginScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Get Data1 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
@@ -269,7 +271,8 @@ class _LoginScreenState extends State<LoginScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
         title: "Get Data2 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
