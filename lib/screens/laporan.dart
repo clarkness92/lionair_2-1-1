@@ -80,6 +80,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   TextEditingController destination = TextEditingController();
   TextEditingController vidx = TextEditingController();
 
+  int index = 0;
+
   void _getImage() async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
@@ -189,9 +191,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     });
   }
 
-  void updateData5() async {
+  void updateData5(index) async {
     final temporaryList7 = [];
-    String idreff = data4[0]['idx'];
+    String idreff = data4[index]['idx'];
     data5.clear();
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
@@ -352,7 +354,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
           },
           tooltip: "Home Screen",
         ),
-        title: const Text("Report"),
+        title: const Text("Complaint"),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
@@ -361,7 +363,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                 loading = true;
               });
               updateData4(destination.text, vidx.text);
-              // updateData5();
+              for (var i = 0; i < dataBaru5.length; i++) {
+                updateData5(i);
+              }
             },
             tooltip: "Refresh Data",
           ),
@@ -382,6 +386,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         key: _formKey,
         itemCount: 1,
         itemBuilder: (context, index) {
+          data5 = dataBaru5;
           if (data4.isEmpty) {
             return Center(
                 child: loading
@@ -412,9 +417,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                       height: MediaQuery.of(context).size.height * 0.72,
                       // width: 300,
                       child: DataTable2(
-                        columnSpacing: 12,
-                        horizontalMargin: 12,
-                        minWidth: 900,
+                        columnSpacing: 1,
+                        horizontalMargin: 10,
+                        minWidth: 1303,
                         columns: [
                           const DataColumn(label: Text("IDX")),
                           const DataColumn(label: Text("Category")),
@@ -454,77 +459,91 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                     color: Colors.red),
                               )),
                               DataCell(
-                                TextButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: Stack(
-                                              clipBehavior: Clip.none,
-                                              children: <Widget>[
-                                                Positioned(
-                                                  right: -40.0,
-                                                  top: -40.0,
-                                                  child: InkResponse(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const CircleAvatar(
-                                                      child: Icon(Icons.close),
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    _image != null
-                                                        ? Image.file(_image!)
-                                                        : ListTile(
-                                                            leading: const Icon(
-                                                                Icons
-                                                                    .photo_library),
-                                                            title: const Text(
-                                                                'Choose Image'),
-                                                            onTap: () {
-                                                              _getImage();
-                                                            },
+                                data5.isNotEmpty
+                                    ? data5[index]['filename']
+                                    : TextButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  content: Stack(
+                                                    clipBehavior: Clip.none,
+                                                    children: <Widget>[
+                                                      Positioned(
+                                                        right: -40.0,
+                                                        top: -40.0,
+                                                        child: InkResponse(
+                                                          onTap: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child:
+                                                              const CircleAvatar(
+                                                            child: Icon(
+                                                                Icons.close),
+                                                            backgroundColor:
+                                                                Colors.red,
                                                           ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              10),
-                                                      child: ElevatedButton(
-                                                        child: const Text(
-                                                            "Submit"),
-                                                        onPressed: () {
-                                                          addImage(index);
-                                                        },
+                                                        ),
                                                       ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        });
-                                  },
-                                  child: Row(children: <Widget>[
-                                    Icon(
-                                      Icons.photo_library,
-                                      color: Colors.grey,
-                                    ),
-                                    SizedBox(width: 5),
-                                    const Text(
-                                      "Choose Image",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ]),
-                                ),
+                                                      Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: <Widget>[
+                                                          _image != null
+                                                              ? Image.file(
+                                                                  _image!)
+                                                              : ListTile(
+                                                                  leading:
+                                                                      const Icon(
+                                                                          Icons
+                                                                              .photo_library),
+                                                                  title: const Text(
+                                                                      'Choose Image'),
+                                                                  onTap: () {
+                                                                    _getImage();
+                                                                  },
+                                                                ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10),
+                                                            child:
+                                                                ElevatedButton(
+                                                              child: const Text(
+                                                                  "Submit"),
+                                                              onPressed: () {
+                                                                addImage(index);
+                                                              },
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                        child: Row(children: <Widget>[
+                                          Icon(
+                                            Icons.photo_library,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(width: 5),
+                                          const Text(
+                                            "Choose Image",
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                          const SizedBox(width: 5),
+                                          ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text("View"),
+                                          ),
+                                        ]),
+                                      ),
                               ),
                             ],
                           ),
