@@ -9,22 +9,28 @@ import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 
 class ReservasiMess extends StatefulWidget {
+  var userapi;
+  var passapi;
   var data;
   var data1;
   var data2;
 
   ReservasiMess(
       {super.key,
+      required this.userapi,
+      required this.passapi,
       required this.data,
       required this.data1,
       required this.data2});
 
   @override
-  State<ReservasiMess> createState() => _ReservasiMessState(data, data1, data2);
+  State<ReservasiMess> createState() =>
+      _ReservasiMessState(userapi, passapi, data, data1, data2);
 }
 
 class _ReservasiMessState extends State<ReservasiMess> {
-  _ReservasiMessState(this.data, this.data1, this.data2);
+  _ReservasiMessState(
+      this.userapi, this.passapi, this.data, this.data1, this.data2);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -36,6 +42,8 @@ class _ReservasiMessState extends State<ReservasiMess> {
   List data2 = [];
   List result = [];
   var gender1;
+  var userapi;
+  var passapi;
 
   final TextEditingController destination = TextEditingController();
   final TextEditingController gender = TextEditingController();
@@ -83,8 +91,8 @@ class _ReservasiMessState extends State<ReservasiMess> {
         '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<InputWebReservation xmlns="http://tempuri.org/">' +
-        '<UsernameApi>admin</UsernameApi>' +
-        '<PasswordApi>admin</PasswordApi>' +
+        '<UsernameApi>$userapi</UsernameApi>' +
+        '<PasswordApi>$passapi</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
         '<IDREFF>Android</IDREFF>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
@@ -122,7 +130,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
         context,
         duration: const Duration(seconds: 1),
         configuration: const IconConfiguration(icon: Icons.error),
-        title: "Input Data Failed, ${response.statusCode}",
+        title: "Input Data1 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -236,7 +244,11 @@ class _ReservasiMessState extends State<ReservasiMess> {
                             gender.text, necessary.text, notes.text);
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => HomeScreen(
-                              data: data, data1: data1, data2: data2),
+                              userapi: userapi,
+                              passapi: passapi,
+                              data: data,
+                              data1: data1,
+                              data2: data2),
                         ));
                       },
                       child: const Text("Submit"),
@@ -255,6 +267,8 @@ class _ReservasiMessState extends State<ReservasiMess> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HomeScreen(
+                userapi: userapi,
+                passapi: passapi,
                 data: data,
                 data1: data1,
                 data2: data2,

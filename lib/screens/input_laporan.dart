@@ -10,6 +10,8 @@ import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 
 class InputLaporan extends StatefulWidget {
+  var userapi;
+  var passapi;
   var data;
   var data1;
   var data2;
@@ -21,6 +23,8 @@ class InputLaporan extends StatefulWidget {
 
   InputLaporan(
       {super.key,
+      required this.userapi,
+      required this.passapi,
       required this.data,
       required this.data1,
       required this.data2,
@@ -31,13 +35,22 @@ class InputLaporan extends StatefulWidget {
       required this.bookout3});
 
   @override
-  State<InputLaporan> createState() => _InputLaporanState(
+  State<InputLaporan> createState() => _InputLaporanState(userapi, passapi,
       data, data1, data2, data3, data4, vidx4, bookin3, bookout3);
 }
 
 class _InputLaporanState extends State<InputLaporan> {
-  _InputLaporanState(this.data, this.data1, this.data2, this.data3, this.data4,
-      this.vidx4, this.bookin3, this.bookout3);
+  _InputLaporanState(
+      this.userapi,
+      this.passapi,
+      this.data,
+      this.data1,
+      this.data2,
+      this.data3,
+      this.data4,
+      this.vidx4,
+      this.bookin3,
+      this.bookout3);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -53,6 +66,8 @@ class _InputLaporanState extends State<InputLaporan> {
   var vidx4;
   var bookin3;
   var bookout3;
+  var userapi;
+  var passapi;
 
   DateTime selectDate = DateTime.now();
 
@@ -97,8 +112,8 @@ class _InputLaporanState extends State<InputLaporan> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<TenantReport_Entry xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>$location</Destination>' +
         '<VIDX>$vidx</VIDX>' +
         '<CATEGORY>$category</CATEGORY>' +
@@ -128,7 +143,7 @@ class _InputLaporanState extends State<InputLaporan> {
         context,
         duration: const Duration(seconds: 1),
         configuration: const IconConfiguration(icon: Icons.error),
-        title: "Input Data Failed, ${response.statusCode}",
+        title: "Input Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -243,6 +258,8 @@ class _InputLaporanState extends State<InputLaporan> {
                         _addReport(vidx.text, description.text);
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => Lihatlaporan(
+                              userapi: userapi,
+                              passapi: passapi,
                               data: data,
                               data1: data1,
                               data2: data2,
@@ -268,6 +285,8 @@ class _InputLaporanState extends State<InputLaporan> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Lihatlaporan(
+                userapi: userapi,
+                passapi: passapi,
                 data: data,
                 data1: data1,
                 data2: data2,

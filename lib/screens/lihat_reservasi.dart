@@ -11,6 +11,8 @@ import 'reservasi_mess.dart';
 import 'package:clipboard/clipboard.dart';
 
 class LihatDataEmployee extends StatefulWidget {
+  var userapi;
+  var passapi;
   var data;
   var data1;
   var data2;
@@ -18,6 +20,8 @@ class LihatDataEmployee extends StatefulWidget {
 
   LihatDataEmployee(
       {super.key,
+      required this.userapi,
+      required this.passapi,
       required this.data,
       required this.data1,
       required this.data2,
@@ -25,11 +29,12 @@ class LihatDataEmployee extends StatefulWidget {
 
   @override
   State<LihatDataEmployee> createState() =>
-      _LihatDataEmployeeState(data, data1, data2, data3);
+      _LihatDataEmployeeState(userapi, passapi, data, data1, data2, data3);
 }
 
 class _LihatDataEmployeeState extends State<LihatDataEmployee> {
-  _LihatDataEmployeeState(this.data, this.data1, this.data2, this.data3);
+  _LihatDataEmployeeState(this.userapi, this.passapi, this.data, this.data1,
+      this.data2, this.data3);
 
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -45,6 +50,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   var vidxBaru;
   var bookinBaru;
   var bookoutBaru;
+  var userapi;
+  var passapi;
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
@@ -59,8 +66,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<Checktime_GetHistoryStay xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
         '</Checktime_GetHistoryStay>' +
@@ -139,7 +146,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         context,
         duration: const Duration(seconds: 1),
         configuration: const IconConfiguration(icon: Icons.error),
-        title: "Update Failed, ${response.statusCode}",
+        title: "Update3 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -160,8 +167,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<TenantReport_GetDataVIDX xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<VIDX>$vidx</VIDX>' +
         '</TenantReport_GetDataVIDX>' +
@@ -215,6 +222,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       Future.delayed(Duration(seconds: 3), () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Lihatlaporan(
+            userapi: userapi,
+            passapi: passapi,
             data: data,
             data1: data1,
             data2: data2,
@@ -235,7 +244,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         context,
         duration: const Duration(seconds: 1),
         configuration: const IconConfiguration(icon: Icons.error),
-        title: "Get Data Failed, ${response.statusCode}",
+        title: "Get Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -265,6 +274,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HomeScreen(
+                userapi: userapi,
+                passapi: passapi,
                 data: data,
                 data1: data1,
                 data2: data2,
@@ -530,6 +541,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ReservasiMess(
+              userapi: userapi,
+              passapi: passapi,
               data: data,
               data1: data1,
               data2: data2,

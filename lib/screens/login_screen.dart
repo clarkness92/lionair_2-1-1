@@ -30,6 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
   List hasil_result3 = [];
   Xml2Json xml2json = Xml2Json();
   var hasilJson;
+  String userapi = 'admin';
+  String passapi = 'admin';
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
@@ -42,8 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<CekUser xmlns="http://tempuri.org/">' +
-        '<Usernameapi>admin</Usernameapi>' +
-        '<Passwordapi>admin</Passwordapi>' +
+        '<Usernameapi>$userapi</Usernameapi>' +
+        '<Passwordapi>$passapi</Passwordapi>' +
         '<Username>$idpegawai</Username>' +
         '<Password>$password</Password>' +
         '</CekUser>' +
@@ -112,8 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<GetReservationByIDSTaffPending xmlns="http://tempuri.org/">' +
-        '<UsernameApi>admin</UsernameApi>' +
-        '<PasswordApi>admin</PasswordApi>' +
+        '<UsernameApi>$userapi</UsernameApi>' +
+        '<PasswordApi>$passapi</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' + //dibuat statis agar mudah bolak balik page => ganti dengan $idpegawai jika ingin dinamis
         '</GetReservationByIDSTaffPending>' +
@@ -168,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         duration: const Duration(seconds: 1),
         configuration: const IconConfiguration(icon: Icons.error),
-        title: "Get Data Failed, ${response.statusCode}",
+        title: "Get Data1 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -185,8 +187,8 @@ class _LoginScreenState extends State<LoginScreen> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<Checktime_GetCurrentStay xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
         '</Checktime_GetCurrentStay>' +
@@ -250,6 +252,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Timer(const Duration(seconds: 1), () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HomeScreen(
+                  userapi: userapi,
+                  passapi: passapi,
                   data: hasil_result,
                   data1: hasil_result1,
                   data2: hasil_result2),
@@ -266,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
         context,
         duration: const Duration(seconds: 1),
         configuration: const IconConfiguration(icon: Icons.error),
-        title: "Get Data Failed, ${response.statusCode}",
+        title: "Get Data2 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }

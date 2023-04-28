@@ -31,19 +31,24 @@ class MyApp extends StatelessWidget {
         title: 'Lion Reservation',
         routes: {
           'login': (_) => const LoginScreen(),
-          // ignore: prefer_const_constructors
           'reservasi_mess': (_) => ReservasiMess(
+                userapi: '',
+                passapi: '',
                 data: '',
                 data1: '',
                 data2: '',
               ),
           'lihat_reservasi': (_) => LihatDataEmployee(
+                userapi: '',
+                passapi: '',
                 data: '',
                 data1: '',
                 data2: '',
                 data3: '',
               ),
           'input_laporan': (_) => InputLaporan(
+                userapi: '',
+                passapi: '',
                 data: '',
                 data1: '',
                 data2: '',
@@ -54,6 +59,8 @@ class MyApp extends StatelessWidget {
                 bookout3: '',
               ),
           'laporan': (_) => Lihatlaporan(
+                userapi: '',
+                passapi: '',
                 data: '',
                 data1: '',
                 data2: '',
@@ -64,6 +71,8 @@ class MyApp extends StatelessWidget {
                 bookout3: '',
               ),
           'home': (_) => HomeScreen(
+                userapi: '',
+                passapi: '',
                 data: '',
                 data1: '',
                 data2: '',

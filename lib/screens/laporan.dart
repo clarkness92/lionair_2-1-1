@@ -15,6 +15,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 
 class Lihatlaporan extends StatefulWidget {
+  var userapi;
+  var passapi;
   var data;
   var data1;
   var data2;
@@ -26,6 +28,8 @@ class Lihatlaporan extends StatefulWidget {
 
   Lihatlaporan(
       {super.key,
+      required this.userapi,
+      required this.passapi,
       required this.data,
       required this.data1,
       required this.data2,
@@ -36,13 +40,22 @@ class Lihatlaporan extends StatefulWidget {
       required this.bookout3});
 
   @override
-  State<Lihatlaporan> createState() => _Lihatlaporanstate(
+  State<Lihatlaporan> createState() => _Lihatlaporanstate(userapi, passapi,
       data, data1, data2, data3, data4, vidx4, bookin3, bookout3);
 }
 
 class _Lihatlaporanstate extends State<Lihatlaporan> {
-  _Lihatlaporanstate(this.data, this.data1, this.data2, this.data3, this.data4,
-      this.vidx4, this.bookin3, this.bookout3);
+  _Lihatlaporanstate(
+      this.userapi,
+      this.passapi,
+      this.data,
+      this.data1,
+      this.data2,
+      this.data3,
+      this.data4,
+      this.vidx4,
+      this.bookin3,
+      this.bookout3);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -61,6 +74,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   var vidx4;
   var bookin3;
   var bookout3;
+  var userapi;
+  var passapi;
 
   TextEditingController destination = TextEditingController();
   TextEditingController vidx = TextEditingController();
@@ -86,8 +101,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<TenantReport_GetDataVIDX xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<VIDX>$vidx</VIDX>' +
         '</TenantReport_GetDataVIDX>' +
@@ -162,7 +177,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         context,
         duration: const Duration(seconds: 1),
         configuration: const IconConfiguration(icon: Icons.error),
-        title: "Update Failed, ${response.statusCode}",
+        title: "Update4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -182,8 +197,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<File_GetDataFromIDReff xmlns="http://tempuri.org/">' +
-        '<UsernameApi>admin</UsernameApi>' +
-        '<PasswordApi>admin</PasswordApi>' +
+        '<UsernameApi>$userapi</UsernameApi>' +
+        '<PasswordApi>$passapi</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
         '<IDRESERVATION>$idreff</IDRESERVATION>' +
         '</File_GetDataFromIDReff>' +
@@ -246,7 +261,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         context,
         duration: const Duration(seconds: 1),
         configuration: const IconConfiguration(icon: Icons.error),
-        title: "Update Failed, ${response.statusCode}",
+        title: "Update5 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -268,8 +283,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<File_Entry xmlns="http://tempuri.org/">' +
-        '<UsernameApi>admin</UsernameApi>' +
-        '<PasswordApi>admin</PasswordApi>' +
+        '<UsernameApi>$userapi</UsernameApi>' +
+        '<PasswordApi>$passapi</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
         '<IDREFF>$idx</IDREFF>' +
         '<FILENAME>$filename</FILENAME>' +
@@ -300,7 +315,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         context,
         duration: const Duration(seconds: 1),
         configuration: const IconConfiguration(icon: Icons.error),
-        title: "Input Data Failed, ${response.statusCode}",
+        title: "Input Data5 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -323,6 +338,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => LihatDataEmployee(
+                userapi: userapi,
+                passapi: passapi,
                 data: data,
                 data1: data1,
                 data2: data2,
@@ -341,7 +358,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                 loading = true;
               });
               updateData4(destination.text, vidx.text);
-              updateData5();
+              // updateData5();
             },
             tooltip: "Refresh Data",
           ),
@@ -522,6 +539,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => InputLaporan(
+              userapi: userapi,
+              passapi: passapi,
               data: data,
               data1: data1,
               data2: data2,
