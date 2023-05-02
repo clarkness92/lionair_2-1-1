@@ -399,21 +399,24 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                         Text(
                                           " ${data3[index]['areamess']}",
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
                                         )
                                       ]),
                                       Row(children: [
                                         Text(
                                           " ${data3[index]['blok']}",
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
                                         ),
                                       ]),
                                       Row(children: [
                                         Text(
                                           " ${data3[index]['nokamar']}",
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
                                         )
                                       ]),
                                       Row(
@@ -421,7 +424,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                           Text(
                                             " ${data3[index]['namabed']}",
                                             style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
                                           ),
                                         ],
                                       )
@@ -430,8 +434,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                   flex: 1,
                                 ),
                                 SizedBox(
-                                  height: 50,
-                                  width: 115,
+                                  height: 48,
+                                  width: 95,
                                   child: Column(
                                     children: [
                                       ElevatedButton(
@@ -451,7 +455,10 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                                 width: 30,
                                                 child:
                                                     CircularProgressIndicator())
-                                            : const Text("COMPLAINT"),
+                                            : const Text(
+                                                "COMPLAINT",
+                                                style: TextStyle(fontSize: 11),
+                                              ),
                                       ),
                                     ],
                                   ),

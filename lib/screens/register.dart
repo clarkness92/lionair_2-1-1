@@ -77,10 +77,10 @@ class RegisterScreenState extends State<RegisterScreen> {
           .findAllElements('InputWebReservationResult')
           .single
           .text;
-      print('Result: $result');
+      debugPrint('Result: $result');
       sweatAlertAccess(context);
     } else {
-      print('Error: ${response.statusCode}');
+      debugPrint('Error: ${response.statusCode}');
       sweatAlertDenied(context);
     }
   }

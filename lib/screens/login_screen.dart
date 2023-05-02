@@ -101,6 +101,9 @@ class _LoginScreenState extends State<LoginScreen> {
         title: "Cek User Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       hasil_result = temporaryList;
@@ -175,6 +178,9 @@ class _LoginScreenState extends State<LoginScreen> {
         title: "Get Data1 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       hasil_result1 = temporaryList1;
@@ -276,6 +282,9 @@ class _LoginScreenState extends State<LoginScreen> {
         title: "Get Data2 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       hasil_result2 = temporaryList2;
