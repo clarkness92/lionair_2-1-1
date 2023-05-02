@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lionair_2/screens/images.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
 import 'package:status_alert/status_alert.dart';
 import '../constants.dart';
@@ -61,6 +62,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
 
   bool loading = false;
   bool loading1 = false;
+  bool loading2 = false;
 
   List data = [];
   List data1 = [];
@@ -68,6 +70,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   List data3 = [];
   List data4 = [];
   List data5 = [];
+  List data6 = [];
   List dataBaru4 = [];
   List dataBaru5 = [];
   var hasilJson;
@@ -80,6 +83,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   TextEditingController destination = TextEditingController();
   TextEditingController vidx = TextEditingController();
   TextEditingController idx = TextEditingController();
+  TextEditingController idfile = TextEditingController();
 
   void _getImage() async {
     final picker = ImagePicker();
@@ -182,6 +186,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         title: "Update4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       dataBaru4 = temporaryList6;
@@ -190,7 +197,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     });
   }
 
-  void viewImage(String idx, index) async {
+  void getIDFile(String idx, index) async {
     final temporaryList7 = [];
     String idreff = data4[index]['idx'];
 
@@ -264,15 +271,42 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(1),
                           child: data5.isEmpty
                               ? const Center(
                                   child: Text(
                                   "No Image",
                                   style: TextStyle(color: Colors.black54),
                                 ))
-                              : SizedBox(
-                                  child: Text("${data5[index]['filename']}"),
+                              : Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(1),
+                                      child: loading2
+                                          ? const CircularProgressIndicator()
+                                          : IconButton(
+                                              onPressed: () async {
+                                                setState(() {
+                                                  loading2 = true;
+                                                });
+                                                getImage(idfile.text, index);
+                                              },
+                                              icon: const Icon(Icons.zoom_in)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(1),
+                                      child: SizedBox(
+                                        child: Text(
+                                          "${data5[index]['idfile']}",
+                                          style: TextStyle(
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  11,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                         ),
                       ],
@@ -295,10 +329,106 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         title: "Get Data5 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading1 = false;
+      });
     }
     setState(() {
       dataBaru5 = temporaryList7;
       loading1 = true;
+      // debugPrint('$dataBaru4');
+    });
+  }
+
+  void getImage(String idfile, index) async {
+    final temporaryList8 = [];
+    idfile = data5[index]['idfile'];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<File_GetDataFromIDFile xmlns="http://tempuri.org/">' +
+        '<UsernameApi>$userapi</UsernameApi>' +
+        '<PasswordApi>$passapi</PasswordApi>' +
+        '<DESTINATION>BLJ</DESTINATION>' +
+        '<IDFILE>$idfile</IDFILE>' +
+        '</File_GetDataFromIDFile>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_File_GetDataFromIDFile),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/File_GetDataFromIDFile',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
+
+      final list_result_all8 = document.findAllElements('_x002D_');
+
+      for (final list_result in list_result_all8) {
+        final idfile = list_result.findElements('IDFile').first.text;
+        final idref = list_result.findElements('IDRef').first.text;
+        final filebyte = list_result.findElements('Filebyte').first.text;
+        temporaryList8.add({
+          'idfile': idfile,
+          'idref': idref,
+          'filebyte': filebyte,
+        });
+        debugPrint("object 8");
+        hasilJson = jsonEncode(temporaryList8);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 8");
+      }
+
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Lihatgambar(
+            userapi: userapi,
+            passapi: passapi,
+            data: data,
+            data1: data1,
+            data2: data2,
+            data3: data3,
+            data4: data4,
+            data5: data5,
+            data6: data6,
+            vidx4: vidx4,
+            bookin3: bookin3,
+            bookout3: bookout3,
+          ),
+        ));
+        setState(() {
+          loading2 = false;
+        });
+      });
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      StatusAlert.show(
+        context,
+        duration: const Duration(seconds: 1),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Get Data6 Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
+      setState(() {
+        loading2 = false;
+      });
+    }
+    setState(() {
+      data6 = temporaryList8;
+      loading2 = true;
       // debugPrint('$dataBaru4');
     });
   }
@@ -338,8 +468,6 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     if (response.statusCode == 200) {
       final responseBody = response.body;
       final parsedResponse = xml.XmlDocument.parse(responseBody);
-      final result = parsedResponse.findAllElements('_x002D_').single.text;
-      debugPrint('Result: $result');
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -350,6 +478,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         title: "Input Data5 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -541,14 +672,21 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                         });
                                   },
                                   child: Row(children: <Widget>[
-                                    const Icon(
-                                      Icons.photo_library,
-                                      color: Colors.grey,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    const Text(
-                                      "Choose Image",
-                                      style: TextStyle(color: Colors.grey),
+                                    Column(
+                                      children: [
+                                        Row(children: const <Widget>[
+                                          Icon(
+                                            Icons.photo_library,
+                                            color: Colors.grey,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            "Choose Image",
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                        ]),
+                                      ],
                                     ),
                                     const SizedBox(width: 5),
                                     ElevatedButton(
@@ -559,7 +697,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                         setState(() {
                                           loading1 = true;
                                         });
-                                        viewImage(idx.text, index);
+                                        getIDFile(idx.text, index);
                                       },
                                       child: loading1
                                           ? const SizedBox(

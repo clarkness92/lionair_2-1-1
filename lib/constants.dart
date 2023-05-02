@@ -29,6 +29,10 @@ const url_TenantReport_GetDataVIDX =
 const url_File_Entry = 'https://lgapvfncacc.com/mess/prc.asmx?op=File_Entry';
 
 // ignore: constant_identifier_names
+const url_File_GetDataFromIDFile =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=File_GetDataFromIDFile';
+
+// ignore: constant_identifier_names
 const url_File_GetDataFromIDReff =
     'https://lgapvfncacc.com/mess/prc.asmx?op=File_GetDataFromIDReff';
 

@@ -134,6 +134,9 @@ class _ReservasiMessState extends State<ReservasiMess> {
         title: "Input Data1 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
   }
 

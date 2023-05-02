@@ -146,6 +146,9 @@ class _InputLaporanState extends State<InputLaporan> {
         title: "Input Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
   }
 

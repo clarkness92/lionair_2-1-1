@@ -150,6 +150,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         title: "Update3 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       dataBaru3 = temporaryList4;
@@ -249,6 +252,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         title: "Get Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       data4 = temporaryList5;

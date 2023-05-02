@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lionair_2/providers/user_provider.dart';
 import 'package:lionair_2/screens/home_screen.dart';
+import 'package:lionair_2/screens/images.dart';
 import 'package:lionair_2/screens/input_laporan.dart';
 import 'package:lionair_2/screens/login_screen.dart';
 import 'package:lionair_2/screens/notification.dart';
@@ -66,6 +67,20 @@ class MyApp extends StatelessWidget {
                 data2: '',
                 data3: '',
                 data4: '',
+                vidx4: '',
+                bookin3: '',
+                bookout3: '',
+              ),
+          'gambar': (_) => Lihatgambar(
+                userapi: '',
+                passapi: '',
+                data: '',
+                data1: '',
+                data2: '',
+                data3: '',
+                data4: '',
+                data5: '',
+                data6: '',
                 vidx4: '',
                 bookin3: '',
                 bookout3: '',
