@@ -13,8 +13,6 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 
-import 'login_screen.dart';
-
 class Lihatlaporan extends StatefulWidget {
   var userapi;
   var passapi;
@@ -328,6 +326,12 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       final parsedResponse = xml.XmlDocument.parse(responseBody);
       final result = parsedResponse.findAllElements('_x002D_').single.text;
       debugPrint('Result: $result');
+      StatusAlert.show(context,
+          duration: const Duration(seconds: 1),
+          configuration:
+              const IconConfiguration(icon: Icons.done, color: Colors.green),
+          title: "Success",
+          backgroundColor: Colors.grey[300]);
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
