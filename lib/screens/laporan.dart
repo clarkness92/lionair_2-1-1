@@ -72,17 +72,17 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   List data5 = [];
   List data6 = [];
   List dataBaru4 = [];
-  List dataBaru5 = [];
   var hasilJson;
   var vidx4;
   var bookin3;
   var bookout3;
   var userapi;
   var passapi;
+  var idreffbaru;
 
   TextEditingController destination = TextEditingController();
   TextEditingController vidx = TextEditingController();
-  TextEditingController idx = TextEditingController();
+  TextEditingController idreff = TextEditingController();
   TextEditingController idfile = TextEditingController();
 
   void _getImage() async {
@@ -197,9 +197,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     });
   }
 
-  void getIDFile(String idx, index) async {
+  void getIDFile(String idreff, index) async {
     final temporaryList7 = [];
-    String idreff = data4[index]['idx'];
+    idreff = data4[index]['idx'];
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -247,74 +247,22 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       }
 
       Future.delayed(const Duration(seconds: 3), () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: Stack(
-                  clipBehavior: Clip.none,
-                  children: <Widget>[
-                    Positioned(
-                      right: -40.0,
-                      top: -40.0,
-                      child: InkResponse(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.red,
-                          child: Icon(Icons.close),
-                        ),
-                      ),
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(1),
-                          child: data5.isEmpty
-                              ? const Center(
-                                  child: Text(
-                                  "No Image",
-                                  style: TextStyle(color: Colors.black54),
-                                ))
-                              : Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(1),
-                                      child: loading2
-                                          ? const CircularProgressIndicator()
-                                          : IconButton(
-                                              onPressed: () async {
-                                                setState(() {
-                                                  loading2 = true;
-                                                });
-                                                getImage(idfile.text, index);
-                                              },
-                                              icon: const Icon(Icons.zoom_in)),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(1),
-                                      child: SizedBox(
-                                        child: Text(
-                                          "${data5[index]['idfile']}",
-                                          style: TextStyle(
-                                              fontSize: MediaQuery.of(context)
-                                                      .textScaleFactor *
-                                                  11,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            });
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Lihatgambar(
+            userapi: userapi,
+            passapi: passapi,
+            data: data,
+            data1: data1,
+            data2: data2,
+            data3: data3,
+            data4: data4,
+            data5: data5,
+            idreff5: idreffbaru,
+            vidx4: vidx4,
+            bookin3: bookin3,
+            bookout3: bookout3,
+          ),
+        ));
         setState(() {
           loading1 = false;
         });
@@ -334,108 +282,16 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       });
     }
     setState(() {
-      dataBaru5 = temporaryList7;
+      data5 = temporaryList7;
+      idreffbaru = idreff;
       loading1 = true;
-      // debugPrint('$dataBaru4');
-    });
-  }
-
-  void getImage(String idfile, index) async {
-    final temporaryList8 = [];
-    idfile = data5[index]['idfile'];
-
-    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
-        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
-        '<soap:Body>' +
-        '<File_GetDataFromIDFile xmlns="http://tempuri.org/">' +
-        '<UsernameApi>$userapi</UsernameApi>' +
-        '<PasswordApi>$passapi</PasswordApi>' +
-        '<DESTINATION>BLJ</DESTINATION>' +
-        '<IDFILE>$idfile</IDFILE>' +
-        '</File_GetDataFromIDFile>' +
-        '</soap:Body>' +
-        '</soap:Envelope>';
-
-    final response = await http.post(Uri.parse(url_File_GetDataFromIDFile),
-        headers: <String, String>{
-          "Access-Control-Allow-Origin": "*",
-          'SOAPAction': 'http://tempuri.org/File_GetDataFromIDFile',
-          "Access-Control-Allow-Credentials": "true",
-          'Content-type': 'text/xml; charset=utf-8',
-        },
-        body: objBody);
-
-    if (response.statusCode == 200) {
-      final document = xml.XmlDocument.parse(response.body);
-
-      // debugPrint("=================");
-      // debugPrint(
-      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      // debugPrint("=================");
-
-      final list_result_all8 = document.findAllElements('_x002D_');
-
-      for (final list_result in list_result_all8) {
-        final idfile = list_result.findElements('IDFile').first.text;
-        final idref = list_result.findElements('IDRef').first.text;
-        final filebyte = list_result.findElements('Filebyte').first.text;
-        temporaryList8.add({
-          'idfile': idfile,
-          'idref': idref,
-          'filebyte': filebyte,
-        });
-        debugPrint("object 8");
-        hasilJson = jsonEncode(temporaryList8);
-
-        debugPrint(hasilJson);
-        debugPrint("object_hasilJson 8");
-      }
-
-      Future.delayed(const Duration(seconds: 3), () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Lihatgambar(
-            userapi: userapi,
-            passapi: passapi,
-            data: data,
-            data1: data1,
-            data2: data2,
-            data3: data3,
-            data4: data4,
-            data5: data5,
-            data6: data6,
-            vidx4: vidx4,
-            bookin3: bookin3,
-            bookout3: bookout3,
-          ),
-        ));
-        setState(() {
-          loading2 = false;
-        });
-      });
-    } else {
-      debugPrint('Error: ${response.statusCode}');
-      StatusAlert.show(
-        context,
-        duration: const Duration(seconds: 1),
-        configuration:
-            const IconConfiguration(icon: Icons.error, color: Colors.red),
-        title: "Get Data6 Failed, ${response.statusCode}",
-        backgroundColor: Colors.grey[300],
-      );
-      setState(() {
-        loading2 = false;
-      });
-    }
-    setState(() {
-      data6 = temporaryList8;
-      loading2 = true;
       // debugPrint('$dataBaru4');
     });
   }
 
   void addImage(index) async {
     String namaasli = data[0]['namaasli'];
-    String idx = data4[index]['idx'];
+    String idreff = data4[index]['idx'];
     String kategori = data4[index]['category'];
     String base64Image = base64Encode(_image!.readAsBytesSync());
     String filename = Path.basename(_image!.path);
@@ -447,7 +303,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         '<UsernameApi>$userapi</UsernameApi>' +
         '<PasswordApi>$passapi</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
-        '<IDREFF>$idx</IDREFF>' +
+        '<IDREFF>$idreff</IDREFF>' +
         '<FILENAME>$filename</FILENAME>' +
         '<FILEBYTE>$base64Image</FILEBYTE>' +
         '<FILECAT>$kategori</FILECAT>' +
@@ -468,6 +324,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     if (response.statusCode == 200) {
       final responseBody = response.body;
       final parsedResponse = xml.XmlDocument.parse(responseBody);
+      final result = parsedResponse.findAllElements('_x002D_').single.text;
+      debugPrint('Result: $result');
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -510,7 +368,6 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
               ),
             ));
           },
-          tooltip: "Home Screen",
         ),
         title: const Text("Complaint"),
         actions: <Widget>[
@@ -536,192 +393,204 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         centerTitle: true,
         backgroundColor: Colors.redAccent,
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        key: _formKey,
-        itemCount: 1,
-        itemBuilder: (context, index) {
-          data5 = dataBaru5;
-          if (data4.isEmpty) {
-            return Center(
-                child: loading
-                    ? const CircularProgressIndicator()
-                    : const Text("No Data"));
-          } else {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 10),
-                    Text(
-                      "${data4[index]['vidx']}",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    const SizedBox(height: 40),
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      margin: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        "Total Rows: ${data4.length}",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.72,
-                      // width: 300,
-                      child: DataTable2(
-                        columnSpacing: 1,
-                        horizontalMargin: 10,
-                        minWidth: 1303,
-                        columns: const [
-                          DataColumn(label: Text("IDX")),
-                          DataColumn(label: Text("Category")),
-                          DataColumn(label: Text("Date")),
-                          DataColumn2(
-                              label: Text("Description"), size: ColumnSize.L),
-                          DataColumn2(
-                              label: Text("Resolution"), size: ColumnSize.L),
-                          DataColumn2(
-                              label: Text("Status"), size: ColumnSize.S),
-                          DataColumn2(label: Text("Image"), size: ColumnSize.L),
-                        ],
-                        rows: List<DataRow>.generate(
-                          data4.length,
-                          (index) => DataRow(
-                            color: MaterialStateProperty.resolveWith<Color?>(
-                                (Set<MaterialState> states) {
-                              // Even rows will have a grey color.
-                              if (index.isOdd) {
-                                return Colors.grey.withOpacity(0.3);
-                              }
-                              return null; // Use default value for other states and odd rows.
-                            }),
-                            cells: <DataCell>[
-                              DataCell(Text("${data4[index]['idx']}")),
-                              DataCell(Text("${data4[index]['category']}")),
-                              DataCell(Text(DateFormat('MMM d, yyyy').format(
-                                  DateTime.parse(data4[index]['date'])
-                                      .toLocal()))),
-                              DataCell(Text("${data4[index]['description']}")),
-                              DataCell(Text("${data4[index]['resolution']}")),
-                              DataCell(Text(
-                                "${data4[index]['status']}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red),
-                              )),
-                              DataCell(
-                                TextButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: Stack(
-                                              clipBehavior: Clip.none,
-                                              children: <Widget>[
-                                                Positioned(
-                                                  right: -40.0,
-                                                  top: -40.0,
-                                                  child: InkResponse(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const CircleAvatar(
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      child: Icon(Icons.close),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    ListTile(
-                                                      leading: const Icon(
-                                                          Icons.photo_library),
-                                                      title: const Text(
-                                                          'Choose Image'),
-                                                      onTap: () {
-                                                        _getImage();
-                                                      },
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              10),
-                                                      child: ElevatedButton(
-                                                        child: const Text(
-                                                            "Submit"),
-                                                        onPressed: () {
-                                                          addImage(index);
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              shrinkWrap: true,
+              key: _formKey,
+              itemCount: 1,
+              itemBuilder: (context, index) {
+                if (data4.isEmpty) {
+                  return const Center(child: Text("No Data"));
+                } else {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 10),
+                          Text(
+                            "${data4[index]['vidx']}",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
+                          const SizedBox(height: 40),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              "Total Rows: ${data4.length}",
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.72,
+                            // width: 300,
+                            child: DataTable2(
+                              columnSpacing: 1,
+                              horizontalMargin: 10,
+                              minWidth: 1303,
+                              columns: const [
+                                DataColumn(label: Text("IDX")),
+                                DataColumn(label: Text("Category")),
+                                DataColumn(label: Text("Date")),
+                                DataColumn2(
+                                    label: Text("Description"),
+                                    size: ColumnSize.L),
+                                DataColumn2(
+                                    label: Text("Resolution"),
+                                    size: ColumnSize.L),
+                                DataColumn2(
+                                    label: Text("Status"), size: ColumnSize.S),
+                                DataColumn2(
+                                    label: Text("Image"), size: ColumnSize.L),
+                              ],
+                              rows: List<DataRow>.generate(
+                                data4.length,
+                                (index) => DataRow(
+                                  color:
+                                      MaterialStateProperty.resolveWith<Color?>(
+                                          (Set<MaterialState> states) {
+                                    // Even rows will have a grey color.
+                                    if (index.isOdd) {
+                                      return Colors.grey.withOpacity(0.3);
+                                    }
+                                    return null; // Use default value for other states and odd rows.
+                                  }),
+                                  cells: <DataCell>[
+                                    DataCell(Text("${data4[index]['idx']}")),
+                                    DataCell(
+                                        Text("${data4[index]['category']}")),
+                                    DataCell(Text(DateFormat('MMM d, yyyy')
+                                        .format(
+                                            DateTime.parse(data4[index]['date'])
+                                                .toLocal()))),
+                                    DataCell(
+                                        Text("${data4[index]['description']}")),
+                                    DataCell(
+                                        Text("${data4[index]['resolution']}")),
+                                    DataCell(Text(
+                                      "${data4[index]['status']}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    )),
+                                    DataCell(
+                                      TextButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  content: Stack(
+                                                    clipBehavior: Clip.none,
+                                                    children: <Widget>[
+                                                      Positioned(
+                                                        right: -40.0,
+                                                        top: -40.0,
+                                                        child: InkResponse(
+                                                          onTap: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child:
+                                                              const CircleAvatar(
+                                                            backgroundColor:
+                                                                Colors.red,
+                                                            child: Icon(
+                                                                Icons.close),
+                                                          ),
+                                                        ),
                                                       ),
-                                                    )
-                                                  ],
+                                                      Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: <Widget>[
+                                                          ListTile(
+                                                            leading: const Icon(
+                                                                Icons
+                                                                    .photo_library),
+                                                            title: const Text(
+                                                                'Choose Image'),
+                                                            onTap: () {
+                                                              _getImage();
+                                                            },
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10),
+                                                            child:
+                                                                ElevatedButton(
+                                                              child: const Text(
+                                                                  "Submit"),
+                                                              onPressed: () {
+                                                                addImage(index);
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                        child: Row(children: <Widget>[
+                                          Column(
+                                            children: [
+                                              Row(children: const <Widget>[
+                                                Icon(
+                                                  Icons.photo_library,
+                                                  color: Colors.grey,
                                                 ),
-                                              ],
-                                            ),
-                                          );
-                                        });
-                                  },
-                                  child: Row(children: <Widget>[
-                                    Column(
-                                      children: [
-                                        Row(children: const <Widget>[
-                                          Icon(
-                                            Icons.photo_library,
-                                            color: Colors.grey,
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  "Choose Image",
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ]),
+                                            ],
                                           ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            "Choose Image",
-                                            style:
-                                                TextStyle(color: Colors.grey),
+                                          const SizedBox(width: 5),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.redAccent,
+                                            ),
+                                            onPressed: () async {
+                                              setState(() {
+                                                loading1 = true;
+                                              });
+                                              getIDFile(idreff.text, index);
+                                            },
+                                            child: loading1
+                                                ? const SizedBox(
+                                                    height: 20,
+                                                    width: 22,
+                                                    child:
+                                                        CircularProgressIndicator())
+                                                : const Text("View"),
                                           ),
                                         ]),
-                                      ],
-                                    ),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.redAccent,
                                       ),
-                                      onPressed: () async {
-                                        setState(() {
-                                          loading1 = true;
-                                        });
-                                        getIDFile(idx.text, index);
-                                      },
-                                      child: loading1
-                                          ? const SizedBox(
-                                              height: 20,
-                                              width: 22,
-                                              child:
-                                                  CircularProgressIndicator())
-                                          : const Text("View"),
                                     ),
-                                  ]),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            );
-          }
-        },
-      ),
+                  );
+                }
+              },
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(

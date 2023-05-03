@@ -278,7 +278,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.home, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HomeScreen(
@@ -290,7 +290,6 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
               ),
             ));
           },
-          tooltip: "Home Screen",
         ),
         title: const Text("Reservation History"),
         actions: <Widget>[
@@ -316,242 +315,238 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         centerTitle: true,
         backgroundColor: Colors.redAccent,
       ),
-      body: Center(
-        child: loading
-            ? const CircularProgressIndicator()
-            : ListView.builder(
-                key: _formKey,
-                itemCount: data3.length,
-                itemBuilder: (context, index) {
-                  if (data3.isEmpty) {
-                    return const Center(child: Text("No Data"));
-                  } else {
-                    return Card(
-                      margin: const EdgeInsets.all(8),
-                      elevation: 8,
-                      child: Container(
-                        margin: const EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Container(
-                              color: Colors.black12,
-                              height: 45,
-                              child: Row(children: [
-                                GestureDetector(
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "${data3[index]['idx']} ",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
-                                      ),
-                                      const Icon(
-                                        Icons.copy_rounded,
-                                        color: Colors.black38,
-                                      ),
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    FlutterClipboard.copy(
-                                        '${data3[index]['idx']}'); // copy teks ke clipboard
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Reservation ID copied!'),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                const Spacer(
-                                  flex: 1,
-                                ),
-                                Text(
-                                  "${data3[index]['idkamar']}",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ]),
-                            ),
-                            const Divider(
-                              thickness: 2,
-                            ),
-                            Row(
-                              children: [
-                                Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(children: const [
-                                        Text("Area"),
-                                      ]),
-                                      Row(children: const [
-                                        Text("Block"),
-                                      ]),
-                                      Row(children: const [
-                                        Text("Number"),
-                                      ]),
-                                      Row(
-                                        children: const [
-                                          Text("Bed"),
-                                        ],
-                                      ),
-                                    ]),
-                                Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(children: [
-                                        Text(
-                                          " ${data3[index]['areamess']}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12),
-                                        )
-                                      ]),
-                                      Row(children: [
-                                        Text(
-                                          " ${data3[index]['blok']}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12),
-                                        ),
-                                      ]),
-                                      Row(children: [
-                                        Text(
-                                          " ${data3[index]['nokamar']}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 12),
-                                        )
-                                      ]),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            " ${data3[index]['namabed']}",
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12),
-                                          ),
-                                        ],
-                                      )
-                                    ]),
-                                const Spacer(
-                                  flex: 1,
-                                ),
-                                SizedBox(
-                                  height: 48,
-                                  width: 95,
-                                  child: Column(
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          setState(() {
-                                            loading1 = true;
-                                          });
-                                          getReport(destination.text, vidx.text,
-                                              index);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.redAccent,
-                                        ),
-                                        child: loading1
-                                            ? const SizedBox(
-                                                height: 28,
-                                                width: 30,
-                                                child:
-                                                    CircularProgressIndicator())
-                                            : const Text(
-                                                "COMPLAINT",
-                                                style: TextStyle(fontSize: 11),
-                                              ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            const Divider(
-                              thickness: 2,
-                            ),
-                            Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              key: _formKey,
+              itemCount: data3.length,
+              itemBuilder: (context, index) {
+                if (data3.isEmpty) {
+                  return const Center(child: Text("No Data"));
+                } else {
+                  return Card(
+                    margin: const EdgeInsets.all(8),
+                    elevation: 8,
+                    child: Container(
+                      margin: const EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Container(
+                            color: Colors.black12,
+                            height: 45,
+                            child: Row(children: [
+                              GestureDetector(
+                                child: Row(
                                   children: [
-                                    Row(children: const [
-                                      Text("Book-In"),
-                                    ]),
-                                    Row(children: const [
-                                      Text("Book-Out"),
-                                    ]),
-                                    Row(children: const [
-                                      Text("Check-In"),
-                                    ]),
-                                    Row(
-                                      children: const [
-                                        Text("Check-Out"),
-                                      ],
+                                    Text(
+                                      "${data3[index]['idx']} ",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
+                                    ),
+                                    const Icon(
+                                      Icons.copy_rounded,
+                                      color: Colors.black38,
                                     ),
                                   ],
                                 ),
-                                Column(
+                                onTap: () {
+                                  FlutterClipboard.copy(
+                                      '${data3[index]['idx']}'); // copy teks ke clipboard
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Reservation ID copied!'),
+                                    ),
+                                  );
+                                },
+                              ),
+                              const Spacer(
+                                flex: 1,
+                              ),
+                              Text(
+                                "${data3[index]['idkamar']}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ]),
+                          ),
+                          const Divider(
+                            thickness: 2,
+                          ),
+                          Row(
+                            children: [
+                              Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(children: const [
+                                      Text("Area"),
+                                    ]),
+                                    Row(children: const [
+                                      Text("Block"),
+                                    ]),
+                                    Row(children: const [
+                                      Text("Number"),
+                                    ]),
+                                    Row(
+                                      children: const [
+                                        Text("Bed"),
+                                      ],
+                                    ),
+                                  ]),
+                              Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(children: [
                                       Text(
-                                        DateFormat(' : MMM dd, yyyy').format(
-                                            DateTime.parse(
-                                                    data3[index]['bookin'])
-                                                .toLocal()),
+                                        " ${data3[index]['areamess']}",
                                         style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                        ),
+                                      )
+                                    ]),
+                                    Row(children: [
+                                      Text(
+                                        " ${data3[index]['blok']}",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
                                       ),
                                     ]),
                                     Row(children: [
                                       Text(
-                                        DateFormat(' : MMM dd, yyyy').format(
-                                            DateTime.parse(
-                                                    data3[index]['bookout'])
-                                                .toLocal()),
+                                        " ${data3[index]['nokamar']}",
                                         style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ]),
-                                    Row(children: [
-                                      Text(
-                                        DateFormat(' : MMM dd, yyyy').format(
-                                            DateTime.parse(
-                                                    data3[index]['checkin'])
-                                                .toLocal()),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12),
+                                      )
                                     ]),
                                     Row(
                                       children: [
                                         Text(
-                                          DateFormat(' : MMM dd, yyyy').format(
-                                              DateTime.parse(
-                                                      data3[index]['checkout'])
-                                                  .toLocal()),
+                                          " ${data3[index]['namabed']}",
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
                                         ),
                                       ],
+                                    )
+                                  ]),
+                              const Spacer(
+                                flex: 1,
+                              ),
+                              SizedBox(
+                                height: 48,
+                                width: 95,
+                                child: Column(
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          loading1 = true;
+                                        });
+                                        getReport(
+                                            destination.text, vidx.text, index);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.redAccent,
+                                      ),
+                                      child: loading1
+                                          ? const SizedBox(
+                                              height: 28,
+                                              width: 30,
+                                              child:
+                                                  CircularProgressIndicator())
+                                          : const Text(
+                                              "COMPLAINT",
+                                              style: TextStyle(fontSize: 11),
+                                            ),
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              )
+                            ],
+                          ),
+                          const Divider(
+                            thickness: 2,
+                          ),
+                          Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(children: const [
+                                    Text("Book-In"),
+                                  ]),
+                                  Row(children: const [
+                                    Text("Book-Out"),
+                                  ]),
+                                  Row(children: const [
+                                    Text("Check-In"),
+                                  ]),
+                                  Row(
+                                    children: const [
+                                      Text("Check-Out"),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(children: [
+                                    Text(
+                                      DateFormat(' : MMM dd, yyyy').format(
+                                          DateTime.parse(data3[index]['bookin'])
+                                              .toLocal()),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ]),
+                                  Row(children: [
+                                    Text(
+                                      DateFormat(' : MMM dd, yyyy').format(
+                                          DateTime.parse(
+                                                  data3[index]['bookout'])
+                                              .toLocal()),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ]),
+                                  Row(children: [
+                                    Text(
+                                      DateFormat(' : MMM dd, yyyy').format(
+                                          DateTime.parse(
+                                                  data3[index]['checkin'])
+                                              .toLocal()),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ]),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        DateFormat(' : MMM dd, yyyy').format(
+                                            DateTime.parse(
+                                                    data3[index]['checkout'])
+                                                .toLocal()),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    );
-                  }
-                },
-              ),
-      ),
+                    ),
+                  );
+                }
+              },
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
