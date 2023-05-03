@@ -265,12 +265,16 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     });
   }
 
-  logout() {
-    data.clear();
-    data1.clear();
-    data2.clear();
-    data3.clear();
-    data4.clear();
+  void logout() {
+    setState(() {
+      data.clear();
+      data1.clear();
+      data2.clear();
+      data3.clear();
+      data4.clear();
+    });
+
+    Navigator.pushReplacementNamed(context, 'login');
   }
 
   @override
@@ -303,13 +307,48 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
             },
             tooltip: "Refresh Data",
           ),
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: () async {
-              await logout();
-              Navigator.pushReplacementNamed(context, 'login');
+          PopupMenuButton<String>(
+            onSelected: (String value) {
+              if (value == 'menu_1') {
+                print("ok");
+              } else if (value == 'menu_2') {
+                logout();
+              }
             },
-            tooltip: "Logout",
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'menu_1',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.account_circle,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text('Profile'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'menu_2',
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.logout,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Text('Log Out'),
+                    ],
+                  ),
+                ),
+              ];
+            },
           ),
         ],
         centerTitle: true,
