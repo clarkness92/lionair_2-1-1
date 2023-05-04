@@ -1,3 +1,5 @@
+// ignore_for_file: library_prefixes, depend_on_referenced_packages, must_be_immutable, prefer_typing_uninitialized_variables, no_logic_in_create_state, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, non_constant_identifier_names, use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -392,49 +394,6 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
               updateData4(destination.text, vidx.text);
             },
             tooltip: "Refresh Data",
-          ),
-          PopupMenuButton<String>(
-            onSelected: (String value) {
-              if (value == 'menu_1') {
-                debugPrint("ok");
-              } else if (value == 'menu_2') {
-                logout();
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem<String>(
-                  value: 'menu_1',
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.account_circle,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Profile'),
-                    ],
-                  ),
-                ),
-                PopupMenuItem<String>(
-                  value: 'menu_2',
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.logout,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Log Out'),
-                    ],
-                  ),
-                ),
-              ];
-            },
           ),
         ],
         centerTitle: true,

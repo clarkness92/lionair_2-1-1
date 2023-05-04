@@ -1,7 +1,10 @@
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables, no_logic_in_create_state, prefer_adjacent_string_concatenation, prefer_interpolation_to_compose_strings, non_constant_identifier_names, use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
+import 'package:lionair_2/screens/profile.dart';
 import 'package:status_alert/status_alert.dart';
 import 'laporan.dart';
 import 'reservasi_mess.dart';
@@ -507,7 +510,15 @@ class _HomeScreenState extends State<HomeScreen> {
           PopupMenuButton<String>(
             onSelected: (String value) {
               if (value == 'menu_1') {
-                debugPrint("ok");
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => UserProfile(
+                    userapi: userapi,
+                    passapi: passapi,
+                    data: data,
+                    data1: data1,
+                    data2: data2,
+                  ),
+                ));
               } else if (value == 'menu_2') {
                 logout();
               }
