@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading1 = false;
   bool loading2 = false;
   bool loading3 = false;
+  bool loading4 = false;
 
   List data = [];
   List data1 = [];
@@ -2055,6 +2056,55 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         ]),
                                                       ],
                                                     ),
+                                                    const Spacer(
+                                                      flex: 1,
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Padding(
+                                                          padding: EdgeInsets.only(
+                                                              right: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.033),
+                                                          child: SizedBox(
+                                                            height: 30,
+                                                            width: 65,
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                setState(() {
+                                                                  loading4 =
+                                                                      true;
+                                                                });
+                                                              },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .redAccent,
+                                                              ),
+                                                              child: loading4
+                                                                  ? const SizedBox(
+                                                                      height:
+                                                                          28,
+                                                                      width: 30,
+                                                                      child:
+                                                                          CircularProgressIndicator())
+                                                                  : const Text(
+                                                                      "OTP",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              11),
+                                                                    ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
                                                   ],
                                                 ),
                                               ],
