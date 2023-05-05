@@ -8,6 +8,7 @@ import 'package:lionair_2/screens/notification.dart';
 import 'package:lionair_2/screens/profile.dart';
 import 'package:lionair_2/screens/reservasi_mess.dart';
 import 'package:lionair_2/screens/register.dart';
+import 'package:lionair_2/screens/splash_screen.dart';
 import 'package:lionair_2/screens/upemail.dart';
 import 'package:provider/provider.dart';
 import 'screens/laporan.dart';
@@ -33,7 +34,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Lion Reservation',
         routes: {
+          'splash': (_) => const SplashScreen(),
           'login': (_) => const LoginScreen(),
+          'register': (_) => const RegisterScreen(),
           'home': (_) => HomeScreen(
                 userapi: '',
                 passapi: '',
@@ -41,7 +44,6 @@ class MyApp extends StatelessWidget {
                 data1: '',
                 data2: '',
               ),
-          'register': (_) => const RegisterScreen(),
           'profile': (_) => UserProfile(
                 userapi: '',
                 passapi: '',
@@ -110,7 +112,7 @@ class MyApp extends StatelessWidget {
                 bookout3: '',
               ),
         },
-        initialRoute: 'login',
+        initialRoute: 'splash',
       ),
     );
   }

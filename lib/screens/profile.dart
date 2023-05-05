@@ -153,7 +153,7 @@ class _UserProfileState extends State<UserProfile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                ": ${data[index]['idemployee']}",
+                                ": ${data[index]['idemployee']}".trim(),
                                 style: TextStyle(
                                     fontSize:
                                         MediaQuery.of(context).textScaleFactor *
@@ -161,7 +161,7 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                ": ${data[index]['namaasli']}",
+                                ": ${data[index]['namaasli']}".trim(),
                                 style: TextStyle(
                                     fontSize:
                                         MediaQuery.of(context).textScaleFactor *
@@ -169,7 +169,7 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                ": ${data[index]['email']}",
+                                ": ${data[index]['email']}".trim(),
                                 style: TextStyle(
                                     fontSize:
                                         MediaQuery.of(context).textScaleFactor *
@@ -177,7 +177,7 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                ": ${data[index]['phone']}",
+                                ": ${data[index]['phone']}".trim(),
                                 style: TextStyle(
                                     fontSize:
                                         MediaQuery.of(context).textScaleFactor *
