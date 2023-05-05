@@ -1,9 +1,8 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables, no_logic_in_create_state
 
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:lionair_2/screens/uppass.dart';
 import 'home_screen.dart' show HomeScreen;
-import 'package:circular_menu/circular_menu.dart';
 
 class UserProfile extends StatefulWidget {
   var userapi;
@@ -32,7 +31,6 @@ class _UserProfileState extends State<UserProfile> {
 
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
-  bool loading1 = false;
 
   List data = [];
   List data1 = [];
@@ -81,14 +79,17 @@ class _UserProfileState extends State<UserProfile> {
         centerTitle: true,
         backgroundColor: Colors.redAccent,
       ),
-      body: loading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              key: _formKey,
-              itemCount: 1,
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: const EdgeInsets.all(8),
+      body: ListView.builder(
+        key: _formKey,
+        itemCount: 1,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 1,
+                height: MediaQuery.of(context).size.height * 0.45,
+                child: Card(
+                  margin: const EdgeInsets.all(15),
                   elevation: 8,
                   child: Container(
                     margin: const EdgeInsets.all(10),
@@ -189,42 +190,83 @@ class _UserProfileState extends State<UserProfile> {
                       ],
                     ),
                   ),
-                );
-              },
-            ),
-      floatingActionButton: CircularMenu(
-        alignment: Alignment.bottomRight,
-        startingAngleInRadian: 1 * pi,
-        endingAngleInRadian: 1.5 * pi,
-        toggleButtonColor: Colors.red,
-        items: [
-          CircularMenuItem(
-            icon: Icons.mail,
-            color: Colors.redAccent,
-            onTap: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (context) => UpdateEmail(
-              //     userapi: userapi,
-              //     passapi: passapi,
-              //     data: data,
-              //     data1: data1,
-              //     data2: data2,
-              //   ),
-              // ));
-            },
-          ),
-          CircularMenuItem(
-            icon: Icons.phone,
-            color: Colors.green,
-            onTap: () {},
-          ),
-          CircularMenuItem(
-            icon: Icons.password,
-            color: Colors.black38,
-            onTap: () {},
-          ),
-        ],
+                ),
+              ),
+              Center(
+                child: MaterialButton(
+                  color: Colors.red,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  disabledColor: Colors.grey,
+                  onPressed: () {
+                    setState(() {
+                      loading = true;
+                    });
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => UpdatePassword(
+                          userapi: userapi,
+                          passapi: passapi,
+                          data: data,
+                          data1: data1,
+                          data2: data2,
+                        ),
+                      ));
+                      setState(() {
+                        loading = false;
+                      });
+                    });
+                  },
+                  child: loading
+                      ? const SizedBox(
+                          height: 28,
+                          width: 30,
+                          child: CircularProgressIndicator())
+                      : Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 15),
+                          child: const Text('Update Password',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                ),
+              )
+            ],
+          );
+        },
       ),
+      // floatingActionButton: CircularMenu(
+      //   alignment: Alignment.bottomRight,
+      //   startingAngleInRadian: 1 * pi,
+      //   endingAngleInRadian: 1.5 * pi,
+      //   toggleButtonColor: Colors.red,
+      //   items: [
+      //     CircularMenuItem(
+      //       icon: Icons.mail,
+      //       color: Colors.redAccent,
+      //       onTap: () {
+      //         Navigator.of(context).push(MaterialPageRoute(
+      //           builder: (context) => UpdateEmail(
+      //             userapi: userapi,
+      //             passapi: passapi,
+      //             data: data,
+      //             data1: data1,
+      //             data2: data2,
+      //           ),
+      //         ));
+      //       },
+      //     ),
+      //     CircularMenuItem(
+      //       icon: Icons.phone,
+      //       color: Colors.green,
+      //       onTap: () {},
+      //     ),
+      //     CircularMenuItem(
+      //       icon: Icons.password,
+      //       color: Colors.black38,
+      //       onTap: () {},
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

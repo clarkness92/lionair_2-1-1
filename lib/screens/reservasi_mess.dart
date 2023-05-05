@@ -126,6 +126,21 @@ class _ReservasiMessState extends State<ReservasiMess> {
           .single
           .text;
       debugPrint('Result: $result');
+      StatusAlert.show(context,
+          duration: const Duration(seconds: 1),
+          configuration:
+              const IconConfiguration(icon: Icons.done, color: Colors.green),
+          title: "Input Data Success",
+          subtitle: "Please Refresh!!",
+          backgroundColor: Colors.grey[300]);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomeScreen(
+            userapi: userapi,
+            passapi: passapi,
+            data: data,
+            data1: data1,
+            data2: data2),
+      ));
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -275,21 +290,6 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         } else {
                           _sendReservation(
                               gender.text, necessary.text, notes.text);
-                          StatusAlert.show(context,
-                              duration: const Duration(seconds: 1),
-                              configuration: const IconConfiguration(
-                                  icon: Icons.done, color: Colors.green),
-                              title: "Input Data Success",
-                              subtitle: "Please Refresh!!",
-                              backgroundColor: Colors.grey[300]);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => HomeScreen(
-                                userapi: userapi,
-                                passapi: passapi,
-                                data: data,
-                                data1: data1,
-                                data2: data2),
-                          ));
                         }
                       },
                       child: const Text("Submit"),

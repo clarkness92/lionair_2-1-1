@@ -138,6 +138,26 @@ class _InputLaporanState extends State<InputLaporan> {
       final parsedResponse = xml.XmlDocument.parse(responseBody);
       final result = parsedResponse.findAllElements('_x002D_').single.text;
       debugPrint('Result: $result');
+      StatusAlert.show(context,
+          duration: const Duration(seconds: 1),
+          configuration:
+              const IconConfiguration(icon: Icons.done, color: Colors.green),
+          title: "Input Data Success",
+          subtitle: "Please Refresh!!",
+          backgroundColor: Colors.grey[300]);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Lihatlaporan(
+            userapi: userapi,
+            passapi: passapi,
+            data: data,
+            data1: data1,
+            data2: data2,
+            data3: data3,
+            data4: data4,
+            vidx4: vidx4,
+            bookin3: bookin3,
+            bookout3: bookout3),
+      ));
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -293,26 +313,6 @@ class _InputLaporanState extends State<InputLaporan> {
                           );
                         } else {
                           _addReport(vidx.text, description.text);
-                          StatusAlert.show(context,
-                              duration: const Duration(seconds: 1),
-                              configuration: const IconConfiguration(
-                                  icon: Icons.done, color: Colors.green),
-                              title: "Input Data Success",
-                              subtitle: "Please Refresh!!",
-                              backgroundColor: Colors.grey[300]);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Lihatlaporan(
-                                userapi: userapi,
-                                passapi: passapi,
-                                data: data,
-                                data1: data1,
-                                data2: data2,
-                                data3: data3,
-                                data4: data4,
-                                vidx4: vidx4,
-                                bookin3: bookin3,
-                                bookout3: bookout3),
-                          ));
                         }
                       },
                       child: const Text("Submit"),

@@ -10,6 +10,7 @@ import 'package:lionair_2/screens/reservasi_mess.dart';
 import 'package:lionair_2/screens/register.dart';
 import 'package:lionair_2/screens/splash_screen.dart';
 import 'package:lionair_2/screens/upemail.dart';
+import 'package:lionair_2/screens/uppass.dart';
 import 'package:provider/provider.dart';
 import 'screens/laporan.dart';
 import 'screens/lihat_reservasi.dart';
@@ -52,6 +53,13 @@ class MyApp extends StatelessWidget {
                 data2: '',
               ),
           'upemail': (_) => UpdateEmail(
+                userapi: '',
+                passapi: '',
+                data: '',
+                data1: '',
+                data2: '',
+              ),
+          'uppass': (_) => UpdatePassword(
                 userapi: '',
                 passapi: '',
                 data: '',

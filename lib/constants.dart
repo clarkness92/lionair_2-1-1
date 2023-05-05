@@ -31,3 +31,6 @@ const url_File_GetDataFromIDReff =
 const url_GetOTPWA = 'https://lgapvfncacc.com/otp/prc.asmx?op=GetOTPWA';
 
 const url_OpenOTP = 'https://lgapvfncacc.com/otp/prc.asmx?op=OpenOTP';
+
+const url_UserWeb_UpdatePass =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=UserWeb_UpdatePass';
