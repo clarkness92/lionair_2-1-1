@@ -11,22 +11,28 @@ import 'package:xml2json/xml2json.dart';
 import 'package:xml/xml.dart' as xml;
 
 class HomeScreen extends StatefulWidget {
+  var userapi;
+  var passapi;
   var data;
   var data1;
   var data2;
 
   HomeScreen(
       {super.key,
+      required this.userapi,
+      required this.passapi,
       required this.data,
       required this.data1,
       required this.data2});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState(data, data1, data2);
+  State<HomeScreen> createState() =>
+      _HomeScreenState(userapi, passapi, data, data1, data2);
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  _HomeScreenState(this.data, this.data1, this.data2);
+  _HomeScreenState(
+      this.userapi, this.passapi, this.data, this.data1, this.data2);
   late PageController _pageController;
   int activePage = 0;
   int maxLimit = 19;
@@ -50,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
   var vidxBaru;
   var bookinBaru;
   var bookoutBaru;
+  var userapi;
+  var passapi;
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
@@ -64,8 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<GetReservationByIDSTaffPending xmlns="http://tempuri.org/">' +
-        '<UsernameApi>admin</UsernameApi>' +
-        '<PasswordApi>admin</PasswordApi>' +
+        '<UsernameApi>$userapi</UsernameApi>' +
+        '<PasswordApi>$passapi</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
         '</GetReservationByIDSTaffPending>' +
@@ -119,8 +127,9 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
-        title: "Update Failed, ${response.statusCode}",
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Update1 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -140,8 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<Checktime_GetCurrentStay xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
         '</Checktime_GetCurrentStay>' +
@@ -228,8 +237,9 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
-        title: "Update Failed, ${response.statusCode}",
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Update2 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -248,8 +258,8 @@ class _HomeScreenState extends State<HomeScreen> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<Checktime_GetHistoryStay xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
         '</Checktime_GetHistoryStay>' +
@@ -307,6 +317,8 @@ class _HomeScreenState extends State<HomeScreen> {
       Future.delayed(const Duration(seconds: 5), () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => LihatDataEmployee(
+            userapi: userapi,
+            passapi: passapi,
             data: data,
             data1: data1,
             data2: data2,
@@ -322,8 +334,9 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
-        title: "Get Data Failed, ${response.statusCode}",
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Get Data3 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -343,8 +356,8 @@ class _HomeScreenState extends State<HomeScreen> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<TenantReport_GetDataVIDX xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<VIDX>$vidx</VIDX>' +
         '</TenantReport_GetDataVIDX>' +
@@ -398,6 +411,8 @@ class _HomeScreenState extends State<HomeScreen> {
       Future.delayed(const Duration(seconds: 3), () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Lihatlaporan(
+            userapi: userapi,
+            passapi: passapi,
             data: data,
             data1: data1,
             data2: data2,
@@ -417,8 +432,9 @@ class _HomeScreenState extends State<HomeScreen> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
-        title: "Get Data Failed, ${response.statusCode}",
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Get Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -461,6 +477,8 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HomeScreen(
+                userapi: userapi,
+                passapi: passapi,
                 data: data,
                 data1: data1,
                 data2: data2,
@@ -538,10 +556,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text("ID Employee : ${data[index]['idemployee']}"
                                 .trim()),
                             const SizedBox(height: 10),
-                            // Text("Divisi: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
-                            // Text("Email: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
                             Container(
                               margin: const EdgeInsets.all(15),
                               child: Row(
@@ -565,6 +579,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) => ReservasiMess(
+                                              userapi: userapi,
+                                              passapi: passapi,
                                               data: data,
                                               data1: data1,
                                               data2: data2,
@@ -727,10 +743,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text("ID Employee : ${data[index]['idemployee']}"
                                 .trim()),
                             const SizedBox(height: 10),
-                            // Text("Divisi: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
-                            // Text("Email: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
                             Container(
                               margin: const EdgeInsets.all(15),
                               child: Row(
@@ -754,6 +766,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) => ReservasiMess(
+                                              userapi: userapi,
+                                              passapi: passapi,
                                               data: data,
                                               data1: data1,
                                               data2: data2,
@@ -937,7 +951,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .bold),
+                                                                          .bold,
+                                                                  fontSize: 12),
                                                             )
                                                           ]),
                                                           Row(children: [
@@ -946,7 +961,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .bold),
+                                                                          .bold,
+                                                                  fontSize: 12),
                                                             ),
                                                           ]),
                                                           Row(children: [
@@ -955,7 +971,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .bold),
+                                                                          .bold,
+                                                                  fontSize: 12),
                                                             )
                                                           ]),
                                                           Row(
@@ -965,7 +982,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 style: const TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .bold),
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        12),
                                                               ),
                                                             ],
                                                           )
@@ -975,26 +994,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                     Column(
                                                       children: [
-                                                        ElevatedButton(
-                                                          onPressed: () async {
-                                                            setState(() {
-                                                              loading3 = true;
-                                                            });
-                                                            getReport(
-                                                                destination
-                                                                    .text,
-                                                                vidx.text,
-                                                                index);
-                                                          },
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                Colors
-                                                                    .redAccent,
+                                                        SizedBox(
+                                                          height: 35,
+                                                          width: 95,
+                                                          child: ElevatedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              setState(() {
+                                                                loading3 = true;
+                                                              });
+                                                              getReport(
+                                                                  destination
+                                                                      .text,
+                                                                  vidx.text,
+                                                                  index);
+                                                            },
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors
+                                                                      .redAccent,
+                                                            ),
+                                                            child: loading3
+                                                                ? const SizedBox(
+                                                                    height: 28,
+                                                                    width: 30,
+                                                                    child:
+                                                                        CircularProgressIndicator())
+                                                                : const Text(
+                                                                    "COMPLAINT",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            11),
+                                                                  ),
                                                           ),
-                                                          child: loading3
-                                                              ? const CircularProgressIndicator()
-                                                              : Text("REPORT"),
                                                         ),
                                                       ],
                                                     )
@@ -1141,6 +1175,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) => ReservasiMess(
+                                              userapi: userapi,
+                                              passapi: passapi,
                                               data: data,
                                               data1: data1,
                                               data2: data2,
@@ -1459,10 +1495,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text("ID Employee : ${data[index]['idemployee']}"
                                 .trim()),
                             const SizedBox(height: 10),
-                            // Text("Divisi: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
-                            // Text("Email: ${data[index]['namaasli']}"),
-                            // const SizedBox(height: 20),
                             Container(
                               margin: const EdgeInsets.all(15),
                               child: Row(
@@ -1486,6 +1518,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
                                             builder: (context) => ReservasiMess(
+                                              userapi: userapi,
+                                              passapi: passapi,
                                               data: data,
                                               data1: data1,
                                               data2: data2,
@@ -1825,7 +1859,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .bold),
+                                                                          .bold,
+                                                                  fontSize: 12),
                                                             )
                                                           ]),
                                                           Row(children: [
@@ -1834,7 +1869,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .bold),
+                                                                          .bold,
+                                                                  fontSize: 12),
                                                             ),
                                                           ]),
                                                           Row(children: [
@@ -1843,7 +1879,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               style: const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .bold),
+                                                                          .bold,
+                                                                  fontSize: 12),
                                                             )
                                                           ]),
                                                           Row(
@@ -1853,7 +1890,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 style: const TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
-                                                                            .bold),
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        12),
                                                               ),
                                                             ],
                                                           )
@@ -1865,7 +1904,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       children: [
                                                         SizedBox(
                                                           height: 35,
-                                                          width: 85,
+                                                          width: 95,
                                                           child: ElevatedButton(
                                                             onPressed:
                                                                 () async {
@@ -1886,13 +1925,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       .redAccent,
                                                             ),
                                                             child: loading3
-                                                                ? Container(
+                                                                ? const SizedBox(
                                                                     height: 28,
                                                                     width: 30,
                                                                     child:
-                                                                        const CircularProgressIndicator())
-                                                                : Text(
-                                                                    "REPORT"),
+                                                                        CircularProgressIndicator())
+                                                                : const Text(
+                                                                    "COMPLAINT",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            11),
+                                                                  ),
                                                           ),
                                                         ),
                                                       ],

@@ -1,5 +1,4 @@
 import "dart:async";
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
 import 'package:lionair_2/screens/laporan.dart';
@@ -10,6 +9,8 @@ import '../constants.dart';
 import 'package:xml/xml.dart' as xml;
 
 class InputLaporan extends StatefulWidget {
+  var userapi;
+  var passapi;
   var data;
   var data1;
   var data2;
@@ -21,6 +22,8 @@ class InputLaporan extends StatefulWidget {
 
   InputLaporan(
       {super.key,
+      required this.userapi,
+      required this.passapi,
       required this.data,
       required this.data1,
       required this.data2,
@@ -31,13 +34,22 @@ class InputLaporan extends StatefulWidget {
       required this.bookout3});
 
   @override
-  State<InputLaporan> createState() => _InputLaporanState(
+  State<InputLaporan> createState() => _InputLaporanState(userapi, passapi,
       data, data1, data2, data3, data4, vidx4, bookin3, bookout3);
 }
 
 class _InputLaporanState extends State<InputLaporan> {
-  _InputLaporanState(this.data, this.data1, this.data2, this.data3, this.data4,
-      this.vidx4, this.bookin3, this.bookout3);
+  _InputLaporanState(
+      this.userapi,
+      this.passapi,
+      this.data,
+      this.data1,
+      this.data2,
+      this.data3,
+      this.data4,
+      this.vidx4,
+      this.bookin3,
+      this.bookout3);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -53,12 +65,14 @@ class _InputLaporanState extends State<InputLaporan> {
   var vidx4;
   var bookin3;
   var bookout3;
+  var userapi;
+  var passapi;
 
   DateTime selectDate = DateTime.now();
 
   String location = 'Balaraja';
   String category = 'KEAMANAN/KETERTIBAN';
-  final items = ['Balaraja'];
+  final items = ['Balaraja', 'Makassar', 'Manado'];
   List<String> listCategory = [
     'KEAMANAN/KETERTIBAN',
     'KEBERSIHAN',
@@ -97,8 +111,8 @@ class _InputLaporanState extends State<InputLaporan> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<TenantReport_Entry xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>$location</Destination>' +
         '<VIDX>$vidx</VIDX>' +
         '<CATEGORY>$category</CATEGORY>' +
@@ -127,8 +141,9 @@ class _InputLaporanState extends State<InputLaporan> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
-        title: "Input Data Failed, ${response.statusCode}",
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Input Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -157,7 +172,7 @@ class _InputLaporanState extends State<InputLaporan> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      "Report\n/\nComplaint",
+                      "Complaint",
                       style:
                           TextStyle(fontSize: 33, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
@@ -183,14 +198,31 @@ class _InputLaporanState extends State<InputLaporan> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    TextField(
-                      enabled: false,
-                      controller: destination,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Mess Location",
+                    const Text(
+                      "Mess Location",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 15),
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.black, width: 2),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                              value: location,
+                              iconSize: 23,
+                              isExpanded: true,
+                              items: items.map(buildmenuItem).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  location = value!;
+                                });
+                              }),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -204,7 +236,12 @@ class _InputLaporanState extends State<InputLaporan> {
                         labelText: "Reservation ID",
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 15),
+                    const Text(
+                      "Category",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 15),
                     Center(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -240,18 +277,38 @@ class _InputLaporanState extends State<InputLaporan> {
                     const SizedBox(height: 30),
                     ElevatedButton(
                       onPressed: () async {
-                        _addReport(vidx.text, description.text);
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Lihatlaporan(
-                              data: data,
-                              data1: data1,
-                              data2: data2,
-                              data3: data3,
-                              data4: data4,
-                              vidx4: vidx4,
-                              bookin3: bookin3,
-                              bookout3: bookout3),
-                        ));
+                        if (location == 'Makassar' || location == 'Manado') {
+                          StatusAlert.show(
+                            context,
+                            duration: const Duration(seconds: 1),
+                            configuration: const IconConfiguration(
+                                icon: Icons.error, color: Colors.red),
+                            title: "Still On Progress",
+                            backgroundColor: Colors.grey[300],
+                          );
+                        } else {
+                          _addReport(vidx.text, description.text);
+                          StatusAlert.show(context,
+                              duration: const Duration(seconds: 1),
+                              configuration: const IconConfiguration(
+                                  icon: Icons.done, color: Colors.green),
+                              title: "Input Data Success",
+                              subtitle: "Please Refresh!!",
+                              backgroundColor: Colors.grey[300]);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => Lihatlaporan(
+                                userapi: userapi,
+                                passapi: passapi,
+                                data: data,
+                                data1: data1,
+                                data2: data2,
+                                data3: data3,
+                                data4: data4,
+                                vidx4: vidx4,
+                                bookin3: bookin3,
+                                bookout3: bookout3),
+                          ));
+                        }
                       },
                       child: const Text("Submit"),
                     ),
@@ -268,6 +325,8 @@ class _InputLaporanState extends State<InputLaporan> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Lihatlaporan(
+                userapi: userapi,
+                passapi: passapi,
                 data: data,
                 data1: data1,
                 data2: data2,

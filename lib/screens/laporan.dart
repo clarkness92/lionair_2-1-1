@@ -9,12 +9,12 @@ import 'package:xml/xml.dart' as xml;
 import 'package:http/http.dart' as http;
 import 'input_laporan.dart';
 import 'package:data_table_2/data_table_2.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 
 class Lihatlaporan extends StatefulWidget {
+  var userapi;
+  var passapi;
   var data;
   var data1;
   var data2;
@@ -26,6 +26,8 @@ class Lihatlaporan extends StatefulWidget {
 
   Lihatlaporan(
       {super.key,
+      required this.userapi,
+      required this.passapi,
       required this.data,
       required this.data1,
       required this.data2,
@@ -36,32 +38,48 @@ class Lihatlaporan extends StatefulWidget {
       required this.bookout3});
 
   @override
-  State<Lihatlaporan> createState() => _Lihatlaporanstate(
+  State<Lihatlaporan> createState() => _Lihatlaporanstate(userapi, passapi,
       data, data1, data2, data3, data4, vidx4, bookin3, bookout3);
 }
 
 class _Lihatlaporanstate extends State<Lihatlaporan> {
-  _Lihatlaporanstate(this.data, this.data1, this.data2, this.data3, this.data4,
-      this.vidx4, this.bookin3, this.bookout3);
+  _Lihatlaporanstate(
+      this.userapi,
+      this.passapi,
+      this.data,
+      this.data1,
+      this.data2,
+      this.data3,
+      this.data4,
+      this.vidx4,
+      this.bookin3,
+      this.bookout3);
 
   final _formKey = GlobalKey<FormState>();
 
   File? _image;
 
   bool loading = false;
+  bool loading1 = false;
+
   List data = [];
   List data1 = [];
   List data2 = [];
   List data3 = [];
   List data4 = [];
+  List data5 = [];
   List dataBaru4 = [];
+  List dataBaru5 = [];
   var hasilJson;
   var vidx4;
   var bookin3;
   var bookout3;
+  var userapi;
+  var passapi;
 
   TextEditingController destination = TextEditingController();
   TextEditingController vidx = TextEditingController();
+  TextEditingController idx = TextEditingController();
 
   void _getImage() async {
     final picker = ImagePicker();
@@ -70,7 +88,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       if (pickedImage != null) {
         _image = File(pickedImage.path);
       } else {
-        print('No image selected.');
+        debugPrint('No image selected.');
       }
     });
   }
@@ -84,8 +102,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<TenantReport_GetDataVIDX xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<VIDX>$vidx</VIDX>' +
         '</TenantReport_GetDataVIDX>' +
@@ -159,8 +177,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
-        title: "Update Failed, ${response.statusCode}",
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Update4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -171,7 +190,120 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     });
   }
 
-  void sendImageToServer(index) async {
+  void viewImage(String idx, index) async {
+    final temporaryList7 = [];
+    String idreff = data4[index]['idx'];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<File_GetDataFromIDReff xmlns="http://tempuri.org/">' +
+        '<UsernameApi>$userapi</UsernameApi>' +
+        '<PasswordApi>$passapi</PasswordApi>' +
+        '<DESTINATION>BLJ</DESTINATION>' +
+        '<IDRESERVATION>$idreff</IDRESERVATION>' +
+        '</File_GetDataFromIDReff>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_File_GetDataFromIDReff),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/File_GetDataFromIDReff',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
+
+      final list_result_all6 = document.findAllElements('_x002D_');
+
+      for (final list_result in list_result_all6) {
+        final idfile = list_result.findElements('IDFILE').first.text;
+        final filename = list_result.findElements('FILENAME').first.text;
+        temporaryList7.add({
+          'idfile': idfile,
+          'filename': filename,
+        });
+        debugPrint("object 7");
+        hasilJson = jsonEncode(temporaryList7);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 7");
+      }
+
+      Future.delayed(const Duration(seconds: 3), () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Stack(
+                  clipBehavior: Clip.none,
+                  children: <Widget>[
+                    Positioned(
+                      right: -40.0,
+                      top: -40.0,
+                      child: InkResponse(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const CircleAvatar(
+                          backgroundColor: Colors.red,
+                          child: Icon(Icons.close),
+                        ),
+                      ),
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: data5.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                  "No Image",
+                                  style: TextStyle(color: Colors.black54),
+                                ))
+                              : SizedBox(
+                                  child: Text("${data5[index]['filename']}"),
+                                ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            });
+        setState(() {
+          loading1 = false;
+        });
+      });
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      StatusAlert.show(
+        context,
+        duration: const Duration(seconds: 1),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Get Data5 Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
+    }
+    setState(() {
+      dataBaru5 = temporaryList7;
+      loading1 = true;
+      // debugPrint('$dataBaru4');
+    });
+  }
+
+  void addImage(index) async {
     String namaasli = data[0]['namaasli'];
     String idx = data4[index]['idx'];
     String kategori = data4[index]['category'];
@@ -182,8 +314,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<File_Entry xmlns="http://tempuri.org/">' +
-        '<UsernameApi>admin</UsernameApi>' +
-        '<PasswordApi>admin</PasswordApi>' +
+        '<UsernameApi>$userapi</UsernameApi>' +
+        '<PasswordApi>$passapi</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
         '<IDREFF>$idx</IDREFF>' +
         '<FILENAME>$filename</FILENAME>' +
@@ -213,8 +345,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
-        title: "Input Data Failed, ${response.statusCode}",
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Input Data5 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -237,6 +370,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => LihatDataEmployee(
+                userapi: userapi,
+                passapi: passapi,
                 data: data,
                 data1: data1,
                 data2: data2,
@@ -246,7 +381,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
           },
           tooltip: "Home Screen",
         ),
-        title: const Text("Report"),
+        title: const Text("Complaint"),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.white),
@@ -275,6 +410,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         key: _formKey,
         itemCount: 1,
         itemBuilder: (context, index) {
+          data5 = dataBaru5;
           if (data4.isEmpty) {
             return Center(
                 child: loading
@@ -305,21 +441,20 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                       height: MediaQuery.of(context).size.height * 0.72,
                       // width: 300,
                       child: DataTable2(
-                        columnSpacing: 12,
-                        horizontalMargin: 12,
-                        minWidth: 1000,
-                        columns: [
-                          const DataColumn(label: Text("IDX")),
-                          const DataColumn(label: Text("Category")),
-                          const DataColumn(label: Text("Date")),
-                          const DataColumn2(
+                        columnSpacing: 1,
+                        horizontalMargin: 10,
+                        minWidth: 1303,
+                        columns: const [
+                          DataColumn(label: Text("IDX")),
+                          DataColumn(label: Text("Category")),
+                          DataColumn(label: Text("Date")),
+                          DataColumn2(
                               label: Text("Description"), size: ColumnSize.L),
-                          const DataColumn2(
+                          DataColumn2(
                               label: Text("Resolution"), size: ColumnSize.L),
-                          const DataColumn2(
+                          DataColumn2(
                               label: Text("Status"), size: ColumnSize.S),
-                          const DataColumn2(
-                              label: Text("Image"), size: ColumnSize.L),
+                          DataColumn2(label: Text("Image"), size: ColumnSize.L),
                         ],
                         rows: List<DataRow>.generate(
                           data4.length,
@@ -365,9 +500,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                                           .pop();
                                                     },
                                                     child: const CircleAvatar(
-                                                      child: Icon(Icons.close),
                                                       backgroundColor:
                                                           Colors.red,
+                                                      child: Icon(Icons.close),
                                                     ),
                                                   ),
                                                 ),
@@ -392,8 +527,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                                         child: const Text(
                                                             "Submit"),
                                                         onPressed: () {
-                                                          sendImageToServer(
-                                                              index);
+                                                          addImage(index);
+                                                          Navigator.of(context)
+                                                              .pop();
                                                         },
                                                       ),
                                                     )
@@ -405,14 +541,33 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                                         });
                                   },
                                   child: Row(children: <Widget>[
-                                    Icon(
+                                    const Icon(
                                       Icons.photo_library,
                                       color: Colors.grey,
                                     ),
-                                    SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                                     const Text(
                                       "Choose Image",
                                       style: TextStyle(color: Colors.grey),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.redAccent,
+                                      ),
+                                      onPressed: () async {
+                                        setState(() {
+                                          loading1 = true;
+                                        });
+                                        viewImage(idx.text, index);
+                                      },
+                                      child: loading1
+                                          ? const SizedBox(
+                                              height: 20,
+                                              width: 22,
+                                              child:
+                                                  CircularProgressIndicator())
+                                          : const Text("View"),
                                     ),
                                   ]),
                                 ),
@@ -433,6 +588,8 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => InputLaporan(
+              userapi: userapi,
+              passapi: passapi,
               data: data,
               data1: data1,
               data2: data2,

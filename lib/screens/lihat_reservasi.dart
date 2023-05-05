@@ -11,6 +11,8 @@ import 'reservasi_mess.dart';
 import 'package:clipboard/clipboard.dart';
 
 class LihatDataEmployee extends StatefulWidget {
+  var userapi;
+  var passapi;
   var data;
   var data1;
   var data2;
@@ -18,6 +20,8 @@ class LihatDataEmployee extends StatefulWidget {
 
   LihatDataEmployee(
       {super.key,
+      required this.userapi,
+      required this.passapi,
       required this.data,
       required this.data1,
       required this.data2,
@@ -25,11 +29,12 @@ class LihatDataEmployee extends StatefulWidget {
 
   @override
   State<LihatDataEmployee> createState() =>
-      _LihatDataEmployeeState(data, data1, data2, data3);
+      _LihatDataEmployeeState(userapi, passapi, data, data1, data2, data3);
 }
 
 class _LihatDataEmployeeState extends State<LihatDataEmployee> {
-  _LihatDataEmployeeState(this.data, this.data1, this.data2, this.data3);
+  _LihatDataEmployeeState(this.userapi, this.passapi, this.data, this.data1,
+      this.data2, this.data3);
 
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -45,6 +50,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   var vidxBaru;
   var bookinBaru;
   var bookoutBaru;
+  var userapi;
+  var passapi;
 
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
@@ -59,8 +66,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<Checktime_GetHistoryStay xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<IDSTAFF>$idpegawai</IDSTAFF>' +
         '</Checktime_GetHistoryStay>' +
@@ -138,8 +145,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
-        title: "Update Failed, ${response.statusCode}",
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Update3 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -160,8 +168,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
         '<soap:Body>' +
         '<TenantReport_GetDataVIDX xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>admin</UsernameAPI>' +
-        '<PasswordAPI>admin</PasswordAPI>' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>BLJ</Destination>' +
         '<VIDX>$vidx</VIDX>' +
         '</TenantReport_GetDataVIDX>' +
@@ -212,9 +220,11 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         debugPrint(hasilJson);
         debugPrint("object_hasilJson 4");
       }
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Lihatlaporan(
+            userapi: userapi,
+            passapi: passapi,
             data: data,
             data1: data1,
             data2: data2,
@@ -234,8 +244,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       StatusAlert.show(
         context,
         duration: const Duration(seconds: 1),
-        configuration: const IconConfiguration(icon: Icons.error),
-        title: "Get Data Failed, ${response.statusCode}",
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Get Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
     }
@@ -265,6 +276,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HomeScreen(
+                userapi: userapi,
+                passapi: passapi,
                 data: data,
                 data1: data1,
                 data2: data2,
@@ -386,21 +399,24 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                         Text(
                                           " ${data3[index]['areamess']}",
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
                                         )
                                       ]),
                                       Row(children: [
                                         Text(
                                           " ${data3[index]['blok']}",
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
                                         ),
                                       ]),
                                       Row(children: [
                                         Text(
                                           " ${data3[index]['nokamar']}",
                                           style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
                                         )
                                       ]),
                                       Row(
@@ -408,7 +424,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                           Text(
                                             " ${data3[index]['namabed']}",
                                             style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
                                           ),
                                         ],
                                       )
@@ -417,8 +434,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                   flex: 1,
                                 ),
                                 SizedBox(
-                                  height: 50,
-                                  width: 100,
+                                  height: 48,
+                                  width: 95,
                                   child: Column(
                                     children: [
                                       ElevatedButton(
@@ -433,12 +450,15 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                           backgroundColor: Colors.redAccent,
                                         ),
                                         child: loading1
-                                            ? Container(
+                                            ? const SizedBox(
                                                 height: 28,
                                                 width: 30,
                                                 child:
-                                                    const CircularProgressIndicator())
-                                            : Text("REPORT"),
+                                                    CircularProgressIndicator())
+                                            : const Text(
+                                                "COMPLAINT",
+                                                style: TextStyle(fontSize: 11),
+                                              ),
                                       ),
                                     ],
                                   ),
@@ -530,6 +550,8 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ReservasiMess(
+              userapi: userapi,
+              passapi: passapi,
               data: data,
               data1: data1,
               data2: data2,
