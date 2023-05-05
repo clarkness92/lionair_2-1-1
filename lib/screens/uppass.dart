@@ -129,7 +129,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
             ));
           },
         ),
-        title: const Text("Update Email"),
+        title: const Text("Update Password"),
         centerTitle: true,
         backgroundColor: Colors.redAccent,
       ),
@@ -139,7 +139,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
               itemCount: 1,
               itemBuilder: (context, index) {
                 return Card(
-                  margin: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(15),
                   elevation: 8,
                   child: Container(
                     margin: const EdgeInsets.all(10),
@@ -186,7 +186,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                                 validator: (value) {
                                   return (newpass.text == renewpass.text)
                                       ? null
-                                      : 'Password do not match, Please check again!!';
+                                      : "Password don't match, Please check again!!";
                                 },
                               ),
                               const SizedBox(height: 30),
@@ -211,7 +211,23 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                                     setState(() {
                                       loading = true;
                                     });
-                                    updatePass(newpass.text);
+                                    if (newpass.text != renewpass.text) {
+                                      StatusAlert.show(
+                                        context,
+                                        duration: const Duration(seconds: 1),
+                                        configuration: const IconConfiguration(
+                                            icon: Icons.error,
+                                            color: Colors.red),
+                                        title: "Password don't match",
+                                        subtitle: "Please check again!!",
+                                        backgroundColor: Colors.grey[300],
+                                      );
+                                      setState(() {
+                                        loading = false;
+                                      });
+                                    } else {
+                                      updatePass(newpass.text);
+                                    }
                                   }),
                             ],
                           ),

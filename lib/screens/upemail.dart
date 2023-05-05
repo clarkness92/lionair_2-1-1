@@ -70,7 +70,7 @@ class _UpdateEmailState extends State<UpdateEmail> {
               itemCount: 1,
               itemBuilder: (context, index) {
                 return Card(
-                  margin: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(15),
                   elevation: 8,
                   child: Container(
                     margin: const EdgeInsets.all(10),

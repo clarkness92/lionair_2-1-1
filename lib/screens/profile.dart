@@ -40,6 +40,8 @@ class _UserProfileState extends State<UserProfile> {
 
   void logout() {
     setState(() {
+      userapi = '';
+      passapi = '';
       data.clear();
       data1.clear();
       data2.clear();
