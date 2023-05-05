@@ -92,12 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
-
-      // debugPrint("=================");
-      // debugPrint(
-      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      // debugPrint("=================");
-
       final listResultAll1 = document.findAllElements('_x002D_');
 
       for (final list_result in listResultAll1) {
@@ -375,11 +369,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (response.statusCode == 200) {
       final document = xml.XmlDocument.parse(response.body);
-
-      // debugPrint("=================");
-      // debugPrint(
-      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      // debugPrint("=================");
 
       final listResultAll5 = document.findAllElements('_x002D_');
 

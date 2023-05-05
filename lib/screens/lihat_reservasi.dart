@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lionair_2/screens/rating.dart';
 import 'package:status_alert/status_alert.dart';
 import 'laporan.dart';
 import '../constants.dart';
@@ -9,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'home_screen.dart' show HomeScreen;
 import 'reservasi_mess.dart';
 import 'package:clipboard/clipboard.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class LihatDataEmployee extends StatefulWidget {
   var userapi;
@@ -18,14 +20,15 @@ class LihatDataEmployee extends StatefulWidget {
   var data2;
   var data3;
 
-  LihatDataEmployee(
-      {super.key,
-      required this.userapi,
-      required this.passapi,
-      required this.data,
-      required this.data1,
-      required this.data2,
-      required this.data3});
+  LihatDataEmployee({
+    super.key,
+    required this.userapi,
+    required this.passapi,
+    required this.data,
+    required this.data1,
+    required this.data2,
+    required this.data3,
+  });
 
   @override
   State<LihatDataEmployee> createState() =>
@@ -39,12 +42,15 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
   bool loading1 = false;
+  bool loading2 = false;
 
   List data = [];
   List data1 = [];
   List data2 = [];
   List data3 = [];
   List data4 = [];
+  List data5 = [];
+  List data7 = [];
   List dataBaru3 = [];
   var hasilJson;
   var vidxBaru;
@@ -56,6 +62,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   TextEditingController destination = TextEditingController();
   TextEditingController idpegawai = TextEditingController();
   TextEditingController vidx = TextEditingController();
+  TextEditingController idx = TextEditingController();
 
   void updateData3(String destination, String idpegawai) async {
     final temporaryList4 = [];
@@ -256,6 +263,93 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       bookinBaru = bookin;
       bookoutBaru = bookout;
       loading1 = true;
+    });
+  }
+
+  void getRating(String vidx, index) async {
+    final temporaryList10 = [];
+    vidx = data3[index]['idx'];
+
+    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
+        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
+        '<soap:Body>' +
+        '<RATING_GetDataByVIDX xmlns="http://tempuri.org/">' +
+        '<UsernameAPI>$userapi</UsernameAPI>' +
+        '<PasswordAPI>$passapi</PasswordAPI>' +
+        '<Destination>BLJ</Destination>' +
+        '<VIDX>$vidx</VIDX>' +
+        '</RATING_GetDataByVIDX>' +
+        '</soap:Body>' +
+        '</soap:Envelope>';
+
+    final response = await http.post(Uri.parse(url_RATING_GetDataByVIDX),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'SOAPAction': 'http://tempuri.org/RATING_GetDataByVIDX',
+          "Access-Control-Allow-Credentials": "true",
+          'Content-type': 'text/xml; charset=utf-8',
+        },
+        body: objBody);
+
+    if (response.statusCode == 200) {
+      final document = xml.XmlDocument.parse(response.body);
+
+      // debugPrint("=================");
+      // debugPrint(
+      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
+      // debugPrint("=================");
+
+      final listResultAll5 = document.findAllElements('_x002D_');
+
+      for (final list_result in listResultAll5) {
+        final idx = list_result.findElements('IDX').first.text;
+        final name = list_result.findElements('NAME').first.text;
+        final rating = list_result.findElements('RATING').first.text;
+
+        temporaryList10.add({
+          'idx': idx,
+          'rating': rating,
+          'name': name,
+        });
+        debugPrint("object 10");
+        hasilJson = jsonEncode(temporaryList10);
+
+        debugPrint(hasilJson);
+        debugPrint("object_hasilJson 10");
+      }
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => LihatRating(
+            userapi: userapi,
+            passapi: passapi,
+            data: data,
+            data1: data1,
+            data2: data2,
+            data3: data3,
+            data7: data7,
+          ),
+        ));
+        setState(() {
+          loading2 = false;
+        });
+      });
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+      StatusAlert.show(
+        context,
+        duration: const Duration(seconds: 1),
+        configuration:
+            const IconConfiguration(icon: Icons.error, color: Colors.red),
+        title: "Get Data10 Failed, ${response.statusCode}",
+        backgroundColor: Colors.grey[300],
+      );
+      setState(() {
+        loading2 = false;
+      });
+    }
+    setState(() {
+      data7 = temporaryList10;
+      loading2 = true;
     });
   }
 
@@ -535,6 +629,44 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                       ],
                                     ),
                                   ],
+                                ),
+                                //Try SPACER
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                Padding(
+                                  // height: 48,
+                                  // width: 95,
+                                  padding: EdgeInsets.only(right: 20),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              IconButton(
+                                                iconSize: 50,
+                                                icon: loading2
+                                                    ? const CircularProgressIndicator()
+                                                    : const Icon(Icons
+                                                        .sentiment_neutral_outlined),
+                                                color: Color.fromARGB(
+                                                    255, 176, 176, 171),
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    loading2 = true;
+                                                  });
+
+                                                  getRating(vidx.text, index);
+                                                },
+                                              ),
+                                              const Text("Rate Us"),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

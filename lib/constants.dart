@@ -33,5 +33,12 @@ const url_File_GetDataFromIDReff =
     'https://lgapvfncacc.com/mess/prc.asmx?op=File_GetDataFromIDReff';
 
 // ignore: constant_identifier_names
-const url_RATING_InsertData =
-    'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_InsertData';
+// const url_RATING_InsertData =
+//     'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_InsertData';
+
+// ignore: constant_identifier_names
+const url_RATING_UpdateData =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_UpdateData';
+
+const url_RATING_GetDataByVIDX =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_GetDataByVIDX';

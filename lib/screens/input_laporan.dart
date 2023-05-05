@@ -103,9 +103,9 @@ class _InputLaporanState extends State<InputLaporan> {
         ),
       );
 
-  void _addReport(String vidx, String description) async {
+  void _addReport(String idx, String description) async {
     String namaasli = data[0]['namaasli'];
-    vidx = vidx4;
+    idx = idx;
 
     final String soapEnvelope = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -114,7 +114,7 @@ class _InputLaporanState extends State<InputLaporan> {
         '<UsernameAPI>$userapi</UsernameAPI>' +
         '<PasswordAPI>$passapi</PasswordAPI>' +
         '<Destination>$location</Destination>' +
-        '<VIDX>$vidx</VIDX>' +
+        '<VIDX>$idx</VIDX>' +
         '<CATEGORY>$category</CATEGORY>' +
         '<DESCRIPTION>$description</DESCRIPTION>' +
         '<USERINSERT>$namaasli</USERINSERT>' +

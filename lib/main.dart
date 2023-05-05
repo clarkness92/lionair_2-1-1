@@ -4,6 +4,7 @@ import 'package:lionair_2/screens/home_screen.dart';
 import 'package:lionair_2/screens/input_laporan.dart';
 import 'package:lionair_2/screens/login_screen.dart';
 import 'package:lionair_2/screens/notification.dart';
+import 'package:lionair_2/screens/rating.dart';
 import 'package:lionair_2/screens/reservasi_mess.dart';
 import 'package:lionair_2/screens/register.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +77,15 @@ class MyApp extends StatelessWidget {
                 data: '',
                 data1: '',
                 data2: '',
+              ),
+          'rating': (_) => LihatRating(
+                userapi: '',
+                passapi: '',
+                data: '',
+                data1: '',
+                data2: '',
+                data3: '',
+                data7: '',
               ),
           'register': (_) => const RegisterScreen(),
         },
