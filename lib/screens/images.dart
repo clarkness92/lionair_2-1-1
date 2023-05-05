@@ -284,20 +284,6 @@ class _Lihatgambarstate extends State<Lihatgambar> {
     });
   }
 
-  void logout() {
-    setState(() {
-      data.clear();
-      data1.clear();
-      data2.clear();
-      data3.clear();
-      data4.clear();
-      data5.clear();
-      data6.clear();
-    });
-
-    Navigator.pushReplacementNamed(context, 'login');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -305,6 +291,10 @@ class _Lihatgambarstate extends State<Lihatgambar> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
+            userapi = '';
+            passapi = '';
+            data5.clear();
+            data6.clear();
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Lihatlaporan(
                 userapi: userapi,
@@ -332,49 +322,6 @@ class _Lihatgambarstate extends State<Lihatgambar> {
               updateData5(idreff.text);
             },
             tooltip: "Refresh Data",
-          ),
-          PopupMenuButton<String>(
-            onSelected: (String value) {
-              if (value == 'menu_1') {
-                debugPrint("ok");
-              } else if (value == 'menu_2') {
-                logout();
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem<String>(
-                  value: 'menu_1',
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.account_circle,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Profile'),
-                    ],
-                  ),
-                ),
-                PopupMenuItem<String>(
-                  value: 'menu_2',
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.logout,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Text('Log Out'),
-                    ],
-                  ),
-                ),
-              ];
-            },
           ),
         ],
         centerTitle: true,

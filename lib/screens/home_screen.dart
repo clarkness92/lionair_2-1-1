@@ -452,6 +452,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void logout() {
     setState(() {
+      userapi = '';
+      passapi = '';
       data.clear();
       data1.clear();
       data2.clear();

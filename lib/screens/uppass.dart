@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:lionair_2/screens/profile.dart';
 import 'package:status_alert/status_alert.dart';
-import 'package:xml2json/xml2json.dart';
 import 'package:http/http.dart' as http;
 import '../constants.dart';
 import 'package:xml/xml.dart' as xml;

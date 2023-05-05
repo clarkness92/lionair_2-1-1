@@ -34,3 +34,9 @@ const url_OpenOTP = 'https://lgapvfncacc.com/otp/prc.asmx?op=OpenOTP';
 
 const url_UserWeb_UpdatePass =
     'https://lgapvfncacc.com/mess/prc.asmx?op=UserWeb_UpdatePass';
+
+const url_RATING_UpdateData =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_UpdateData';
+
+const url_RATING_GetDataByVIDX =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_GetDataByVIDX';

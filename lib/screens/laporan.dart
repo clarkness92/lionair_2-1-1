@@ -350,20 +350,6 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     }
   }
 
-  void logout() {
-    setState(() {
-      data.clear();
-      data1.clear();
-      data2.clear();
-      data3.clear();
-      data4.clear();
-      data5.clear();
-      data6.clear();
-    });
-
-    Navigator.pushReplacementNamed(context, 'login');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -371,6 +357,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
+            data4.clear();
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => LihatDataEmployee(
                 userapi: userapi,
