@@ -720,15 +720,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: 10),
-                            const Text(
+                            Text(
                               "WELCOME",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      MediaQuery.of(context).textScaleFactor *
+                                          20),
                             ),
                             const SizedBox(height: 20),
                             Text("Name : ${data[index]['namaasli']}".trim()),
                             const SizedBox(height: 5),
-                            Text("Username : ${data[index]['username']}"),
+                            Text(
+                                "Username : ${data[index]['username']}".trim()),
                             const SizedBox(height: 5),
                             Text("ID Employee : ${data[index]['idemployee']}"
                                 .trim()),
@@ -816,10 +820,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Pending Reservation",
                       style: TextStyle(
-                          fontSize: 30,
+                          fontSize: MediaQuery.of(context).textScaleFactor * 30,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline),
                     ),
@@ -846,10 +850,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Current Reservation",
                       style: TextStyle(
-                          fontSize: 30,
+                          fontSize: MediaQuery.of(context).textScaleFactor * 30,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline),
                     ),
@@ -906,10 +910,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: 10),
-                            const Text(
+                            Text(
                               "WELCOME",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      MediaQuery.of(context).textScaleFactor *
+                                          20),
                             ),
                             const SizedBox(height: 20),
                             Text("Name : ${data[index]['namaasli']}".trim()),
@@ -1003,10 +1010,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Pending Reservation",
                       style: TextStyle(
-                          fontSize: 30,
+                          fontSize: MediaQuery.of(context).textScaleFactor * 30,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline),
                     ),
@@ -1033,10 +1040,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Current Reservation",
                       style: TextStyle(
-                          fontSize: 30,
+                          fontSize: MediaQuery.of(context).textScaleFactor * 30,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline),
                     ),
@@ -1073,10 +1080,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   child: Row(children: [
                                                     Text(
                                                       "${data2[index]['idx']}",
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 18),
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .textScaleFactor *
+                                                              18),
                                                     ),
                                                     const Spacer(
                                                       flex: 1,
@@ -1125,43 +1135,53 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           Row(children: [
                                                             Text(
                                                               " ${data2[index]['areamess']}",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
-                                                                  fontSize: 12),
+                                                                  fontSize:
+                                                                      MediaQuery.of(context)
+                                                                              .textScaleFactor *
+                                                                          12),
                                                             )
                                                           ]),
                                                           Row(children: [
                                                             Text(
                                                               " ${data2[index]['blok']}",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
-                                                                  fontSize: 12),
+                                                                  fontSize:
+                                                                      MediaQuery.of(context)
+                                                                              .textScaleFactor *
+                                                                          12),
                                                             ),
                                                           ]),
                                                           Row(children: [
                                                             Text(
                                                               " ${data2[index]['nokamar']}",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
-                                                                  fontSize: 12),
+                                                                  fontSize:
+                                                                      MediaQuery.of(context)
+                                                                              .textScaleFactor *
+                                                                          12),
                                                             )
                                                           ]),
                                                           Row(
                                                             children: [
                                                               Text(
                                                                 " ${data2[index]['namabed']}",
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold,
                                                                     fontSize:
-                                                                        12),
+                                                                        MediaQuery.of(context).textScaleFactor *
+                                                                            12),
                                                               ),
                                                             ],
                                                           )
@@ -1199,11 +1219,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     width: 30,
                                                                     child:
                                                                         CircularProgressIndicator())
-                                                                : const Text(
+                                                                : Text(
                                                                     "COMPLAINT",
                                                                     style: TextStyle(
                                                                         fontSize:
-                                                                            11),
+                                                                            MediaQuery.of(context).textScaleFactor *
+                                                                                11),
                                                                   ),
                                                           ),
                                                         ),
@@ -1397,11 +1418,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       width: 30,
                                                                       child:
                                                                           CircularProgressIndicator())
-                                                                  : const Text(
+                                                                  : Text(
                                                                       "OTP",
                                                                       style: TextStyle(
                                                                           fontSize:
-                                                                              11),
+                                                                              MediaQuery.of(context).textScaleFactor * 11),
                                                                     ),
                                                             ),
                                                           ),
@@ -1451,10 +1472,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: 10),
-                            const Text(
+                            Text(
                               "WELCOME",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      MediaQuery.of(context).textScaleFactor *
+                                          20),
                             ),
                             const SizedBox(height: 20),
                             Text("Name : ${data[index]['namaasli']}".trim()),
@@ -1548,10 +1572,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Pending Reservation",
                       style: TextStyle(
-                          fontSize: 30,
+                          fontSize: MediaQuery.of(context).textScaleFactor * 30,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline),
                     ),
@@ -1595,10 +1619,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   child: Row(children: [
                                                     Text(
                                                       "${data1[index]['idx']}",
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 18),
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .textScaleFactor *
+                                                              18),
                                                     ),
                                                     const Spacer(
                                                       flex: 1,
@@ -1734,10 +1761,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Current Reservation",
                       style: TextStyle(
-                          fontSize: 30,
+                          fontSize: MediaQuery.of(context).textScaleFactor * 30,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline),
                     ),
@@ -1794,10 +1821,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: 10),
-                            const Text(
+                            Text(
                               "WELCOME",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      MediaQuery.of(context).textScaleFactor *
+                                          20),
                             ),
                             const SizedBox(height: 20),
                             Text("Name : ${data[index]['namaasli']}".trim()),
@@ -1891,10 +1921,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Pending Reservation",
                       style: TextStyle(
-                          fontSize: 30,
+                          fontSize: MediaQuery.of(context).textScaleFactor * 30,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline),
                     ),
@@ -1938,10 +1968,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   child: Row(children: [
                                                     Text(
                                                       "${data1[index]['idx']}",
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 18),
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .textScaleFactor *
+                                                              18),
                                                     ),
                                                     const Spacer(
                                                       flex: 1,
@@ -2077,10 +2110,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 40),
-                    const Text(
+                    Text(
                       "Current Reservation",
                       style: TextStyle(
-                          fontSize: 30,
+                          fontSize: MediaQuery.of(context).textScaleFactor * 30,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline),
                     ),
@@ -2117,10 +2150,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   child: Row(children: [
                                                     Text(
                                                       "${data2[index]['idx']}",
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          fontSize: 18),
+                                                          fontSize: MediaQuery.of(
+                                                                      context)
+                                                                  .textScaleFactor *
+                                                              18),
                                                     ),
                                                     const Spacer(
                                                       flex: 1,
@@ -2169,43 +2205,53 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           Row(children: [
                                                             Text(
                                                               " ${data2[index]['areamess']}",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
-                                                                  fontSize: 12),
+                                                                  fontSize:
+                                                                      MediaQuery.of(context)
+                                                                              .textScaleFactor *
+                                                                          12),
                                                             )
                                                           ]),
                                                           Row(children: [
                                                             Text(
                                                               " ${data2[index]['blok']}",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
-                                                                  fontSize: 12),
+                                                                  fontSize:
+                                                                      MediaQuery.of(context)
+                                                                              .textScaleFactor *
+                                                                          12),
                                                             ),
                                                           ]),
                                                           Row(children: [
                                                             Text(
                                                               " ${data2[index]['nokamar']}",
-                                                              style: const TextStyle(
+                                                              style: TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
-                                                                  fontSize: 12),
+                                                                  fontSize:
+                                                                      MediaQuery.of(context)
+                                                                              .textScaleFactor *
+                                                                          12),
                                                             )
                                                           ]),
                                                           Row(
                                                             children: [
                                                               Text(
                                                                 " ${data2[index]['namabed']}",
-                                                                style: const TextStyle(
+                                                                style: TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold,
                                                                     fontSize:
-                                                                        12),
+                                                                        MediaQuery.of(context).textScaleFactor *
+                                                                            12),
                                                               ),
                                                             ],
                                                           )
@@ -2243,11 +2289,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                     width: 30,
                                                                     child:
                                                                         CircularProgressIndicator())
-                                                                : const Text(
+                                                                : Text(
                                                                     "COMPLAINT",
                                                                     style: TextStyle(
                                                                         fontSize:
-                                                                            11),
+                                                                            MediaQuery.of(context).textScaleFactor *
+                                                                                11),
                                                                   ),
                                                           ),
                                                         ),
@@ -2441,11 +2488,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       width: 30,
                                                                       child:
                                                                           CircularProgressIndicator())
-                                                                  : const Text(
+                                                                  : Text(
                                                                       "OTP",
                                                                       style: TextStyle(
                                                                           fontSize:
-                                                                              11),
+                                                                              MediaQuery.of(context).textScaleFactor * 11),
                                                                     ),
                                                             ),
                                                           ),

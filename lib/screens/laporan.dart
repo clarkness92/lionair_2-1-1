@@ -404,8 +404,11 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                           const SizedBox(height: 10),
                           Text(
                             "${data4[index]['vidx']}",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize:
+                                    MediaQuery.of(context).textScaleFactor *
+                                        20),
                           ),
                           const SizedBox(height: 40),
                           Container(
@@ -413,7 +416,10 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
                             margin: const EdgeInsets.only(left: 10),
                             child: Text(
                               "Total Rows: ${data4.length}",
-                              style: const TextStyle(fontSize: 15),
+                              style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).textScaleFactor *
+                                          15),
                             ),
                           ),
                           SizedBox(

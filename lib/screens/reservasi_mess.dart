@@ -181,10 +181,11 @@ class _ReservasiMessState extends State<ReservasiMess> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Reservation",
-                      style:
-                          TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: MediaQuery.of(context).textScaleFactor * 35,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
                     Column(
@@ -193,14 +194,18 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         Text(
                           DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY)
                               .format(start),
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).textScaleFactor * 20),
                         ),
                         const SizedBox(height: 20),
                         const Text('End Date:'),
                         Text(
                           DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY)
                               .format(end),
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).textScaleFactor * 20),
                         ),
                       ],
                     ),

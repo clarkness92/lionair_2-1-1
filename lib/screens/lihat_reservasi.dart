@@ -445,9 +445,11 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                   children: [
                                     Text(
                                       "${data3[index]['idx']} ",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 18),
+                                          fontSize: MediaQuery.of(context)
+                                                  .textScaleFactor *
+                                              18),
                                     ),
                                     const Icon(
                                       Icons.copy_rounded,
@@ -504,35 +506,43 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                     Row(children: [
                                       Text(
                                         " ${data3[index]['areamess']}",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 12,
+                                          fontSize: MediaQuery.of(context)
+                                                  .textScaleFactor *
+                                              12,
                                         ),
                                       )
                                     ]),
                                     Row(children: [
                                       Text(
                                         " ${data3[index]['blok']}",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 12),
+                                            fontSize: MediaQuery.of(context)
+                                                    .textScaleFactor *
+                                                12),
                                       ),
                                     ]),
                                     Row(children: [
                                       Text(
                                         " ${data3[index]['nokamar']}",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 12),
+                                            fontSize: MediaQuery.of(context)
+                                                    .textScaleFactor *
+                                                12),
                                       )
                                     ]),
                                     Row(
                                       children: [
                                         Text(
                                           " ${data3[index]['namabed']}",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 12),
+                                              fontSize: MediaQuery.of(context)
+                                                      .textScaleFactor *
+                                                  12),
                                         ),
                                       ],
                                     )
@@ -562,9 +572,13 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                               width: 30,
                                               child:
                                                   CircularProgressIndicator())
-                                          : const Text(
+                                          : Text(
                                               "COMPLAINT",
-                                              style: TextStyle(fontSize: 11),
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      MediaQuery.of(context)
+                                                              .textScaleFactor *
+                                                          11),
                                             ),
                                     ),
                                   ],

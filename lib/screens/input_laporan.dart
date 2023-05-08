@@ -196,10 +196,11 @@ class _InputLaporanState extends State<InputLaporan> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Complaint",
-                      style:
-                          TextStyle(fontSize: 33, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: MediaQuery.of(context).textScaleFactor * 33,
+                          fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
@@ -208,7 +209,9 @@ class _InputLaporanState extends State<InputLaporan> {
                         const Text('Date'),
                         Text(
                           DateFormat('MMM dd, yyyy').format(selectDate),
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).textScaleFactor * 20),
                         ),
                       ],
                     ),
