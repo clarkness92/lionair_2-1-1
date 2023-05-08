@@ -101,6 +101,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
 
       for (final list_result in listResultAll4) {
         final idx = list_result.findElements('IDX').first.text;
+        final docstate = list_result.findElements('DOCSTATE').first.text;
         final idkamar = list_result.findElements('IDKAMAR').first.text;
         final areamess = list_result.findElements('AREAMESS').first.text;
         final blok = list_result.findElements('BLOK').first.text;
@@ -108,20 +109,35 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         final namabed = list_result.findElements('NAMABED').first.text;
         final bookin = list_result.findElements('BOOKIN').first.text;
         final bookout = list_result.findElements('BOOKOUT').first.text;
-        final checkin = list_result.findElements('CHECKIN').first.text;
-        final checkout = list_result.findElements('CHECKOUT').first.text;
-        temporaryList4.add({
-          'idx': idx,
-          'idkamar': idkamar,
-          'areamess': areamess,
-          'blok': blok,
-          'nokamar': nokamar,
-          'namabed': namabed,
-          'bookin': bookin,
-          'bookout': bookout,
-          'checkin': checkin,
-          'checkout': checkout
-        });
+        if (docstate == "VOID") {
+          temporaryList4.add({
+            'idx': idx,
+            'docstate': docstate,
+            'idkamar': idkamar,
+            'areamess': areamess,
+            'blok': blok,
+            'nokamar': nokamar,
+            'namabed': namabed,
+            'bookin': bookin,
+            'bookout': bookout,
+          });
+        } else {
+          final checkin = list_result.findElements('CHECKIN').first.text;
+          final checkout = list_result.findElements('CHECKOUT').first.text;
+          temporaryList4.add({
+            'idx': idx,
+            'docstate': docstate,
+            'idkamar': idkamar,
+            'areamess': areamess,
+            'blok': blok,
+            'nokamar': nokamar,
+            'namabed': namabed,
+            'bookin': bookin,
+            'bookout': bookout,
+            'checkin': checkin,
+            'checkout': checkout
+          });
+        }
         debugPrint("object 3.1");
         hasilJson = jsonEncode(temporaryList4);
 
@@ -603,25 +619,38 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                     ),
                                   ]),
                                   Row(children: [
-                                    Text(
-                                      DateFormat(' : MMM dd, yyyy').format(
-                                          DateTime.parse(
-                                                  data3[index]['checkin'])
-                                              .toLocal()),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                    data3[index]['checkin'] == null
+                                        ? const Text(
+                                            " : NULL",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : Text(
+                                            DateFormat(' : MMM dd, yyyy')
+                                                .format(DateTime.parse(
+                                                        data3[index]['checkin'])
+                                                    .toLocal()),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                   ]),
                                   Row(
                                     children: [
-                                      Text(
-                                        DateFormat(' : MMM dd, yyyy').format(
-                                            DateTime.parse(
-                                                    data3[index]['checkout'])
-                                                .toLocal()),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                      data3[index]['checkout'] == null
+                                          ? const Text(
+                                              " : NULL",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            )
+                                          : Text(
+                                              DateFormat(' : MMM dd, yyyy')
+                                                  .format(DateTime.parse(
+                                                          data3[index]
+                                                              ['checkout'])
+                                                      .toLocal()),
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                     ],
                                   ),
                                 ],
@@ -629,40 +658,72 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                               const Spacer(
                                 flex: 1,
                               ),
-                              Padding(
-                                // height: 48,
-                                // width: 95,
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            IconButton(
-                                              iconSize: 50,
-                                              icon: loading2
-                                                  ? const CircularProgressIndicator()
-                                                  : const Icon(Icons
-                                                      .sentiment_neutral_outlined),
-                                              color: const Color.fromARGB(
-                                                  255, 176, 176, 171),
-                                              onPressed: () async {
-                                                setState(() {
-                                                  loading2 = true;
-                                                });
-
-                                                getRating(vidx.text, index);
-                                              },
+                              data3[index]['docstate'] == "VOID"
+                                  ? Padding(
+                                      padding: EdgeInsets.all(
+                                          MediaQuery.of(context).size.width *
+                                              0.015),
+                                      child: Container(
+                                        width: 80,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                            border:
+                                                Border.all(color: Colors.red)),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Text(
+                                              "VOID",
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                            const Text("Rate Us"),
                                           ],
                                         ),
-                                      ],
+                                      ),
+                                    )
+                                  : Padding(
+                                      // height: 48,
+                                      // width: 95,
+                                      padding: EdgeInsets.only(
+                                          right: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.035),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  IconButton(
+                                                    iconSize: 50,
+                                                    icon: loading2
+                                                        ? const CircularProgressIndicator()
+                                                        : const Icon(Icons
+                                                            .sentiment_neutral_outlined),
+                                                    color: const Color.fromARGB(
+                                                        255, 176, 176, 171),
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        loading2 = true;
+                                                      });
+
+                                                      getRating(
+                                                          vidx.text, index);
+                                                    },
+                                                  ),
+                                                  const Text("Rate Us"),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ),
                             ],
                           ),
                         ],

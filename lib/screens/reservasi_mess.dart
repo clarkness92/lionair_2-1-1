@@ -253,7 +253,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         labelText: "Gender",
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 30),
                     TextField(
                       maxLength: 20,
                       controller: necessary,
@@ -264,7 +264,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         labelText: 'Necessary',
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 20),
                     TextField(
                       maxLength: 20,
                       controller: notes,
