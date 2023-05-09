@@ -60,11 +60,10 @@ class _LihatRatingState extends State<LihatRating> {
   TextEditingController idpegawai = TextEditingController();
   TextEditingController vidx = TextEditingController();
   TextEditingController _rating = TextEditingController();
-  TextEditingController idx = TextEditingController();
 
-  void updateRating(String _rating, String idx, index) async {
+  void updateRating(String _rating, index) async {
     final temporaryList9 = [];
-    idx = data3[index]['idx'];
+    String idx = data7[index]['idx'];
     _rating = String.fromCharCode(ratingBaru.round() + 48);
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -87,6 +86,7 @@ class _LihatRatingState extends State<LihatRating> {
           'Content-type': 'text/xml; charset=utf-8'
         },
         body: objBody);
+    print(objBody);
 
     if (response.statusCode == 200) {
       final responseBody = response.body;
@@ -182,7 +182,50 @@ class _LihatRatingState extends State<LihatRating> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             Text(
-                              '${data7[index]['idx']}',
+                              '${data7[index]['name']}',
+                            ),
+                            RatingBar.builder(
+                              initialRating: 0,
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                switch (index) {
+                                  case 0:
+                                    return const Icon(
+                                      Icons.sentiment_very_dissatisfied,
+                                      color: Colors.red,
+                                    );
+
+                                  case 1:
+                                    return const Icon(
+                                      Icons.sentiment_dissatisfied,
+                                      color: Colors.redAccent,
+                                    );
+                                  case 2:
+                                    return const Icon(
+                                      Icons.sentiment_neutral,
+                                      color: Colors.amber,
+                                    );
+                                  case 3:
+                                    return const Icon(
+                                      Icons.sentiment_satisfied,
+                                      color: Colors.lightGreen,
+                                    );
+                                  case 4:
+                                    return const Icon(
+                                      Icons.sentiment_very_satisfied,
+                                      color: Colors.green,
+                                    );
+                                  default:
+                                    return Container();
+                                }
+                              },
+                              onRatingUpdate: (rating) {
+                                setState(() {
+                                  ratingBaru = rating;
+                                  // print(rating);
+                                });
+                                updateRating(_rating.text, index);
+                              },
                             ),
                           ],
                         ),
