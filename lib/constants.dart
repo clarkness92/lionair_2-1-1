@@ -1,40 +1,45 @@
-// ignore: constant_identifier_names
+// ignore_for_file: constant_identifier_names
+
 const url_CekUser = 'https://lgapvfncacc.com/mess/prc.asmx?op=CekUser';
 
-// ignore: constant_identifier_names
 const url_InputWebReservation =
     'https://lgapvfncacc.com/mess/prc.asmx?op=InputWebReservation';
 
-// ignore: constant_identifier_names
 const url_GetReservationByIDSTaffPending =
     'https://lgapvfncacc.com/mess/prc.asmx?op=GetReservationByIDSTaffPending';
 
-// ignore: constant_identifier_names
 const url_Checktime_GetCurrentStay =
     'https://lgapvfncacc.com/mess/prc.asmx?op=Checktime_GetCurrentStay';
 
-// ignore: constant_identifier_names
 const url_Checktime_GetHistoryStay =
     'https://lgapvfncacc.com/mess/prc.asmx?op=Checktime_GetHistoryStay';
 
-// ignore: constant_identifier_names
 const url_TenantReport_Entry =
     'https://lgapvfncacc.com/mess/prc.asmx?op=TenantReport_Entry';
 
-// ignore: constant_identifier_names
 const url_TenantReport_GetDataVIDX =
     'https://lgapvfncacc.com/mess/prc.asmx?op=TenantReport_GetDataVIDX';
 
-// ignore: constant_identifier_names
 const url_File_Entry = 'https://lgapvfncacc.com/mess/prc.asmx?op=File_Entry';
 
-// ignore: constant_identifier_names
+const url_File_GetDataFromIDFile =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=File_GetDataFromIDFile';
+
 const url_File_GetDataFromIDReff =
     'https://lgapvfncacc.com/mess/prc.asmx?op=File_GetDataFromIDReff';
 
-// ignore: constant_identifier_names
-// const url_RATING_InsertData =
-//     'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_InsertData';
+const url_GetOTPWA = 'https://lgapvfncacc.com/otp/prc.asmx?op=GetOTPWA';
+
+const url_OpenOTP = 'https://lgapvfncacc.com/otp/prc.asmx?op=OpenOTP';
+
+const url_UserWeb_UpdatePass =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=UserWeb_UpdatePass';
+
+const url_RATING_UpdateData =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_UpdateData';
+
+const url_RATING_GetDataByVIDX =
+    'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_GetDataByVIDX';
 
 // ignore: constant_identifier_names
 const url_RATING_UpdateData =

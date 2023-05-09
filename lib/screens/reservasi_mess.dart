@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables, no_logic_in_create_state, unused_field, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import "dart:async";
 import "package:intl/intl.dart";
@@ -53,8 +55,8 @@ class _ReservasiMessState extends State<ReservasiMess> {
 
   final TextEditingController destination = TextEditingController();
   final TextEditingController gender = TextEditingController();
-  final TextEditingController notes = TextEditingController();
   final TextEditingController necessary = TextEditingController();
+  final TextEditingController notes = TextEditingController();
 
   DateTimeRange dateRange = DateTimeRange(
     start: DateTime.now(),
@@ -125,6 +127,21 @@ class _ReservasiMessState extends State<ReservasiMess> {
           .single
           .text;
       debugPrint('Result: $result');
+      StatusAlert.show(context,
+          duration: const Duration(seconds: 1),
+          configuration:
+              const IconConfiguration(icon: Icons.done, color: Colors.green),
+          title: "Input Data Success",
+          subtitle: "Please Refresh!!",
+          backgroundColor: Colors.grey[300]);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomeScreen(
+            userapi: userapi,
+            passapi: passapi,
+            data: data,
+            data1: data1,
+            data2: data2),
+      ));
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -135,6 +152,9 @@ class _ReservasiMessState extends State<ReservasiMess> {
         title: "Input Data1 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -162,10 +182,11 @@ class _ReservasiMessState extends State<ReservasiMess> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Reservation",
-                      style:
-                          TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: MediaQuery.of(context).textScaleFactor * 35,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
                     Column(
@@ -174,14 +195,18 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         Text(
                           DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY)
                               .format(start),
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).textScaleFactor * 20),
                         ),
                         const SizedBox(height: 20),
                         const Text('End Date:'),
                         Text(
                           DateFormat(DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY)
                               .format(end),
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).textScaleFactor * 20),
                         ),
                       ],
                     ),
@@ -234,7 +259,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         labelText: "Gender",
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 30),
                     TextField(
                       maxLength: 20,
                       controller: necessary,
@@ -245,7 +270,7 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         labelText: 'Necessary',
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 20),
                     TextField(
                       maxLength: 20,
                       controller: notes,
@@ -271,21 +296,6 @@ class _ReservasiMessState extends State<ReservasiMess> {
                         } else {
                           _sendReservation(
                               gender.text, necessary.text, notes.text);
-                          StatusAlert.show(context,
-                              duration: const Duration(seconds: 1),
-                              configuration: const IconConfiguration(
-                                  icon: Icons.done, color: Colors.green),
-                              title: "Input Data Success",
-                              subtitle: "Please Refresh!!",
-                              backgroundColor: Colors.grey[300]);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => HomeScreen(
-                                userapi: userapi,
-                                passapi: passapi,
-                                data: data,
-                                data1: data1,
-                                data2: data2),
-                          ));
                         }
                       },
                       child: const Text("Submit"),

@@ -1,7 +1,10 @@
+// ignore_for_file: library_prefixes, depend_on_referenced_packages, must_be_immutable, prefer_typing_uninitialized_variables, no_logic_in_create_state, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, non_constant_identifier_names, use_build_context_synchronously
+
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lionair_2/screens/images.dart';
 import 'package:lionair_2/screens/lihat_reservasi.dart';
 import 'package:status_alert/status_alert.dart';
 import '../constants.dart';
@@ -61,6 +64,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
 
   bool loading = false;
   bool loading1 = false;
+  bool loading2 = false;
 
   List data = [];
   List data1 = [];
@@ -68,18 +72,20 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
   List data3 = [];
   List data4 = [];
   List data5 = [];
+  List data6 = [];
   List dataBaru4 = [];
-  List dataBaru5 = [];
   var hasilJson;
   var vidx4;
   var bookin3;
   var bookout3;
   var userapi;
   var passapi;
+  var idreffbaru;
 
   TextEditingController destination = TextEditingController();
   TextEditingController vidx = TextEditingController();
-  TextEditingController idx = TextEditingController();
+  TextEditingController idreff = TextEditingController();
+  TextEditingController idfile = TextEditingController();
 
   void _getImage() async {
     final picker = ImagePicker();
@@ -182,6 +188,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         title: "Update4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       dataBaru4 = temporaryList6;
@@ -190,9 +199,9 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
     });
   }
 
-  void viewImage(String idx, index) async {
+  void getIDFile(String idreff, index) async {
     final temporaryList7 = [];
-    String idreff = data4[index]['idx'];
+    idreff = data4[index]['idx'];
 
     String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
         '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
@@ -240,47 +249,22 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       }
 
       Future.delayed(const Duration(seconds: 3), () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                content: Stack(
-                  clipBehavior: Clip.none,
-                  children: <Widget>[
-                    Positioned(
-                      right: -40.0,
-                      top: -40.0,
-                      child: InkResponse(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.red,
-                          child: Icon(Icons.close),
-                        ),
-                      ),
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: data5.isEmpty
-                              ? const Center(
-                                  child: Text(
-                                  "No Image",
-                                  style: TextStyle(color: Colors.black54),
-                                ))
-                              : SizedBox(
-                                  child: Text("${data5[index]['filename']}"),
-                                ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            });
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Lihatgambar(
+            userapi: userapi,
+            passapi: passapi,
+            data: data,
+            data1: data1,
+            data2: data2,
+            data3: data3,
+            data4: data4,
+            data5: data5,
+            idreff5: idreffbaru,
+            vidx4: vidx4,
+            bookin3: bookin3,
+            bookout3: bookout3,
+          ),
+        ));
         setState(() {
           loading1 = false;
         });
@@ -295,9 +279,13 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         title: "Get Data5 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading1 = false;
+      });
     }
     setState(() {
-      dataBaru5 = temporaryList7;
+      data5 = temporaryList7;
+      idreffbaru = idreff;
       loading1 = true;
       // debugPrint('$dataBaru4');
     });
@@ -305,7 +293,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
 
   void addImage(index) async {
     String namaasli = data[0]['namaasli'];
-    String idx = data4[index]['idx'];
+    String idreff = data4[index]['idx'];
     String kategori = data4[index]['category'];
     String base64Image = base64Encode(_image!.readAsBytesSync());
     String filename = Path.basename(_image!.path);
@@ -317,7 +305,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         '<UsernameApi>$userapi</UsernameApi>' +
         '<PasswordApi>$passapi</PasswordApi>' +
         '<DESTINATION>BLJ</DESTINATION>' +
-        '<IDREFF>$idx</IDREFF>' +
+        '<IDREFF>$idreff</IDREFF>' +
         '<FILENAME>$filename</FILENAME>' +
         '<FILEBYTE>$base64Image</FILEBYTE>' +
         '<FILECAT>$kategori</FILECAT>' +
@@ -340,6 +328,12 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
       final parsedResponse = xml.XmlDocument.parse(responseBody);
       final result = parsedResponse.findAllElements('_x002D_').single.text;
       debugPrint('Result: $result');
+      StatusAlert.show(context,
+          duration: const Duration(seconds: 1),
+          configuration:
+              const IconConfiguration(icon: Icons.done, color: Colors.green),
+          title: "Success",
+          backgroundColor: Colors.grey[300]);
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -350,15 +344,10 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         title: "Input Data5 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
-  }
-
-  logout1() {
-    data.clear();
-    data1.clear();
-    data2.clear();
-    data3.clear();
-    data4.clear();
   }
 
   @override
@@ -368,6 +357,7 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
+            data4.clear();
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => LihatDataEmployee(
                 userapi: userapi,
@@ -379,7 +369,6 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
               ),
             ));
           },
-          tooltip: "Home Screen",
         ),
         title: const Text("Complaint"),
         actions: <Widget>[
@@ -393,197 +382,214 @@ class _Lihatlaporanstate extends State<Lihatlaporan> {
             },
             tooltip: "Refresh Data",
           ),
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: () async {
-              await logout1();
-              Navigator.pushReplacementNamed(context, 'login');
-            },
-            tooltip: "Logout",
-          ),
         ],
         centerTitle: true,
         backgroundColor: Colors.redAccent,
       ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        key: _formKey,
-        itemCount: 1,
-        itemBuilder: (context, index) {
-          data5 = dataBaru5;
-          if (data4.isEmpty) {
-            return Center(
-                child: loading
-                    ? const CircularProgressIndicator()
-                    : const Text("No Data"));
-          } else {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: <Widget>[
-                    const SizedBox(height: 10),
-                    Text(
-                      "${data4[index]['vidx']}",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    const SizedBox(height: 40),
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      margin: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        "Total Rows: ${data4.length}",
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.72,
-                      // width: 300,
-                      child: DataTable2(
-                        columnSpacing: 1,
-                        horizontalMargin: 10,
-                        minWidth: 1303,
-                        columns: const [
-                          DataColumn(label: Text("IDX")),
-                          DataColumn(label: Text("Category")),
-                          DataColumn(label: Text("Date")),
-                          DataColumn2(
-                              label: Text("Description"), size: ColumnSize.L),
-                          DataColumn2(
-                              label: Text("Resolution"), size: ColumnSize.L),
-                          DataColumn2(
-                              label: Text("Status"), size: ColumnSize.S),
-                          DataColumn2(label: Text("Image"), size: ColumnSize.L),
-                        ],
-                        rows: List<DataRow>.generate(
-                          data4.length,
-                          (index) => DataRow(
-                            color: MaterialStateProperty.resolveWith<Color?>(
-                                (Set<MaterialState> states) {
-                              // Even rows will have a grey color.
-                              if (index.isOdd) {
-                                return Colors.grey.withOpacity(0.3);
-                              }
-                              return null; // Use default value for other states and odd rows.
-                            }),
-                            cells: <DataCell>[
-                              DataCell(Text("${data4[index]['idx']}")),
-                              DataCell(Text("${data4[index]['category']}")),
-                              DataCell(Text(DateFormat('MMM d, yyyy').format(
-                                  DateTime.parse(data4[index]['date'])
-                                      .toLocal()))),
-                              DataCell(Text("${data4[index]['description']}")),
-                              DataCell(Text("${data4[index]['resolution']}")),
-                              DataCell(Text(
-                                "${data4[index]['status']}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red),
-                              )),
-                              DataCell(
-                                TextButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: Stack(
-                                              clipBehavior: Clip.none,
-                                              children: <Widget>[
-                                                Positioned(
-                                                  right: -40.0,
-                                                  top: -40.0,
-                                                  child: InkResponse(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const CircleAvatar(
-                                                      backgroundColor:
-                                                          Colors.red,
-                                                      child: Icon(Icons.close),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    ListTile(
-                                                      leading: const Icon(
-                                                          Icons.photo_library),
-                                                      title: const Text(
-                                                          'Choose Image'),
-                                                      onTap: () {
-                                                        _getImage();
-                                                      },
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              10),
-                                                      child: ElevatedButton(
-                                                        child: const Text(
-                                                            "Submit"),
-                                                        onPressed: () {
-                                                          addImage(index);
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
+      body: loading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              shrinkWrap: true,
+              key: _formKey,
+              itemCount: 1,
+              itemBuilder: (context, index) {
+                if (data4.isEmpty) {
+                  return const Center(child: Text("No Data"));
+                } else {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 10),
+                          Text(
+                            "${data4[index]['vidx']}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize:
+                                    MediaQuery.of(context).textScaleFactor *
+                                        20),
+                          ),
+                          const SizedBox(height: 40),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            margin: const EdgeInsets.only(left: 10),
+                            child: Text(
+                              "Total Rows: ${data4.length}",
+                              style: TextStyle(
+                                  fontSize:
+                                      MediaQuery.of(context).textScaleFactor *
+                                          15),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.72,
+                            // width: 300,
+                            child: DataTable2(
+                              columnSpacing: 1,
+                              horizontalMargin: 10,
+                              minWidth: 1303,
+                              columns: const [
+                                DataColumn(label: Text("IDX")),
+                                DataColumn(label: Text("Category")),
+                                DataColumn(label: Text("Date")),
+                                DataColumn2(
+                                    label: Text("Description"),
+                                    size: ColumnSize.L),
+                                DataColumn2(
+                                    label: Text("Resolution"),
+                                    size: ColumnSize.L),
+                                DataColumn2(
+                                    label: Text("Status"), size: ColumnSize.S),
+                                DataColumn2(
+                                    label: Text("Image"), size: ColumnSize.L),
+                              ],
+                              rows: List<DataRow>.generate(
+                                data4.length,
+                                (index) => DataRow(
+                                  color:
+                                      MaterialStateProperty.resolveWith<Color?>(
+                                          (Set<MaterialState> states) {
+                                    // Even rows will have a grey color.
+                                    if (index.isOdd) {
+                                      return Colors.grey.withOpacity(0.3);
+                                    }
+                                    return null; // Use default value for other states and odd rows.
+                                  }),
+                                  cells: <DataCell>[
+                                    DataCell(Text("${data4[index]['idx']}")),
+                                    DataCell(
+                                        Text("${data4[index]['category']}")),
+                                    DataCell(Text(DateFormat('MMM d, yyyy')
+                                        .format(
+                                            DateTime.parse(data4[index]['date'])
+                                                .toLocal()))),
+                                    DataCell(
+                                        Text("${data4[index]['description']}")),
+                                    DataCell(
+                                        Text("${data4[index]['resolution']}")),
+                                    DataCell(Text(
+                                      "${data4[index]['status']}",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red),
+                                    )),
+                                    DataCell(
+                                      TextButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  content: Stack(
+                                                    clipBehavior: Clip.none,
+                                                    children: <Widget>[
+                                                      Positioned(
+                                                        right: -40.0,
+                                                        top: -40.0,
+                                                        child: InkResponse(
+                                                          onTap: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child:
+                                                              const CircleAvatar(
+                                                            backgroundColor:
+                                                                Colors.red,
+                                                            child: Icon(
+                                                                Icons.close),
+                                                          ),
+                                                        ),
                                                       ),
-                                                    )
-                                                  ],
+                                                      Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: <Widget>[
+                                                          ListTile(
+                                                            leading: const Icon(
+                                                                Icons
+                                                                    .photo_library),
+                                                            title: const Text(
+                                                                'Choose Image'),
+                                                            onTap: () {
+                                                              _getImage();
+                                                            },
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10),
+                                                            child:
+                                                                ElevatedButton(
+                                                              child: const Text(
+                                                                  "Submit"),
+                                                              onPressed: () {
+                                                                addImage(index);
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                        child: Row(children: <Widget>[
+                                          Column(
+                                            children: [
+                                              Row(children: const <Widget>[
+                                                Icon(
+                                                  Icons.photo_library,
+                                                  color: Colors.grey,
                                                 ),
-                                              ],
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  "Choose Image",
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ]),
+                                            ],
+                                          ),
+                                          const SizedBox(width: 5),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.redAccent,
                                             ),
-                                          );
-                                        });
-                                  },
-                                  child: Row(children: <Widget>[
-                                    const Icon(
-                                      Icons.photo_library,
-                                      color: Colors.grey,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    const Text(
-                                      "Choose Image",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    const SizedBox(width: 5),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.redAccent,
+                                            onPressed: () async {
+                                              setState(() {
+                                                loading1 = true;
+                                              });
+                                              getIDFile(idreff.text, index);
+                                            },
+                                            child: loading1
+                                                ? const SizedBox(
+                                                    height: 20,
+                                                    width: 22,
+                                                    child:
+                                                        CircularProgressIndicator())
+                                                : const Text("View"),
+                                          ),
+                                        ]),
                                       ),
-                                      onPressed: () async {
-                                        setState(() {
-                                          loading1 = true;
-                                        });
-                                        viewImage(idx.text, index);
-                                      },
-                                      child: loading1
-                                          ? const SizedBox(
-                                              height: 20,
-                                              width: 22,
-                                              child:
-                                                  CircularProgressIndicator())
-                                          : const Text("View"),
                                     ),
-                                  ]),
+                                  ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            );
-          }
-        },
-      ),
+                  );
+                }
+              },
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(

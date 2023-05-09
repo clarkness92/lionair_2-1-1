@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables, no_logic_in_create_state, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, non_constant_identifier_names, use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -49,8 +51,6 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
   List data2 = [];
   List data3 = [];
   List data4 = [];
-  List data5 = [];
-  List data7 = [];
   List dataBaru3 = [];
   var hasilJson;
   var vidxBaru;
@@ -103,6 +103,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
 
       for (final list_result in listResultAll4) {
         final idx = list_result.findElements('IDX').first.text;
+        final docstate = list_result.findElements('DOCSTATE').first.text;
         final idkamar = list_result.findElements('IDKAMAR').first.text;
         final areamess = list_result.findElements('AREAMESS').first.text;
         final blok = list_result.findElements('BLOK').first.text;
@@ -110,20 +111,35 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         final namabed = list_result.findElements('NAMABED').first.text;
         final bookin = list_result.findElements('BOOKIN').first.text;
         final bookout = list_result.findElements('BOOKOUT').first.text;
-        final checkin = list_result.findElements('CHECKIN').first.text;
-        final checkout = list_result.findElements('CHECKOUT').first.text;
-        temporaryList4.add({
-          'idx': idx,
-          'idkamar': idkamar,
-          'areamess': areamess,
-          'blok': blok,
-          'nokamar': nokamar,
-          'namabed': namabed,
-          'bookin': bookin,
-          'bookout': bookout,
-          'checkin': checkin,
-          'checkout': checkout
-        });
+        if (docstate == "VOID") {
+          temporaryList4.add({
+            'idx': idx,
+            'docstate': docstate,
+            'idkamar': idkamar,
+            'areamess': areamess,
+            'blok': blok,
+            'nokamar': nokamar,
+            'namabed': namabed,
+            'bookin': bookin,
+            'bookout': bookout,
+          });
+        } else {
+          final checkin = list_result.findElements('CHECKIN').first.text;
+          final checkout = list_result.findElements('CHECKOUT').first.text;
+          temporaryList4.add({
+            'idx': idx,
+            'docstate': docstate,
+            'idkamar': idkamar,
+            'areamess': areamess,
+            'blok': blok,
+            'nokamar': nokamar,
+            'namabed': namabed,
+            'bookin': bookin,
+            'bookout': bookout,
+            'checkin': checkin,
+            'checkout': checkout
+          });
+        }
         debugPrint("object 3.1");
         hasilJson = jsonEncode(temporaryList4);
 
@@ -157,6 +173,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         title: "Update3 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       dataBaru3 = temporaryList4;
@@ -256,6 +275,9 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
         title: "Get Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
     setState(() {
       data4 = temporaryList5;
@@ -263,93 +285,6 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
       bookinBaru = bookin;
       bookoutBaru = bookout;
       loading1 = true;
-    });
-  }
-
-  void getRating(String vidx, index) async {
-    final temporaryList10 = [];
-    vidx = data3[index]['idx'];
-
-    String objBody = '<?xml version="1.0" encoding="utf-8"?>' +
-        '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">' +
-        '<soap:Body>' +
-        '<RATING_GetDataByVIDX xmlns="http://tempuri.org/">' +
-        '<UsernameAPI>$userapi</UsernameAPI>' +
-        '<PasswordAPI>$passapi</PasswordAPI>' +
-        '<Destination>BLJ</Destination>' +
-        '<VIDX>$vidx</VIDX>' +
-        '</RATING_GetDataByVIDX>' +
-        '</soap:Body>' +
-        '</soap:Envelope>';
-
-    final response = await http.post(Uri.parse(url_RATING_GetDataByVIDX),
-        headers: <String, String>{
-          "Access-Control-Allow-Origin": "*",
-          'SOAPAction': 'http://tempuri.org/RATING_GetDataByVIDX',
-          "Access-Control-Allow-Credentials": "true",
-          'Content-type': 'text/xml; charset=utf-8',
-        },
-        body: objBody);
-
-    if (response.statusCode == 200) {
-      final document = xml.XmlDocument.parse(response.body);
-
-      // debugPrint("=================");
-      // debugPrint(
-      //     "document.toXmlString : ${document.toXmlString(pretty: true, indent: '\t')}");
-      // debugPrint("=================");
-
-      final listResultAll5 = document.findAllElements('_x002D_');
-
-      for (final list_result in listResultAll5) {
-        final idx = list_result.findElements('IDX').first.text;
-        final name = list_result.findElements('NAME').first.text;
-        final rating = list_result.findElements('RATING').first.text;
-
-        temporaryList10.add({
-          'idx': idx,
-          'rating': rating,
-          'name': name,
-        });
-        debugPrint("object 10");
-        hasilJson = jsonEncode(temporaryList10);
-
-        debugPrint(hasilJson);
-        debugPrint("object_hasilJson 10");
-      }
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => LihatRating(
-            userapi: userapi,
-            passapi: passapi,
-            data: data,
-            data1: data1,
-            data2: data2,
-            data3: data3,
-            data7: data7,
-          ),
-        ));
-        setState(() {
-          loading2 = false;
-        });
-      });
-    } else {
-      debugPrint('Error: ${response.statusCode}');
-      StatusAlert.show(
-        context,
-        duration: const Duration(seconds: 1),
-        configuration:
-            const IconConfiguration(icon: Icons.error, color: Colors.red),
-        title: "Get Data10 Failed, ${response.statusCode}",
-        backgroundColor: Colors.grey[300],
-      );
-      setState(() {
-        loading2 = false;
-      });
-    }
-    setState(() {
-      data7 = temporaryList10;
-      loading2 = true;
     });
   }
 
@@ -366,7 +301,7 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.home, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => HomeScreen(
@@ -378,7 +313,6 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
               ),
             ));
           },
-          tooltip: "Home Screen",
         ),
         title: const Text("Reservation History"),
         actions: <Widget>[
@@ -391,14 +325,6 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
               updateData3(destination.text, idpegawai.text);
             },
             tooltip: "Refresh Data",
-          ),
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
-            onPressed: () async {
-              await logout();
-              Navigator.pushReplacementNamed(context, 'login');
-            },
-            tooltip: "Logout",
           ),
         ],
         centerTitle: true,
@@ -629,44 +555,6 @@ class _LihatDataEmployeeState extends State<LihatDataEmployee> {
                                       ],
                                     ),
                                   ],
-                                ),
-                                //Try SPACER
-                                const Spacer(
-                                  flex: 1,
-                                ),
-                                Padding(
-                                  // height: 48,
-                                  // width: 95,
-                                  padding: EdgeInsets.only(right: 20),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Column(
-                                            children: [
-                                              IconButton(
-                                                iconSize: 50,
-                                                icon: loading2
-                                                    ? const CircularProgressIndicator()
-                                                    : const Icon(Icons
-                                                        .sentiment_neutral_outlined),
-                                                color: Color.fromARGB(
-                                                    255, 176, 176, 171),
-                                                onPressed: () async {
-                                                  setState(() {
-                                                    loading2 = true;
-                                                  });
-
-                                                  getRating(vidx.text, index);
-                                                },
-                                              ),
-                                              const Text("Rate Us"),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
                                 ),
                               ],
                             ),

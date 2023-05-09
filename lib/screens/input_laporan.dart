@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables, no_logic_in_create_state, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, use_build_context_synchronously
+
 import "dart:async";
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
@@ -136,6 +138,26 @@ class _InputLaporanState extends State<InputLaporan> {
       final parsedResponse = xml.XmlDocument.parse(responseBody);
       final result = parsedResponse.findAllElements('_x002D_').single.text;
       debugPrint('Result: $result');
+      StatusAlert.show(context,
+          duration: const Duration(seconds: 1),
+          configuration:
+              const IconConfiguration(icon: Icons.done, color: Colors.green),
+          title: "Input Data Success",
+          subtitle: "Please Refresh!!",
+          backgroundColor: Colors.grey[300]);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Lihatlaporan(
+            userapi: userapi,
+            passapi: passapi,
+            data: data,
+            data1: data1,
+            data2: data2,
+            data3: data3,
+            data4: data4,
+            vidx4: vidx4,
+            bookin3: bookin3,
+            bookout3: bookout3),
+      ));
     } else {
       debugPrint('Error: ${response.statusCode}');
       StatusAlert.show(
@@ -146,6 +168,9 @@ class _InputLaporanState extends State<InputLaporan> {
         title: "Input Data4 Failed, ${response.statusCode}",
         backgroundColor: Colors.grey[300],
       );
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -171,10 +196,11 @@ class _InputLaporanState extends State<InputLaporan> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Complaint",
-                      style:
-                          TextStyle(fontSize: 33, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: MediaQuery.of(context).textScaleFactor * 33,
+                          fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
@@ -183,7 +209,9 @@ class _InputLaporanState extends State<InputLaporan> {
                         const Text('Date'),
                         Text(
                           DateFormat('MMM dd, yyyy').format(selectDate),
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                              fontSize:
+                                  MediaQuery.of(context).textScaleFactor * 20),
                         ),
                       ],
                     ),
@@ -288,26 +316,6 @@ class _InputLaporanState extends State<InputLaporan> {
                           );
                         } else {
                           _addReport(vidx.text, description.text);
-                          StatusAlert.show(context,
-                              duration: const Duration(seconds: 1),
-                              configuration: const IconConfiguration(
-                                  icon: Icons.done, color: Colors.green),
-                              title: "Input Data Success",
-                              subtitle: "Please Refresh!!",
-                              backgroundColor: Colors.grey[300]);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Lihatlaporan(
-                                userapi: userapi,
-                                passapi: passapi,
-                                data: data,
-                                data1: data1,
-                                data2: data2,
-                                data3: data3,
-                                data4: data4,
-                                vidx4: vidx4,
-                                bookin3: bookin3,
-                                bookout3: bookout3),
-                          ));
                         }
                       },
                       child: const Text("Submit"),

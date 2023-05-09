@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:lionair_2/providers/user_provider.dart';
 import 'package:lionair_2/screens/home_screen.dart';
+import 'package:lionair_2/screens/images.dart';
 import 'package:lionair_2/screens/input_laporan.dart';
 import 'package:lionair_2/screens/login_screen.dart';
 import 'package:lionair_2/screens/notification.dart';
-import 'package:lionair_2/screens/rating.dart';
+import 'package:lionair_2/screens/profile.dart';
 import 'package:lionair_2/screens/reservasi_mess.dart';
 import 'package:lionair_2/screens/register.dart';
+import 'package:lionair_2/screens/splash_screen.dart';
+import 'package:lionair_2/screens/upemail.dart';
+import 'package:lionair_2/screens/uppass.dart';
+import 'package:lionair_2/screens/rating.dart';
 import 'package:provider/provider.dart';
 import 'screens/laporan.dart';
 import 'screens/lihat_reservasi.dart';
@@ -31,7 +36,37 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Lion Reservation',
         routes: {
+          'splash': (_) => const SplashScreen(),
           'login': (_) => const LoginScreen(),
+          'register': (_) => const RegisterScreen(),
+          'home': (_) => HomeScreen(
+                userapi: '',
+                passapi: '',
+                data: '',
+                data1: '',
+                data2: '',
+              ),
+          'profile': (_) => UserProfile(
+                userapi: '',
+                passapi: '',
+                data: '',
+                data1: '',
+                data2: '',
+              ),
+          'upemail': (_) => UpdateEmail(
+                userapi: '',
+                passapi: '',
+                data: '',
+                data1: '',
+                data2: '',
+              ),
+          'uppass': (_) => UpdatePassword(
+                userapi: '',
+                passapi: '',
+                data: '',
+                data1: '',
+                data2: '',
+              ),
           'reservasi_mess': (_) => ReservasiMess(
                 userapi: '',
                 passapi: '',
@@ -46,6 +81,15 @@ class MyApp extends StatelessWidget {
                 data1: '',
                 data2: '',
                 data3: '',
+              ),
+          'rating': (_) => LihatRating(
+                userapi: '',
+                passapi: '',
+                data: '',
+                data1: '',
+                data2: '',
+                data3: '',
+                data7: '',
               ),
           'input_laporan': (_) => InputLaporan(
                 userapi: '',
@@ -71,25 +115,23 @@ class MyApp extends StatelessWidget {
                 bookin3: '',
                 bookout3: '',
               ),
-          'home': (_) => HomeScreen(
-                userapi: '',
-                passapi: '',
-                data: '',
-                data1: '',
-                data2: '',
-              ),
-          'rating': (_) => LihatRating(
+          'gambar': (_) => Lihatgambar(
                 userapi: '',
                 passapi: '',
                 data: '',
                 data1: '',
                 data2: '',
                 data3: '',
-                data7: '',
+                data4: '',
+                data5: '',
+                idreff5: '',
+                vidx4: '',
+                bookin3: '',
+                bookout3: '',
               ),
           'register': (_) => const RegisterScreen(),
         },
-        initialRoute: 'login',
+        initialRoute: 'splash',
       ),
     );
   }

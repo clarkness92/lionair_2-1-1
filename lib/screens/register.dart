@@ -1,6 +1,5 @@
 // import 'dart:ffi';
-
-// import 'dart:ffi';
+// ignore_for_file: unused_field, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

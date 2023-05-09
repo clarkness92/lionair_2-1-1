@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -76,12 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
         final idemployee = list_result.findElements('IDEMPLOYEE').first.text;
         final namaasli = list_result.findElements('NAMAASLI').first.text;
         final division = list_result.findElements('DIVISION').first.text;
+        final email = list_result.findElements('EMAIL').first.text;
+        final phone = list_result.findElements('PHONE').first.text;
         final gender = list_result.findElements('GENDER').first.text;
         temporaryList.add({
           'username': username,
           'idemployee': idemployee,
           'namaasli': namaasli,
           'division': division,
+          'email': email,
+          'phone': phone,
           'gender': gender,
         });
         debugPrint("object");
