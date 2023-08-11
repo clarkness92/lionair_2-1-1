@@ -9,7 +9,6 @@ import 'package:lionair_2/screens/profile.dart';
 import 'package:lionair_2/screens/reservasi_mess.dart';
 import 'package:lionair_2/screens/register.dart';
 import 'package:lionair_2/screens/splash_screen.dart';
-import 'package:lionair_2/screens/upemail.dart';
 import 'package:lionair_2/screens/uppass.dart';
 import 'package:lionair_2/screens/rating.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +34,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Lion Reservation',
+        color: Colors.white,
         routes: {
           'splash': (_) => const SplashScreen(),
           'login': (_) => const LoginScreen(),
@@ -47,13 +47,6 @@ class MyApp extends StatelessWidget {
                 data2: '',
               ),
           'profile': (_) => UserProfile(
-                userapi: '',
-                passapi: '',
-                data: '',
-                data1: '',
-                data2: '',
-              ),
-          'upemail': (_) => UpdateEmail(
                 userapi: '',
                 passapi: '',
                 data: '',
@@ -129,7 +122,6 @@ class MyApp extends StatelessWidget {
                 bookin3: '',
                 bookout3: '',
               ),
-          'register': (_) => const RegisterScreen(),
         },
         initialRoute: 'splash',
       ),
