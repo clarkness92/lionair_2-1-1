@@ -42,8 +42,8 @@ const url_RATING_GetDataByVIDX =
     'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_GetDataByVIDX';
 
 // ignore: constant_identifier_names
-const url_RATING_UpdateData =
-    'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_UpdateData';
+// const url_RATING_UpdateData =
+//     'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_UpdateData';
 
-const url_RATING_GetDataByVIDX =
-    'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_GetDataByVIDX';
+// const url_RATING_GetDataByVIDX =
+//     'https://lgapvfncacc.com/mess/prc.asmx?op=RATING_GetDataByVIDX';
